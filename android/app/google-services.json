@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "512733984729",
+    "project_id": "slingcard-test",
+    "storage_bucket": "slingcard-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:512733984729:android:9d848271fef65886624bc8",
+        "android_client_info": {
+          "package_name": "com.sling.slingone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3WPgRw0cvWkdIW1c8suzb1OgJLDyiqUA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

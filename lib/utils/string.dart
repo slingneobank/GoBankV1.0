@@ -1,20 +1,28 @@
 class CustomStrings {
-
   static const String algorithm = 'Happiness';
   static const String skip = 'SKIP';
   static const String setupprofile = 'Set Up Profile';
   static const String onbonding1 = 'Easily Accessible';
-  static const String onbonding2 = 'Access your account anytime anywhere, no hassele';
-  static const String onbonding3 = 'for any kind of transaction. Transfer, pay or buy anything';
-  static const String onbonding4 = 'anywhere, your account is in your fingertips';
+  static const String onbonding2 =
+      'Access your account anytime anywhere, no hassele';
+  static const String onbonding3 =
+      'for any kind of transaction. Transfer, pay or buy anything';
+  static const String onbonding4 =
+      'anywhere, your account is in your fingertips';
   static const String onbonding5 = 'Manage anytime';
-  static const String onbonding6 = 'Manage your account anytime anywhere, no hassele';
-  static const String onbonding7 = 'for any kind of management. Transfer, pay or buy anything';
-  static const String onbonding8 = 'anywhere, your account is in your fingertips.';
+  static const String onbonding6 =
+      'Manage your account anytime anywhere, no hassele';
+  static const String onbonding7 =
+      'for any kind of management. Transfer, pay or buy anything';
+  static const String onbonding8 =
+      'anywhere, your account is in your fingertips.';
   static const String onbonding9 = 'Safe transaction';
-  static const String onbonding10 = 'Manage your account anytime anywhere, no hassele';
-  static const String onbonding11 = 'for any kind of transaction. Transfer, pay or buy anything';
-  static const String onbonding12 = 'anywhere, your account is in your fingertips';
+  static const String onbonding10 =
+      'Manage your account anytime anywhere, no hassele';
+  static const String onbonding11 =
+      'for any kind of transaction. Transfer, pay or buy anything';
+  static const String onbonding12 =
+      'anywhere, your account is in your fingertips';
   static const String login = 'Log In';
   static const String security = 'Security';
   static const String language = 'Language';
@@ -72,7 +80,8 @@ class CustomStrings {
   static const String resetyourpassword = 'Reset your password';
   static const String octnov = 'October - November';
   static const String grocery = 'Grocery';
-  static const String accessaccount = 'Enter your new password to re-access your account';
+  static const String accessaccount =
+      'Enter your new password to re-access your account';
   static const String recent = 'Recent Expenses';
   static const String outcome = 'Outcome';
   static const String createpasswords = 'Create Password';
@@ -120,7 +129,8 @@ class CustomStrings {
   static const String otherlanguages = 'Other Languages';
   static const String englishuk = 'English (UK)';
   static const String english = 'English';
-  static const String lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget ornare quam vel facilisis feugiat amet sagittis arcu, tortor. Sapien, consequat ultrices morbi orci semper sit nulla. Leo auctor ut etiam est, amet aliquet ut vivamus. Odio vulputate est id tincidunt fames.';
+  static const String lorem =
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget ornare quam vel facilisis feugiat amet sagittis arcu, tortor. Sapien, consequat ultrices morbi orci semper sit nulla. Leo auctor ut etiam est, amet aliquet ut vivamus. Odio vulputate est id tincidunt fames.';
   static const String bahasaindonesia = 'Bahasa Indonesia';
   static const String chineses = 'Chineses';
   static const String croatian = 'Croatian';
@@ -176,7 +186,8 @@ class CustomStrings {
   static const String requestsent = 'Request Sent!';
   static const String paying = 'Thank you for paying!';
   static const String paymentsuccessful = 'Payment Successful!';
-  static const String pleasepayment = 'Please enter your PIN to confirm payment';
+  static const String pleasepayment =
+      'Please enter your PIN to confirm payment';
   static const String enteryourpin = 'Enter Your PIN';
   static const String confirmpayment = 'Confirm Payment';
   static const String top1 = 'Top Up your Credit Card or';
@@ -233,8 +244,10 @@ class CustomStrings {
   static const String hello = 'Hello Johan shaikh';
   static const String goodmorning = 'Good Morning,';
   static const String verityme = 'Verify Me';
-  static const String verification1 = 'We’ve sent a 4digits verification code to your Mail.';
-  static const String verification2 = 'Please enter the code below to verify it’s you!';
+  static const String verification1 =
+      'We’ve sent a 4digits verification code to your Mail.';
+  static const String verification2 =
+      'Please enter the code below to verify it’s you!';
   static const String verification = 'Verification';
   static const String retypepassword = 'Re-type password';
   static const String confirmpassword = 'Confirm Password';
@@ -251,7 +264,7 @@ class CustomStrings {
   static const String accounts = 'Already have an account? ';
   static const String loginhear = 'Log In here';
   static const String personalinformations = 'Personal Informations';
-  static const String antorpaul = 'Antor Paul';
+  static const String antorpaul = 'Your Name';
   static const String contactnumber = 'Contact Number';
   static const String dateofbirth = 'Date of birth';
   static const String gender = 'Gender';
@@ -283,7 +296,8 @@ class CustomStrings {
   static const String fullnames = 'Full name';
   static const String fullnamee = 'Full Name';
   static const String addcreditionalstoloop = 'Add Creditionals to Loop';
-  static const String addyourbankcradite = 'Add your bank credit/debit card to Loop for\nmanage your expenses and set your budget for savings';
+  static const String addyourbankcradite =
+      'Add your bank credit/debit card to Loop for\nmanage your expenses and set your budget for savings';
   static const String next = 'Next';
   static const String addcreditcard = 'Add Credit card';
   static const String cardnumber = 'Card Number';
@@ -296,11 +310,13 @@ class CustomStrings {
   static const String cardinformation = 'Card Information';
   static const String verify = 'Verify';
   static const String identity = 'Identity';
-  static const String nowweneedtoverifiy = 'Now we need to verify your identity';
-  static const String takeapassword = 'Take a Passport or ID to Check\nyour Information';
-  static const String passportscan = 'Passport Scan';
+  static const String nowweneedtoverifiy =
+      'Now we need to verify your identity';
+  static const String takeapassword = 'Take a ID to Check\nyour Information';
+  static const String passportscan = 'Document Scan';
   static const String haventuploadyet = 'Haven t uploaded yet';
-  static const String selfwithfront = 'Selfie with your front camera to\nverify your identity';
+  static const String selfwithfront =
+      'Selfie with your front camera to\nverify your identity';
   static const String selfie = 'Selfie';
   static const String submitall = 'Submit All';
   static const String addcards = 'Add Card';
@@ -314,7 +330,7 @@ class CustomStrings {
   static const String savepin = 'Save Pin';
   static const String confirmyourpin = 'Confirm your PIN';
   static const String verificationdone = 'Verification Done!';
-  static const String theaacountbeen = 'The account has been successfully leveraged,\nenjoy to Managing your money feels guided';
+  static const String theaacountbeen =
+      'The account has been successfully leveraged,\nenjoy to Managing your money feels guided';
   static const String done = 'Done';
 }
-

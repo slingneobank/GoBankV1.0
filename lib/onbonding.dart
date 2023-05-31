@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gobank/bottombar/bottombar.dart';
 import 'package:gobank/login/login.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:gobank/utils/string.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gobank/login/phone.dart';
+
+import 'home/home.dart';
 
 class Onbonding extends StatefulWidget {
   const Onbonding({Key? key}) : super(key: key);
@@ -267,7 +271,7 @@ class _OnbondingState extends State<Onbonding> {
                 ),
               ],
             ),
-            if (_currentPage ==0) ...{
+            if (_currentPage == 0) ...{
               Column(
                 children: [
                   SizedBox(
@@ -283,7 +287,8 @@ class _OnbondingState extends State<Onbonding> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const Login(),
+                                builder: (context) =>
+                                    const Bottombar(), //Login() for real
                               ),
                             );
                           },
@@ -327,7 +332,7 @@ class _OnbondingState extends State<Onbonding> {
                   ),
                 ],
               ),
-            } else if (_currentPage ==1) ...{
+            } else if (_currentPage == 1) ...{
               Column(
                 children: [
                   SizedBox(
@@ -387,7 +392,7 @@ class _OnbondingState extends State<Onbonding> {
                   ),
                 ],
               ),
-            } else if(_currentPage ==2)...{
+            } else if (_currentPage == 2) ...{
               Column(
                 children: [
                   SizedBox(
@@ -437,7 +442,7 @@ class _OnbondingState extends State<Onbonding> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Login(),
+                          builder: (context) => const MyPhone(),
                         ),
                       );
                     },

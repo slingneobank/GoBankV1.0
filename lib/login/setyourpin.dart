@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:gobank/login/auth_ctrl.dart';
 import 'package:gobank/login/confirmpin.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
@@ -17,6 +19,7 @@ class Setyourpin extends StatefulWidget {
 
 class _SetyourpinState extends State<Setyourpin> {
   late ColorNotifire notifire;
+  final authCtrl = Get.find<AuthCtrl>();
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +110,7 @@ class _SetyourpinState extends State<Setyourpin> {
       height: height / 14,
       width: width / 1.2,
       child: PinPut(
+        controller: authCtrl.pin1Ctrl,
         textStyle: TextStyle(
             color: Colors.black,
             fontFamily: "Gilroy Bold",

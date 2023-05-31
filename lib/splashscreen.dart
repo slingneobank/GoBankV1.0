@@ -1,7 +1,8 @@
 import 'dart:async';
 
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:gobank/login/auth_ctrl.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ class Splashscreen extends StatefulWidget {
 
 class _SplashscreenState extends State<Splashscreen> {
   late ColorNotifire notifire;
+  final authCtrl  = Get.put<AuthCtrl>(AuthCtrl());
 
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
@@ -46,7 +48,6 @@ class _SplashscreenState extends State<Splashscreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:gobank/login/auth_ctrl.dart';
 import 'package:gobank/login/register.dart';
 import 'package:gobank/login/verify.dart';
+import 'package:gobank/login/verify_pin.dart';
 import 'package:gobank/profile/forgotpassword.dart';
 import 'package:gobank/utils/button.dart';
 import 'package:gobank/utils/media.dart';
@@ -20,6 +24,8 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   late ColorNotifire notifire;
+  bool loading = false;
+  final authCtrl = Get.find<AuthCtrl>();
 
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
@@ -29,6 +35,13 @@ class _LoginState extends State<Login> {
     } else {
       notifire.setIsDark = previusstate;
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loading = false;
   }
 
   @override
@@ -108,7 +121,9 @@ class _LoginState extends State<Login> {
                                     notifire.getbluecolor,
                                     "images/email.png",
                                     CustomStrings.emailhint,
-                                    notifire.getdarkwhitecolor),
+                                    notifire.getdarkwhitecolor,
+                                    inputType: TextInputType.emailAddress,
+                                    controller: authCtrl.emailCtrl3),
                                 SizedBox(
                                   height: height / 35,
                                 ),
@@ -135,59 +150,99 @@ class _LoginState extends State<Login> {
                                     notifire.getbluecolor,
                                     "images/password.png",
                                     CustomStrings.passwordhint,
-                                    notifire.getdarkwhitecolor),
+                                    notifire.getdarkwhitecolor,
+                                    controller: authCtrl.passwordCtrl3),
                                 SizedBox(
                                   height: height / 35,
                                 ),
-                                Row(
-                                  children: [
-                                    const Spacer(),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const ForgotPassword(),
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        height: height / 40,
-                                        color: Colors.transparent,
-                                        child: Text(
-                                          CustomStrings.forgotpassword,
-                                          style: TextStyle(
-                                              color: notifire.getdarkscolor,
-                                              fontSize: height / 60,
-                                              fontFamily: 'Gilroy Medium'),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: width / 18,
-                                    ),
-                                  ],
-                                ),
+                                // Row(
+                                //   children: [
+                                //     const Spacer(),
+                                //     GestureDetector(
+                                //       onTap: () {
+                                //         Navigator.push(
+                                //           context,
+                                //           MaterialPageRoute(
+                                //             builder: (context) =>
+                                //                 const ForgotPassword(),
+                                //           ),
+                                //         );
+                                //       },
+                                //       child: Container(
+                                //         height: height / 40,
+                                //         color: Colors.transparent,
+                                //         child: Text(
+                                //           CustomStrings.forgotpassword,
+                                //           style: TextStyle(
+                                //               color: notifire.getdarkscolor,
+                                //               fontSize: height / 60,
+                                //               fontFamily: 'Gilroy Medium'),
+                                //         ),
+                                //       ),
+                                //     ),
+                                //     SizedBox(
+                                //       width: width / 18,
+                                //     ),
+                                //   ],
+                                // ),
                                 SizedBox(
                                   height: height / 20,
                                 ),
                                 GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const Verify(),
-                                      ),
-                                    );
+                                  onTap: () async {
+                                    if (authCtrl.emailCtrl3.text.isNotEmpty &&
+                                        authCtrl
+                                            .passwordCtrl3.text.isNotEmpty) {
+                                      loading = true;
+                                      setState(() {});
+                                      await authCtrl
+                                          .signInWithEmailAndPassword(
+                                              authCtrl.emailCtrl3.text,
+                                              authCtrl.passwordCtrl3.text)
+                                          .then((value) {
+                                        loading = false;
+                                        setState(() {});
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const VerifyPin(),
+                                          ),
+                                        );
+                                      });
+                                    } else {
+                                      loading = false;
+                                      setState(() {});
+                                      Fluttertoast.showToast(
+                                          msg: "Please check the values");
+                                    }
                                   },
-                                  child: Custombutton.button(
-                                      notifire.getbluecolor,
-                                      CustomStrings.login,
-                                      width / 2),
+                                  child: loading
+                                      ? Center(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                Radius.circular(30),
+                                              ),
+                                              color: notifire.getbluecolor,
+                                            ),
+                                            height: height / 15,
+                                            width: width / 5,
+                                            child: Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                              color: Colors.white,
+                                            )),
+                                          ),
+                                        )
+                                      : Custombutton.button(
+                                          notifire.getbluecolor,
+                                          CustomStrings.login,
+                                          width / 2),
                                 ),
                                 SizedBox(
-                                  height: height / 50,
+                                  height: height / 10,
                                 ),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
@@ -219,57 +274,57 @@ class _LoginState extends State<Login> {
                                 SizedBox(
                                   height: height / 20,
                                 ),
-                                Row(
-                                  children: [
-                                    const Spacer(),
-                                    Container(
-                                      height: height / 10,
-                                      width: width / 5.1,
-                                      decoration: BoxDecoration(
-                                        color: notifire.getprimerycolor,
-                                        borderRadius: BorderRadius.circular(19),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: const Color(0xff6C56F9)
-                                                .withOpacity(0.11),
-                                            blurRadius: 10.0,
-                                          ),
-                                        ],
-                                      ),
-                                      child: Center(
-                                        child: Image.asset(
-                                          "images/facebook.png",
-                                          height: height / 20,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: width / 12,
-                                    ),
-                                    Container(
-                                      height: height / 10,
-                                      width: width / 5.1,
-                                      decoration: BoxDecoration(
-                                        color: notifire.getprimerycolor,
-                                        borderRadius: BorderRadius.circular(19),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: const Color(0xff6C56F9)
-                                                .withOpacity(0.11),
-                                            blurRadius: 10.0,
-                                          ),
-                                        ],
-                                      ),
-                                      child: Center(
-                                        child: Image.asset(
-                                          "images/google.png",
-                                          height: height / 20,
-                                        ),
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                  ],
-                                ),
+                                // Row(
+                                //   children: [
+                                //     const Spacer(),
+                                //     Container(
+                                //       height: height / 10,
+                                //       width: width / 5.1,
+                                //       decoration: BoxDecoration(
+                                //         color: notifire.getprimerycolor,
+                                //         borderRadius: BorderRadius.circular(19),
+                                //         boxShadow: [
+                                //           BoxShadow(
+                                //             color: const Color(0xff6C56F9)
+                                //                 .withOpacity(0.11),
+                                //             blurRadius: 10.0,
+                                //           ),
+                                //         ],
+                                //       ),
+                                //       child: Center(
+                                //         child: Image.asset(
+                                //           "images/facebook.png",
+                                //           height: height / 20,
+                                //         ),
+                                //       ),
+                                //     ),
+                                //     SizedBox(
+                                //       width: width / 12,
+                                //     ),
+                                //     Container(
+                                //       height: height / 10,
+                                //       width: width / 5.1,
+                                //       decoration: BoxDecoration(
+                                //         color: notifire.getprimerycolor,
+                                //         borderRadius: BorderRadius.circular(19),
+                                //         boxShadow: [
+                                //           BoxShadow(
+                                //             color: const Color(0xff6C56F9)
+                                //                 .withOpacity(0.11),
+                                //             blurRadius: 10.0,
+                                //           ),
+                                //         ],
+                                //       ),
+                                //       child: Center(
+                                //         child: Image.asset(
+                                //           "images/google.png",
+                                //           height: height / 20,
+                                //         ),
+                                //       ),
+                                //     ),
+                                //     const Spacer(),
+                                //   ],
+                                // ),
                                 SizedBox(
                                   height: height / 20,
                                 ),
