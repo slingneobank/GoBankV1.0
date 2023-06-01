@@ -19,7 +19,6 @@ import '../profile/helpsupport.dart';
 import '../profile/legalandpolicy.dart';
 import 'home_ctrl.dart';
 import 'seeallpayment.dart';
-import 'topup/topupcard/topup.dart';
 import 'transfer/sendmoney.dart';
 
 class Home extends StatefulWidget {
@@ -412,7 +411,7 @@ class _HomeState extends State<Home> {
                                             borderRadius:
                                                 BorderRadius.circular(32.0),
                                             boxShadow: [
-                                              BoxShadow(
+                                              const BoxShadow(
                                                 color: Colors.white,
                                                 offset: Offset(-4.0, -4.0),
                                                 blurRadius: 16.0,
@@ -420,7 +419,7 @@ class _HomeState extends State<Home> {
                                               BoxShadow(
                                                 color: Colors.black
                                                     .withOpacity(0.2),
-                                                offset: Offset(4.0, 4.0),
+                                                offset: const Offset(4.0, 4.0),
                                                 blurRadius: 16.0,
                                               ),
                                             ],
@@ -582,12 +581,12 @@ class _HomeState extends State<Home> {
               padding: EdgeInsets.symmetric(horizontal: width / 30),
               child: Container(
                   height: height / 7,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
                       Radius.circular(10),
                     ),
                   ),
-                  child: CouponSliders()),
+                  child: const CouponSliders()),
             ),
             SizedBox(
               height: height / 30,
@@ -651,7 +650,7 @@ class _HomeState extends State<Home> {
                       return GestureDetector(
                         onTap: () {
                           if (index == 1) {
-                            Get.to(() => SlingStore());
+                            Get.to(() => const SlingStore());
                           } else {
                             Navigator.push(
                               context,
@@ -723,12 +722,12 @@ class _HomeState extends State<Home> {
               padding: EdgeInsets.symmetric(horizontal: width / 30),
               child: Container(
                   height: height / 4.5,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
                       Radius.circular(10),
                     ),
                   ),
-                  child: SaversClubSliders()),
+                  child: const SaversClubSliders()),
             ),
             SizedBox(
               height: height / 50,

@@ -1,11 +1,8 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:gobank/login/verify_kyc_otp.dart';
-import 'package:gobank/login/verify_pin.dart';
-import 'package:gobank/verification/indetyfiyverifiy.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart';
@@ -525,7 +522,7 @@ class _SetupProfileState extends State<SetupProfile> {
                                             ),
                                             height: height / 15,
                                             width: width / 5,
-                                            child: Center(
+                                            child: const Center(
                                                 child:
                                                     CircularProgressIndicator(
                                               color: Colors.white,

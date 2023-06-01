@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:gobank/profile/editprofile.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/colornotifire.dart';
-import '../utils/profiletextfield.dart';
 import '../utils/string.dart';
 
 class MyProfile extends StatefulWidget {
@@ -165,7 +163,7 @@ class _MyProfileState extends State<MyProfile> {
                 SizedBox(
                   height: height / 70,
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
@@ -189,7 +187,7 @@ class _MyProfileState extends State<MyProfile> {
                 SizedBox(
                   height: height / 70,
                 ),
-                Text(
+                const Text(
                   "Upgrade KYC",
                   style: TextStyle(
                       color: Colors.green,
@@ -209,7 +207,7 @@ class _MyProfileState extends State<MyProfile> {
                       color: Colors.grey[100],
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Center(
+                    child: const Center(
                         child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [

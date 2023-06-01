@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,12 +30,12 @@ class _AddMoneyToGoalState extends State<AddMoneyToGoal> {
                 onTap: () {
                   Get.back();
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.arrow_back_ios_new_rounded,
                   color: Colors.white,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Text(
@@ -72,7 +69,7 @@ class _AddMoneyToGoalState extends State<AddMoneyToGoal> {
           ),
           Container(
             height: height / 1.2,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20), topRight: Radius.circular(20)),
@@ -82,7 +79,7 @@ class _AddMoneyToGoalState extends State<AddMoneyToGoal> {
               child: Stack(
                 children: [
                   ListView(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     children: [
                       SizedBox(
                         height: height / 30,
@@ -106,14 +103,14 @@ class _AddMoneyToGoalState extends State<AddMoneyToGoal> {
                                     height: height / 20,
                                     width: height / 20,
                                     decoration: BoxDecoration(
-                                      image: DecorationImage(
+                                      image: const DecorationImage(
                                           image: AssetImage(
                                               "images/onbonding1.png")),
                                       color: Colors.deepPurple.shade100,
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   Text(

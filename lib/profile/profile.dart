@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gobank/profile/editprofile.dart';
 import 'package:gobank/profile/myprofile.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

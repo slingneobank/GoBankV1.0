@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:gobank/login/setupprofile.dart';
-import 'package:gobank/login/verify.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -37,7 +36,7 @@ class _RegisterState extends State<Register> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     loading = false;
   }
@@ -294,7 +293,7 @@ class _RegisterState extends State<Register> {
                                             ),
                                             height: height / 15,
                                             width: width / 5,
-                                            child: Center(
+                                            child: const Center(
                                                 child:
                                                     CircularProgressIndicator(
                                               color: Colors.white,

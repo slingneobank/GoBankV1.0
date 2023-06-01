@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,7 +25,7 @@ class _SaversClubSlidersState extends State<SaversClubSliders> {
   Timer? _timer;
 
   // The duration for the automatic scrolling
-  final Duration _duration = Duration(seconds: 3);
+  final Duration _duration = const Duration(seconds: 3);
 
   // The list of colors for the containers
   final List<Color> _colors = [
@@ -81,7 +80,7 @@ class _SaversClubSlidersState extends State<SaversClubSliders> {
       // Animate the scrolling to the next position
       _controller.animateTo(
         next,
-        duration: Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 500),
         curve: Curves.easeOut,
       );
     });

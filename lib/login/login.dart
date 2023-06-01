@@ -3,9 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:gobank/login/auth_ctrl.dart';
 import 'package:gobank/login/register.dart';
-import 'package:gobank/login/verify.dart';
 import 'package:gobank/login/verify_pin.dart';
-import 'package:gobank/profile/forgotpassword.dart';
 import 'package:gobank/utils/button.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:gobank/utils/string.dart';
@@ -39,7 +37,7 @@ class _LoginState extends State<Login> {
 
   @override
   void initState() {
-    // TODO: implement initState
+  
     super.initState();
     loading = false;
   }
@@ -229,7 +227,7 @@ class _LoginState extends State<Login> {
                                             ),
                                             height: height / 15,
                                             width: width / 5,
-                                            child: Center(
+                                            child: const Center(
                                                 child:
                                                     CircularProgressIndicator(
                                               color: Colors.white,

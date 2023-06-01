@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gobank/login/phone.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gobank/login/setupprofile.dart';
 import 'package:gobank/login/auth_ctrl.dart';
@@ -54,7 +53,7 @@ class _MyVerifyState extends State<MyVerify> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios_rounded,
             color: Colors.black,
           ),
@@ -62,7 +61,7 @@ class _MyVerifyState extends State<MyVerify> {
         elevation: 0,
       ),
       body: Container(
-        margin: EdgeInsets.only(left: 25, right: 25),
+        margin: const EdgeInsets.only(left: 25, right: 25),
         alignment: Alignment.center,
         child: SingleChildScrollView(
           child: Column(
@@ -73,24 +72,24 @@ class _MyVerifyState extends State<MyVerify> {
                 width: 150,
                 height: 150,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
-              Text(
+              const Text(
                 "Phone Verification",
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Text(
+              const Text(
                 "We need to register your phone without getting started!",
                 style: TextStyle(
                   fontSize: 16,
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               PinPut(
@@ -102,7 +101,7 @@ class _MyVerifyState extends State<MyVerify> {
                 // showCursor: true,
                 onSubmit: (pin) => code = pin,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               SizedBox(
@@ -133,7 +132,7 @@ class _MyVerifyState extends State<MyVerify> {
                         );
                       }
                     },
-                    child: Text("Verify Phone Number")),
+                    child: const Text("Verify Phone Number")),
               ),
               Row(
                 children: [
@@ -145,7 +144,7 @@ class _MyVerifyState extends State<MyVerify> {
                               builder: (context) => const MyPhone()),
                         );
                       },
-                      child: Text(
+                      child: const Text(
                         "Edit Phone Number ?",
                         style: TextStyle(color: Colors.black),
                       ))

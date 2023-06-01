@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gobank/bottombar/bottombar.dart';
-import 'package:gobank/login/setupprofile.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

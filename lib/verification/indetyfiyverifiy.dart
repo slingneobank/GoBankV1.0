@@ -4,7 +4,6 @@ import 'package:gobank/utils/button.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:gobank/utils/string.dart';
-import 'package:gobank/verification/scandone.dart';
 import 'package:provider/provider.dart';
 
 class VerifiyIdenty extends StatefulWidget {

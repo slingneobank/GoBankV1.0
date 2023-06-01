@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:gobank/home/savings/add_money_to_goal.dart';
 import 'package:gobank/utils/media.dart';
@@ -45,7 +42,7 @@ class _SavingsState extends State<Savings> {
                           fontSize: 18,
                           fontWeight: FontWeight.w500),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     Text(
@@ -72,13 +69,13 @@ class _SavingsState extends State<Savings> {
           ),
           Container(
             height: height,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20), topRight: Radius.circular(20)),
             ),
             child: ListView(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 SizedBox(
                   height: height / 30,
@@ -108,7 +105,7 @@ class _SavingsState extends State<Savings> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Text(
@@ -147,7 +144,7 @@ class _SavingsState extends State<Savings> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
                       Text(
@@ -197,7 +194,7 @@ class _SavingsState extends State<Savings> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Get.to(() => AddMoneyToGoal());
+                                  Get.to(() => const AddMoneyToGoal());
                                 },
                                 child: Container(
                                   height: height / 20,
@@ -259,7 +256,7 @@ class _SavingsState extends State<Savings> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Column(
@@ -308,7 +305,7 @@ class _SavingsState extends State<Savings> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Column(
@@ -357,7 +354,7 @@ class _SavingsState extends State<Savings> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Column(
@@ -406,7 +403,7 @@ class _SavingsState extends State<Savings> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Column(
