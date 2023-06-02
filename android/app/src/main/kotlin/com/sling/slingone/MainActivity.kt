@@ -1,4 +1,4 @@
-package com.example.gobank
+package com.sling.slingone
 
 import io.flutter.embedding.android.FlutterActivity
 
