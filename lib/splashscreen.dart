@@ -2,6 +2,7 @@ import 'dart:async';
 
 
 import 'package:flutter/material.dart';
+import 'package:gobank/home/home.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +39,7 @@ class _SplashscreenState extends State<Splashscreen> {
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const Onbonding(),
+          builder: (context) => const Home(),//onboarding
         ),
       ),
     );
