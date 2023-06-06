@@ -8,6 +8,8 @@ import 'package:gobank/home/notifications.dart';
 import 'package:gobank/home/request/request.dart';
 import 'package:gobank/home/scanpay/scan.dart';
 import 'package:gobank/home/seealltransaction.dart';
+import 'package:gobank/slingsaverclub/offerdetailspage.dart';
+import 'package:gobank/slingsaverclub/sliderpage.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:gobank/utils/string.dart';
@@ -708,37 +710,48 @@ class _HomeState extends State<Home> {
                     ? CarouselSlider.builder(
                         itemCount: imageUrls.length,
                         itemBuilder: (context, index, realIndex) {
-                          return Row(
-                            children: [
-                              SizedBox(width: 10),
-                              Container(
-                                width: 140,
-                                height: 200,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
+                          return GestureDetector(
+                            onTap: () {
+                              // Navigate to the offer details page
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => OfferDetailsPage(imageUrl: imageUrls[index],currentindex:index),
                                 ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  child: Image.network(
-                                    imageUrls[index],
-                                    fit: BoxFit.cover,
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                SizedBox(width: 10),
+                                Container(
+                                  width: 140,
+                                  height: 200,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Image.network(
+                                      imageUrls[index],
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(width: 10),
-                            ],
+                                SizedBox(width: 10),
+                              ],
+                            ),
                           );
                         },
                         options: CarouselOptions(
                           height: 200,
                           enableInfiniteScroll: true,
-                          //autoPlay: true,
+                          autoPlay: true,
                           autoPlayInterval: Duration(seconds: 3),
                           autoPlayAnimationDuration: Duration(milliseconds: 800),
                           autoPlayCurve: Curves.easeInOut,
                           enlargeCenterPage: true,
-                          viewportFraction: 0.4, // Adjust this value to show 2 or 3 images
-                          aspectRatio: 16 / 5, // Adjust this value based on your image aspect ratio
+                          viewportFraction: 0.5, // Adjust this value to show 2 or 3 images
+                          aspectRatio: 5, // Adjust this value based on your image aspect ratio
                           onPageChanged: (index, reason) {
                             setState(() {
                               activeIndex = index;
@@ -765,6 +778,13 @@ class _HomeState extends State<Home> {
               ),
 
             SizedBox(
+              height: height / 80,
+              ),
+              SizedBox(
+                height: 200,
+                width: width-30,
+                child: SliderPage(),),
+               SizedBox(
               height: height / 80,
               ),
             Padding(
