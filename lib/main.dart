@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:gobank/splashscreen.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
