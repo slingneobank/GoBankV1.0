@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:gobank/login/phone.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gobank/login/setupprofile.dart';
+import 'package:gobank/login/register.dart';
 import 'package:gobank/login/auth_ctrl.dart';
 import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../home/home.dart';
 
 class MyVerify extends StatefulWidget {
   const MyVerify({Key? key}) : super(key: key);
@@ -18,7 +19,54 @@ class MyVerify extends StatefulWidget {
 
 class _MyVerifyState extends State<MyVerify> {
   final authCtrl = Get.find<AuthCtrl>();
+  String otp = "";
   // final FirebaseAuth auth = authCtrl.auth;
+  void verifyFun() async {
+    try {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: MyPhone.verify, smsCode: otp);
+      final FirebaseAuth auth = authCtrl.auth;
+      await auth.signInWithCredential(credential);
+      // check if user exists
+      bool userExist = await searchForMobileNumber();
+      if (userExist == true) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  const Home(), //before routed to verifyOTP.dart
+            ),
+            (route) => false);
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Register(),
+          ),
+        );
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Wrong otp',
+        backgroundColor: Colors.grey,
+      );
+    }
+  }
+
+  Future<bool> searchForMobileNumber() async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('mobileNo', isEqualTo: authCtrl.auth.currentUser!.phoneNumber)
+        .limit(1)
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      return true;
+    } else {
+      return false; // Target mobile number not found
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // final defaultPinTheme = PinTheme(
@@ -54,7 +102,7 @@ class _MyVerifyState extends State<MyVerify> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios_rounded,
             color: Colors.black,
           ),
@@ -62,7 +110,7 @@ class _MyVerifyState extends State<MyVerify> {
         elevation: 0,
       ),
       body: Container(
-        margin: EdgeInsets.only(left: 25, right: 25),
+        margin: const EdgeInsets.only(left: 25, right: 25),
         alignment: Alignment.center,
         child: SingleChildScrollView(
           child: Column(
@@ -73,24 +121,24 @@ class _MyVerifyState extends State<MyVerify> {
                 width: 150,
                 height: 150,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
-              Text(
+              const Text(
                 "Phone Verification",
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Text(
+              const Text(
                 "We need to register your phone without getting started!",
                 style: TextStyle(
                   fontSize: 16,
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               PinPut(
@@ -100,9 +148,9 @@ class _MyVerifyState extends State<MyVerify> {
                 // submittedPinTheme: submittedPinTheme,
 
                 // showCursor: true,
-                onSubmit: (pin) => code = pin,
+                onSubmit: (pin) => otp = pin,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               SizedBox(
@@ -110,30 +158,11 @@ class _MyVerifyState extends State<MyVerify> {
                 height: 45,
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.green.shade600,
+                        backgroundColor: Colors.blue.shade600,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
-                    onPressed: () async {
-                      try {
-                        PhoneAuthCredential credential =
-                            PhoneAuthProvider.credential(
-                                verificationId: MyPhone.verify, smsCode: code);
-                        final FirebaseAuth auth = authCtrl.auth;
-                        await auth.signInWithCredential(credential);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SetupProfile(),
-                          ),
-                        );
-                      } catch (e) {
-                        Fluttertoast.showToast(
-                          msg: 'Wrong otp',
-                          backgroundColor: Colors.grey,
-                        );
-                      }
-                    },
-                    child: Text("Verify Phone Number")),
+                    onPressed: verifyFun,
+                    child: const Text("Verify Phone Number")),
               ),
               Row(
                 children: [
@@ -145,7 +174,7 @@ class _MyVerifyState extends State<MyVerify> {
                               builder: (context) => const MyPhone()),
                         );
                       },
-                      child: Text(
+                      child: const Text(
                         "Edit Phone Number ?",
                         style: TextStyle(color: Colors.black),
                       ))

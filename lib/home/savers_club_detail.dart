@@ -1,8 +1,4 @@
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,7 +23,7 @@ class _SaversClubDetailState extends State<SaversClubDetail> {
             Get.back();
           },
           child: Row(children: [
-            Icon(Icons.arrow_back_ios_new_rounded),
+            const Icon(Icons.arrow_back_ios_new_rounded),
             Text(
               "Back",
               textAlign: TextAlign.center,
@@ -100,7 +96,7 @@ class _SaversClubDetailState extends State<SaversClubDetail> {
         ],
         if (widget.data["price"] != null) ...[
           Padding(
-            padding: EdgeInsets.only(left: 15, top: 15),
+            padding: const EdgeInsets.only(left: 15, top: 15),
             child: Text(
               widget.data["name"] == "" ? "Product Name" : widget.data["name"],
               style: GoogleFonts.poppins(
@@ -112,7 +108,7 @@ class _SaversClubDetailState extends State<SaversClubDetail> {
           ),
         ],
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
           child: Text(
             widget.data["desc"],
             // "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",

@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
-import 'package:gobank/home/home.dart';
 import 'package:gobank/home/home_ctrl.dart';
 import 'package:gobank/home/savings/savings.dart';
 import 'package:gobank/home/savings/unor_list.dart';
@@ -41,7 +37,7 @@ class _UpgradePlanState extends State<UpgradePlan> {
           },
           child: InkWell(
             onTap: () => Get.back(),
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back_ios_new_rounded,
               color: Colors.black,
             ),
@@ -71,8 +67,8 @@ class _UpgradePlanState extends State<UpgradePlan> {
                   inactiveBgColor: Colors.grey.shade300,
                   inactiveFgColor: Colors.grey.shade600,
                   totalSwitches: 2,
-                  labels: ['Lite', 'Premium'],
-                  icons: [Icons.light_mode, Icons.star],
+                  labels: const ['Lite', 'Premium'],
+                  icons: const [Icons.light_mode, Icons.star],
                   iconSize: 30.0,
                   // borderWidth: 5.0,
                   borderColor: [Colors.grey.shade400],
@@ -125,11 +121,11 @@ class _UpgradePlanState extends State<UpgradePlan> {
                                 ),
                               ],
                             ),
-                            Divider(
+                            const Divider(
                               color: Colors.black,
                             ),
                             toggle_value == 0
-                                ? UnorderedList([
+                                ? UnorderedList(const [
                                     "Virtual Debit Card on the App",
                                     "Order Physical Debit Card",
                                     "Core Financial Tools to save, spend and manage money",
@@ -139,7 +135,7 @@ class _UpgradePlanState extends State<UpgradePlan> {
                                     "Insights into all your spends",
                                     "Annual Interest from parents to reward your savings"
                                   ])
-                                : UnorderedList([
+                                : UnorderedList(const [
                                     "Investment Feature to invest in 1500+ stocks and ETFs independently",
                                     "Annual Interest Rewards of 6% on your saving balance paid on monthly ",
                                     "Get 1% cashback on all spends using Fyp card upto † 100 monthly",
@@ -168,7 +164,7 @@ class _UpgradePlanState extends State<UpgradePlan> {
                         child: InkWell(
                           onTap: () async {
                             if (toggle_value == 0) {
-                              Get.to(() => Savings());
+                              Get.to(() => const Savings());
                             } else {
                               await homeCtrl.razorpayCheckout(
                                   context, 100, "Upgrading To Premium Plan");
@@ -195,8 +191,8 @@ class _UpgradePlanState extends State<UpgradePlan> {
                           ),
                         ),
                       ));
+                // ignore: dead_code
                 } else {
-                  return SizedBox();
                 }
               })
         ],

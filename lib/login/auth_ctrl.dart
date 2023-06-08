@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -8,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gobank/constants.dart';
 import 'package:gobank/models/sling_user.dart';
-import 'package:intl/intl.dart';
 
 class AuthCtrl extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -27,7 +24,46 @@ class AuthCtrl extends GetxController {
   TextEditingController mblCtrl = TextEditingController();
   TextEditingController pin1Ctrl = TextEditingController();
   TextEditingController pin2Ctrl = TextEditingController();
+  TextEditingController dobctrl = TextEditingController();
+  TextEditingController genderCtrl = TextEditingController();
   String pineToken = "";
+  Future<void> createUserAndSaveData() async {
+    try {
+      String dropdownvalue =
+          "day"; // Replace with the actual value for the day dropdown
+      String monthvalue =
+          "month"; // Replace with the actual value for the month dropdown
+      String yearvalue =
+          "year"; // Replace with the actual value for the year dropdown
+      String gendervalue =
+          "male"; // Replace with the actual value for the gender
+      String mobileNo = auth.currentUser!.phoneNumber ?? "+910000000000";
+      String email = emailCtrl.text;
+      String fullName = fullnameCtrl.text;
+
+      final DatabaseReference userRef =
+          FirebaseDatabase.instance.ref().child('users').push();
+
+      await userRef.set({
+        'mobile': mobileNo,
+        'dob': '$dropdownvalue/$monthvalue/$yearvalue',
+        'gender': gendervalue,
+        'email': email,
+        'fullName': fullName,
+      });
+
+      print('Data saved to Firebase Realtime Database!');
+
+      // Navigator.push(
+      //   Context
+      //   MaterialPageRoute(
+      //     builder: (context) => const Home(),
+      //   ),
+      // );
+    } catch (error) {
+      print('Failed to save data: $error');
+    }
+  }
 
   Future createUserWithEmailAndPassword(
       emailAddress, password, name, number) async {

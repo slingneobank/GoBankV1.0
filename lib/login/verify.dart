@@ -44,52 +44,65 @@ class _VerifyState extends State<Verify> {
                   width: width,
                   color: Colors.transparent,
                   child: Image.asset(
-                    "images/background.png",
+                    "assets/img1.png",
                     fit: BoxFit.cover,
                   ),
                 ),
                 Column(
                   children: [
-                    SizedBox(height: height / 20,),
-                    Center(child: Image.asset("images/verifiy.png",height: height / 5,),),
-                    SizedBox(height: height / 40,),
+                    SizedBox(
+                      height: height / 20,
+                    ),
+                    Center(
+                      child: Image.asset(
+                        "images/verifiy.png",
+                        height: height / 5,
+                      ),
+                    ),
+                    SizedBox(
+                      height: height / 40,
+                    ),
                     Text(
                       CustomStrings.verification,
                       style: TextStyle(
-                        color: notifire.getdarkscolor,
-                        fontSize: height / 40,
-                        fontFamily: 'Gilroy Bold'
-                      ),
+                          color: notifire.getdarkscolor,
+                          fontSize: height / 40,
+                          fontFamily: 'Gilroy Bold'),
                     ),
-                    SizedBox(height: height / 40,),
+                    SizedBox(
+                      height: height / 40,
+                    ),
                     Text(
                       CustomStrings.verification1,
                       style: TextStyle(
                           color: notifire.getdarkgreycolor,
                           fontSize: height / 65,
-                          fontFamily: 'Gilroy Medium'
-                      ),
+                          fontFamily: 'Gilroy Medium'),
                     ),
-                    SizedBox(height: height / 100,),
+                    SizedBox(
+                      height: height / 100,
+                    ),
                     Text(
                       CustomStrings.verification2,
                       style: TextStyle(
                           color: notifire.getdarkgreycolor,
                           fontSize: height / 65,
-                          fontFamily: 'Gilroy Medium'
-                      ),
+                          fontFamily: 'Gilroy Medium'),
                     ),
-                    SizedBox(height: height / 20,),
+                    SizedBox(
+                      height: height / 20,
+                    ),
                     animatedBorders(),
-                    SizedBox(height: height / 30,),
+                    SizedBox(
+                      height: height / 30,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           CustomStrings.code,
                           style: TextStyle(
-                            color: notifire.getdarkgreycolor
-                                .withOpacity(0.6),
+                            color: notifire.getdarkgreycolor.withOpacity(0.6),
                             fontSize: height / 60,
                           ),
                         ),
@@ -105,7 +118,9 @@ class _VerifyState extends State<Verify> {
                         ),
                       ],
                     ),
-                    SizedBox(height: height / 30,),
+                    SizedBox(
+                      height: height / 30,
+                    ),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -115,10 +130,8 @@ class _VerifyState extends State<Verify> {
                           ),
                         );
                       },
-                      child: Custombutton.button(
-                          notifire.getbluecolor,
-                          CustomStrings.verityme,
-                          width / 2),
+                      child: Custombutton.button(notifire.getbluecolor,
+                          CustomStrings.verityme, width / 2),
                     ),
                   ],
                 ),
@@ -129,33 +142,38 @@ class _VerifyState extends State<Verify> {
       ),
     );
   }
+
   Widget animatedBorders() {
     return Container(
       color: notifire.getprimerycolor,
-      height: height / 14, width: width / 1.2,
-      child: PinPut(textStyle: TextStyle(color: Colors.black,fontFamily: "Gilroy Bold",fontSize: height / 40),
+      height: height / 14,
+      width: width / 1.2,
+      child: PinPut(
+        textStyle: TextStyle(
+            color: Colors.black,
+            fontFamily: "Gilroy Bold",
+            fontSize: height / 40),
         fieldsCount: 4,
         eachFieldWidth: width / 6.5,
         withCursor: false,
         submittedFieldDecoration: BoxDecoration(
-          color: notifire.gettabwhitecolor,
-          borderRadius: BorderRadius.circular(10.0),
-            border: Border.all(color: notifire.getbluecolor)
-        ).copyWith(
-          borderRadius: BorderRadius.circular(10.0),
-            border: Border.all(color: notifire.getbluecolor)
-        ),
+                color: notifire.gettabwhitecolor,
+                borderRadius: BorderRadius.circular(10.0),
+                border: Border.all(color: notifire.getbluecolor))
+            .copyWith(
+                borderRadius: BorderRadius.circular(10.0),
+                border: Border.all(color: notifire.getbluecolor)),
         selectedFieldDecoration: BoxDecoration(
-          color: notifire.gettabwhitecolor,
-          borderRadius: BorderRadius.circular(10.0),
-          border: Border.all(color: notifire.getbluecolor)
-        ),
+            color: notifire.gettabwhitecolor,
+            borderRadius: BorderRadius.circular(10.0),
+            border: Border.all(color: notifire.getbluecolor)),
         followingFieldDecoration: BoxDecoration(
-          color: notifire.gettabwhitecolor,
-          borderRadius: BorderRadius.circular(10.0),border: Border.all(color: notifire.getbluecolor)
-        ).copyWith(
-          borderRadius: BorderRadius.circular(10.0),border: Border.all(color: notifire.getbluecolor)
-        ),
+                color: notifire.gettabwhitecolor,
+                borderRadius: BorderRadius.circular(10.0),
+                border: Border.all(color: notifire.getbluecolor))
+            .copyWith(
+                borderRadius: BorderRadius.circular(10.0),
+                border: Border.all(color: notifire.getbluecolor)),
       ),
     );
   }

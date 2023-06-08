@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gobank/utils/media.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class UnorderedList extends StatelessWidget {
@@ -12,7 +11,7 @@ class UnorderedList extends StatelessWidget {
     for (var text in texts) {
       // Add list item
       // Add space between items
-      widgetList.add(SizedBox(height: 15.0));
+      widgetList.add(const SizedBox(height: 15.0));
       widgetList.add(UnorderedListItem(text));
     }
 
@@ -29,7 +28,7 @@ class UnorderedListItem extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
+        const Text(
           "⭐  ",
           // textAlign: TextAlign.center,
         ),

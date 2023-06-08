@@ -80,7 +80,7 @@ class _TopPhoneState extends State<TopPhone> {
 
   @override
   void initState() {
-    // TODO: implement initState
+   
     super.initState();
     getdarkmodepreviousstate();
   }

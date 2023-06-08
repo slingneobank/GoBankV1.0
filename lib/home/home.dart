@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gobank/bottombar/bottombar.dart';
 import 'package:gobank/card/mycard.dart';
 import 'package:gobank/home/notifications.dart';
 import 'package:gobank/home/request/request.dart';
@@ -9,17 +10,18 @@ import 'package:gobank/home/scanpay/scan.dart';
 import 'package:gobank/home/seealltransaction.dart';
 import 'package:gobank/home/sliders.dart';
 import 'package:gobank/home/sling_store/sling_store.dart';
+import 'package:gobank/models/sling_user.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:gobank/utils/string.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gobank/login/auth_ctrl.dart';
 
 import '../profile/helpsupport.dart';
 import '../profile/legalandpolicy.dart';
 import 'home_ctrl.dart';
 import 'seeallpayment.dart';
-import 'topup/topupcard/topup.dart';
 import 'transfer/sendmoney.dart';
 
 class Home extends StatefulWidget {
@@ -32,7 +34,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final homeCtrl = Get.put<HomeCtrl>(HomeCtrl());
   late ColorNotifire notifire;
-
+  // String setname(){
+  //   return  ;
+  // }
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
     bool? previusstate = prefs.getBool("setIsDark");
@@ -117,7 +121,7 @@ class _HomeState extends State<Home> {
     CustomStrings.relatedpaytm2,
   ];
   bool selection = true;
-
+  final authCtrl = Get.find<AuthCtrl>();
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
@@ -148,7 +152,7 @@ class _HomeState extends State<Home> {
                       height: height / 100,
                     ),
                     Text(
-                      CustomStrings.hello,
+                      authCtrl.auth.currentUser!.phoneNumber ?? 'mynumber',
                       style: TextStyle(
                           color: notifire.getdarkscolor,
                           fontSize: height / 40,
@@ -412,7 +416,7 @@ class _HomeState extends State<Home> {
                                             borderRadius:
                                                 BorderRadius.circular(32.0),
                                             boxShadow: [
-                                              BoxShadow(
+                                              const BoxShadow(
                                                 color: Colors.white,
                                                 offset: Offset(-4.0, -4.0),
                                                 blurRadius: 16.0,
@@ -420,7 +424,7 @@ class _HomeState extends State<Home> {
                                               BoxShadow(
                                                 color: Colors.black
                                                     .withOpacity(0.2),
-                                                offset: Offset(4.0, 4.0),
+                                                offset: const Offset(4.0, 4.0),
                                                 blurRadius: 16.0,
                                               ),
                                             ],
@@ -582,12 +586,12 @@ class _HomeState extends State<Home> {
               padding: EdgeInsets.symmetric(horizontal: width / 30),
               child: Container(
                   height: height / 7,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
                       Radius.circular(10),
                     ),
                   ),
-                  child: CouponSliders()),
+                  child: const CouponSliders()),
             ),
             SizedBox(
               height: height / 30,
@@ -651,7 +655,7 @@ class _HomeState extends State<Home> {
                       return GestureDetector(
                         onTap: () {
                           if (index == 1) {
-                            Get.to(() => SlingStore());
+                            Get.to(() => const SlingStore());
                           } else {
                             Navigator.push(
                               context,
@@ -723,12 +727,12 @@ class _HomeState extends State<Home> {
               padding: EdgeInsets.symmetric(horizontal: width / 30),
               child: Container(
                   height: height / 4.5,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
                       Radius.circular(10),
                     ),
                   ),
-                  child: SaversClubSliders()),
+                  child: const SaversClubSliders()),
             ),
             SizedBox(
               height: height / 50,

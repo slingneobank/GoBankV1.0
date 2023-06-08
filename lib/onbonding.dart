@@ -9,8 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gobank/login/phone.dart';
 
-import 'home/home.dart';
-
 class Onbonding extends StatefulWidget {
   const Onbonding({Key? key}) : super(key: key);
 

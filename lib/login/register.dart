@@ -1,12 +1,14 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:gobank/login/setupprofile.dart';
-import 'package:gobank/login/verify.dart';
+import 'package:gobank/home/home.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../constants.dart';
 import '../utils/button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../utils/colornotifire.dart';
 import '../utils/media.dart';
 import '../utils/string.dart';
@@ -23,6 +25,9 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   late ColorNotifire notifire;
   final authCtrl = Get.find<AuthCtrl>();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final DatabaseReference userRef =
+      FirebaseDatabase.instance.ref().child('users').push();
   bool loading = false;
 
   getdarkmodepreviousstate() async {
@@ -35,9 +40,17 @@ class _RegisterState extends State<Register> {
     }
   }
 
+  String dropdownvalue = '01';
+  String monthvalue = '01';
+  String yearvalue = '2018';
+  String gendervalue = CustomStrings.male;
+  var genderitems = [
+    CustomStrings.male,
+    CustomStrings.female,
+  ];
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     loading = false;
   }
@@ -109,7 +122,7 @@ class _RegisterState extends State<Register> {
                                   ],
                                 ),
                                 SizedBox(
-                                  height: height / 135,
+                                  height: height / 100,
                                 ),
                                 Customtextfilds.textField(
                                     notifire.getdarkscolor,
@@ -120,7 +133,7 @@ class _RegisterState extends State<Register> {
                                     notifire.getdarkwhitecolor,
                                     controller: authCtrl.fullnameCtrl),
                                 SizedBox(
-                                  height: height / 70,
+                                  height: height / 60,
                                 ),
                                 Row(
                                   children: [
@@ -150,102 +163,256 @@ class _RegisterState extends State<Register> {
                                 SizedBox(
                                   height: height / 70,
                                 ),
+                                SizedBox(height: height / 50),
                                 Row(
                                   children: [
-                                    SizedBox(
-                                      width: width / 18,
-                                    ),
+                                    SizedBox(width: width / 20),
                                     Text(
-                                      "Phone number",
+                                      CustomStrings.dateofbirth,
                                       style: TextStyle(
-                                        color: notifire.getdarkscolor,
-                                        fontSize: height / 70,
+                                          color: notifire.getdarkscolor,
+                                          fontSize: height / 50,
+                                          fontFamily: 'Gilroy Bold'),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(height: height / 80),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Container(
+                                      height: height / 17,
+                                      width: width / 5,
+                                      decoration: BoxDecoration(
+                                        color: notifire.gettabwhitecolor,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: Colors.grey.withOpacity(0.3),
+                                        ),
+                                      ),
+                                      child: DropdownButton(
+                                        underline: const SizedBox(),
+                                        // Initial Value
+                                        value: dropdownvalue,
+
+                                        // Down Arrow Icon
+                                        icon: Row(
+                                          children: [
+                                            SizedBox(width: width / 40),
+                                            Icon(
+                                              Icons.arrow_drop_down_outlined,
+                                              color: notifire.getdarkscolor,
+                                            ),
+                                          ],
+                                        ),
+
+                                        // Array list of items
+                                        items: items.map((String items) {
+                                          return DropdownMenuItem(
+                                            value: items,
+                                            child: Row(
+                                              children: [
+                                                SizedBox(width: width / 50),
+                                                Text(
+                                                  items,
+                                                  style: TextStyle(
+                                                      fontSize: height / 60),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }).toList(),
+                                        // After selecting the desired option,it will
+                                        // change button value to selected value
+                                        onChanged: (String? newValue) {
+                                          setState(() {
+                                            dropdownvalue = newValue!;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                    Container(
+                                      height: height / 17,
+                                      width: width / 5,
+                                      decoration: BoxDecoration(
+                                        color: notifire.gettabwhitecolor,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: Colors.grey.withOpacity(0.3),
+                                        ),
+                                      ),
+                                      child: DropdownButton(
+                                        underline: const SizedBox(),
+                                        // Initial Value
+                                        value: monthvalue,
+
+                                        // Down Arrow Icon
+                                        icon: Row(
+                                          children: [
+                                            SizedBox(width: width / 40),
+                                            Icon(
+                                              Icons.arrow_drop_down_outlined,
+                                              color: notifire.getdarkscolor,
+                                            ),
+                                          ],
+                                        ),
+
+                                        // Array list of items
+                                        items:
+                                            monthitems.map((String monthitems) {
+                                          return DropdownMenuItem(
+                                            value: monthitems,
+                                            child: Row(
+                                              children: [
+                                                SizedBox(width: width / 50),
+                                                Text(
+                                                  monthitems,
+                                                  style: TextStyle(
+                                                      fontSize: height / 60),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }).toList(),
+                                        // After selecting the desired option,it will
+                                        // change button value to selected value
+                                        onChanged: (String? newValue) {
+                                          setState(() {
+                                            monthvalue = newValue!;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                    Container(
+                                      height: height / 17,
+                                      width: width / 5,
+                                      decoration: BoxDecoration(
+                                        color: notifire.gettabwhitecolor,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: Colors.grey.withOpacity(0.3),
+                                        ),
+                                      ),
+                                      child: DropdownButton(
+                                        underline: const SizedBox(),
+                                        // Initial Value
+                                        value: yearvalue,
+
+                                        // Down Arrow Icon
+                                        icon: Row(
+                                          children: [
+                                            SizedBox(width: width / 40),
+                                            Icon(
+                                              Icons.arrow_drop_down_outlined,
+                                              color: notifire.getdarkscolor,
+                                            ),
+                                          ],
+                                        ),
+
+                                        // Array list of items
+                                        items:
+                                            yearitems.map((String yearitems) {
+                                          return DropdownMenuItem(
+                                            value: yearitems,
+                                            child: Row(
+                                              children: [
+                                                SizedBox(width: width / 50),
+                                                Text(
+                                                  yearitems,
+                                                  style: TextStyle(
+                                                      fontSize: height / 60),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }).toList(),
+                                        // After selecting the desired option,it will
+                                        // change button value to selected value
+                                        onChanged: (String? newValue) {
+                                          setState(() {
+                                            yearvalue = newValue!;
+                                          });
+                                        },
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                  height: height / 70,
-                                ),
-                                Customtextfilds.textField(
-                                    notifire.getdarkscolor,
-                                    notifire.getdarkgreycolor,
-                                    notifire.getbluecolor,
-                                    "images/mobile.png",
-                                    // replace with phone call image file
-                                    "Enter Phone Number",
-                                    notifire.getdarkwhitecolor,
-                                    controller: authCtrl.phoneCtrl),
-                                SizedBox(
-                                  height: height / 70,
-                                ),
+                                SizedBox(height: height / 50),
                                 Row(
                                   children: [
-                                    SizedBox(
-                                      width: width / 18,
-                                    ),
+                                    SizedBox(width: width / 20),
                                     Text(
-                                      CustomStrings.password,
+                                      CustomStrings.gender,
                                       style: TextStyle(
-                                        color: notifire.getdarkscolor,
-                                        fontSize: height / 50,
-                                      ),
-                                    ),
+                                          color: notifire.getdarkscolor,
+                                          fontSize: height / 50,
+                                          fontFamily: 'Gilroy Bold'),
+                                    )
                                   ],
                                 ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                textfieldss(
-                                    notifire.getdarkscolor,
-                                    notifire.getdarkgreycolor,
-                                    notifire.getbluecolor,
-                                    "images/password.png",
-                                    CustomStrings.createpassword,
-                                    "images/show.png",
-                                    controller: authCtrl.passwordCtrl1),
-                                SizedBox(
-                                  height: height / 35,
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: width / 18,
+                                SizedBox(height: height / 80),
+                                Container(
+                                  height: height / 17,
+                                  width: width / 1.4,
+                                  decoration: BoxDecoration(
+                                    color: notifire.gettabwhitecolor,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: Colors.grey.withOpacity(0.3),
                                     ),
-                                    Text(
-                                      CustomStrings.confirmpassword,
-                                      style: TextStyle(
-                                        color: notifire.getdarkscolor,
-                                        fontSize: height / 50,
-                                      ),
+                                  ),
+                                  child: DropdownButton(
+                                    underline: const SizedBox(),
+                                    // Initial Value
+                                    value: gendervalue,
+
+                                    // Down Arrow Icon
+                                    icon: Row(
+                                      children: [
+                                        SizedBox(width: width / 2),
+                                        Icon(
+                                          Icons.arrow_drop_down_outlined,
+                                          color: notifire.getdarkscolor,
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                    items:
+                                        genderitems.map((String genderitems) {
+                                      return DropdownMenuItem(
+                                        value: genderitems,
+                                        child: Row(
+                                          children: [
+                                            SizedBox(width: width / 50),
+                                            Text(
+                                              genderitems,
+                                              style: TextStyle(
+                                                  fontSize: height / 60),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        gendervalue = newValue!;
+                                      });
+                                    },
+                                  ),
                                 ),
                                 SizedBox(
-                                  height: height / 70,
-                                ),
-                                textfieldss(
-                                    notifire.getdarkscolor,
-                                    notifire.getdarkgreycolor,
-                                    notifire.getbluecolor,
-                                    "images/password.png",
-                                    CustomStrings.retypepassword,
-                                    "images/show.png",
-                                    controller: authCtrl.passwordCtrl2),
-                                SizedBox(
-                                  height: height / 35,
+                                  height: height / 25,
                                 ),
                                 GestureDetector(
                                   onTap: () async {
                                     if (loading == false) {
-                                      if (authCtrl.passwordCtrl2.text ==
-                                              authCtrl.passwordCtrl1.text &&
+                                      if (
+                                          // authCtrl.passwordCtrl2.text ==
+                                          //         authCtrl.passwordCtrl1.text &&
                                           authCtrl.fullnameCtrl.text.trim() !=
-                                              "" &&
-                                          authCtrl.emailCtrl.text.trim() !=
-                                              "" &&
-                                          authCtrl.passwordCtrl1.text.trim() !=
-                                              "") {
+                                                  "" &&
+                                              authCtrl.emailCtrl.text.trim() !=
+                                                  "") {
                                         loading = true;
                                         setState(() {});
                                         authCtrl.slingUser.name =
@@ -259,20 +426,40 @@ class _RegisterState extends State<Register> {
                                                 authCtrl.passwordCtrl2.text,
                                                 authCtrl.fullnameCtrl.text,
                                                 authCtrl.phoneCtrl.text)
-                                            .then((value) {
+                                            .then((value) async {
                                           loading = false;
                                           setState(() {});
                                           if (value == false) {
                                             return;
                                           }
-
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const SetupProfile(), //before routed to verify.dart
-                                            ),
-                                          );
+                                          // Store user data in Firebase
+                                          String mobileNo = authCtrl.auth
+                                                  .currentUser!.phoneNumber ??
+                                              "+910000000000";
+                                          await firestore
+                                              .collection('users')
+                                              .doc(authCtrl.emailCtrl.text)
+                                              .set({
+                                            'mobileNo': mobileNo,
+                                            'name': authCtrl.fullnameCtrl.text,
+                                            'email': authCtrl.emailCtrl.text,
+                                            'dob': authCtrl.dobctrl.text,
+                                            'gender': authCtrl.genderCtrl.text,
+                                          });
+                                          // Store user data in Firebase Realtime Database
+                                          await authCtrl
+                                              .createUserAndSaveData();
+                                          Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const Home(), //before routed to verifyOTP.dart
+                                              ),
+                                              (route) => false);
+                                          // Navigator.push(
+                                          //   context,
+                                          //   ,
+                                          // );
                                         });
                                       } else {
                                         loading = false;
@@ -294,7 +481,7 @@ class _RegisterState extends State<Register> {
                                             ),
                                             height: height / 15,
                                             width: width / 5,
-                                            child: Center(
+                                            child: const Center(
                                                 child:
                                                     CircularProgressIndicator(
                                               color: Colors.white,
@@ -303,36 +490,11 @@ class _RegisterState extends State<Register> {
                                         )
                                       : Custombutton.button(
                                           notifire.getbluecolor,
-                                          CustomStrings.registeraccount,
+                                          "Continue",
                                           width / 2),
                                 ),
                               ],
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: height / 40,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          CustomStrings.accounts,
-                          style: TextStyle(
-                            color: notifire.getdarkgreycolor.withOpacity(0.6),
-                            fontSize: height / 50,
-                          ),
-                        ),
-                        SizedBox(
-                          width: width / 100,
-                        ),
-                        Text(
-                          CustomStrings.loginhear,
-                          style: TextStyle(
-                            color: notifire.getdarkscolor,
-                            fontSize: height / 50,
                           ),
                         ),
                       ],
@@ -346,8 +508,8 @@ class _RegisterState extends State<Register> {
                     ),
                     Center(
                       child: Image.asset(
-                        "images/logos.png",
-                        height: height / 8,
+                        "images/slingneo logo.png",
+                        height: height / 9,
                       ),
                     ),
                   ],

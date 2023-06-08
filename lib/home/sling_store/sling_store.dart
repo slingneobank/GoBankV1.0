@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:gobank/home/sling_store/slider.dart';
 
 import '../../utils/media.dart';
-import '../savers_club_sliders.dart';
 import '../sliders.dart';
 
 class SlingStore extends StatefulWidget {
@@ -41,12 +37,12 @@ class _SlingStoreState extends State<SlingStore> {
               padding: EdgeInsets.symmetric(horizontal: width / 30),
               child: Container(
                   height: height / 7,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
                       Radius.circular(10),
                     ),
                   ),
-                  child: CouponSliders()),
+                  child: const CouponSliders()),
             ),
             SizedBox(
               height: height / 30,
@@ -73,8 +69,8 @@ class _SlingStoreState extends State<SlingStore> {
               padding: EdgeInsets.symmetric(horizontal: width / 30),
               child: Container(
                   height: height / 4.5,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
                       Radius.circular(10),
                     ),
                   ),
@@ -105,8 +101,8 @@ class _SlingStoreState extends State<SlingStore> {
               padding: EdgeInsets.symmetric(horizontal: width / 30),
               child: Container(
                   height: height / 4.5,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
                       Radius.circular(10),
                     ),
                   ),
@@ -137,8 +133,8 @@ class _SlingStoreState extends State<SlingStore> {
               padding: EdgeInsets.symmetric(horizontal: width / 30),
               child: Container(
                   height: height / 4.5,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
                       Radius.circular(10),
                     ),
                   ),
@@ -169,8 +165,8 @@ class _SlingStoreState extends State<SlingStore> {
               padding: EdgeInsets.symmetric(horizontal: width / 30),
               child: Container(
                   height: height / 4.5,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
                       Radius.circular(10),
                     ),
                   ),
@@ -201,8 +197,8 @@ class _SlingStoreState extends State<SlingStore> {
               padding: EdgeInsets.symmetric(horizontal: width / 30),
               child: Container(
                   height: height / 4.5,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
                       Radius.circular(10),
                     ),
                   ),
@@ -233,8 +229,8 @@ class _SlingStoreState extends State<SlingStore> {
               padding: EdgeInsets.symmetric(horizontal: width / 30),
               child: Container(
                   height: height / 4.5,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
                       Radius.circular(10),
                     ),
                   ),

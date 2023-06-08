@@ -1,16 +1,13 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gobank/home/home_ctrl.dart';
 import 'package:gobank/home/savers_club_detail.dart';
-import 'package:gobank/home/sling_store/product_card.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SlingStoreSlider extends StatefulWidget {
   SlingStoreSlider(this.doc, {Key? key}) : super(key: key);
@@ -28,7 +25,7 @@ class _SlingStoreSliderState extends State<SlingStoreSlider> {
   Timer? _timer;
 
   // The duration for the automatic scrolling
-  final Duration _duration = Duration(seconds: 3);
+  final Duration _duration = const Duration(seconds: 3);
 
   // The list of colors for the containers
   final List<Color> _colors = [
@@ -83,7 +80,7 @@ class _SlingStoreSliderState extends State<SlingStoreSlider> {
       // Animate the scrolling to the next position
       _controller.animateTo(
         next,
-        duration: Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 500),
         curve: Curves.easeOut,
       );
     });
