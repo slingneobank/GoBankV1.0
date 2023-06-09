@@ -1,9 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gobank/login/auth_ctrl.dart';
 import 'package:gobank/login/loginCheck.dart';
+import 'package:gobank/home/home.dart';
+import 'package:gobank/slingsaverclub/sliderpage.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:provider/provider.dart';
@@ -40,6 +41,7 @@ class _SplashscreenState extends State<Splashscreen> {
         context,
         MaterialPageRoute(
           builder: (context) => LoginCheck(),
+
         ),
       ),
     );

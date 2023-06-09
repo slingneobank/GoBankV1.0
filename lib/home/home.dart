@@ -1,3 +1,7 @@
+import 'package:carousel_indicator/carousel_indicator.dart';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gobank/bottombar/bottombar.dart';
@@ -8,9 +12,14 @@ import 'package:gobank/home/savers_club_sliders.dart';
 import 'package:gobank/home/savings/savings_story_page.dart';
 import 'package:gobank/home/scanpay/scan.dart';
 import 'package:gobank/home/seealltransaction.dart';
+
 import 'package:gobank/home/sliders.dart';
 import 'package:gobank/home/sling_store/sling_store.dart';
 import 'package:gobank/models/sling_user.dart';
+
+import 'package:gobank/slingsaverclub/offerdetailspage.dart';
+import 'package:gobank/slingsaverclub/sliderpage.dart';
+
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:gobank/utils/string.dart';
@@ -46,14 +55,15 @@ class _HomeState extends State<Home> {
       notifire.setIsDark = previusstate;
     }
   }
-
+  
+  
   List img = [
     "images/mobile.png",
     "images/shopping.png",
     "images/ticket.png",
     "images/wifi1.png",
-    "images/assurance.png",
-    "images/water.png",
+    "images/assurance.png", 
+    "images/ticket.png",
     "images/bill.png",
     "images/mastercard.png",
   ];
@@ -80,6 +90,7 @@ class _HomeState extends State<Home> {
     "images/spotify.png",
     "images/netflix.png"
   ];
+  
   List cashbankimg = [
     "images/cashback.png",
     "images/merchant1.png",
@@ -121,7 +132,59 @@ class _HomeState extends State<Home> {
     CustomStrings.relatedpaytm2,
   ];
   bool selection = true;
+
   final authCtrl = Get.find<AuthCtrl>();
+
+  int activeIndex = 0;
+
+  final FirebaseStorage storage = FirebaseStorage.instance;
+  final String folderPath = 'offer_images'; // Path to your Firebase Storage folder
+  List<String> imageUrls = [];
+  bool flag=false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchImageUrls();
+    
+  }
+  Future<void> fetchImageUrls() async {
+  imageUrls = await getImageUrls(); // Wait for the asynchronous operation to complete
+  print(imageUrls.length); 
+  setState(() {
+    
+  });
+  } 
+  Future<List<String>> getImageUrls() async {
+
+  try {
+    final Reference ref = storage.ref().child(folderPath);
+    final ListResult result = await ref.listAll();
+
+    if (result.items.isNotEmpty) {
+      for (final Reference imageRef in result.items) {
+        final String downloadUrl = await imageRef.getDownloadURL();
+        imageUrls.add(downloadUrl);
+        setState(() {
+          
+        });
+        print(imageUrls);
+
+      }
+      flag=true;
+      setState(() {
+        
+      });
+    } else {
+      print('No images found in the specified folder.');
+    }
+  } catch (e) {
+    print('Error getting image URLs: $e');
+  }
+
+  return imageUrls;
+}
+
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
@@ -705,6 +768,107 @@ class _HomeState extends State<Home> {
             SizedBox(
               height: height / 80,
             ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: width/18),
+              child:
+                  Row(
+                    children: [
+                      Text(
+                        CustomStrings.slingsaverclub,
+                        style: TextStyle(
+                            fontFamily: "Gilroy Bold",
+                            color: notifire.getdarkscolor,
+                            fontSize: height / 40),
+                      ),
+                    ],
+                  ),
+            ),
+            SizedBox(
+              height: height / 80,
+              ),
+               Container(
+                height: 200,
+                child: flag
+                    ? CarouselSlider.builder(
+                        itemCount: imageUrls.length,
+                        itemBuilder: (context, index, realIndex) {
+                          return GestureDetector(
+                            onTap: () {
+                              // Navigate to the offer details page
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => OfferDetailsPage(imageUrl: imageUrls[index],currentindex:index),
+                                ),
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                SizedBox(width: 10),
+                                Container(
+                                  width: 140,
+                                  height: 200,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Image.network(
+                                      imageUrls[index],
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                              ],
+                            ),
+                          );
+                        },
+                        options: CarouselOptions(
+                          height: 200,
+                          enableInfiniteScroll: true,
+                          autoPlay: true,
+                          autoPlayInterval: Duration(seconds: 3),
+                          autoPlayAnimationDuration: Duration(milliseconds: 800),
+                          autoPlayCurve: Curves.easeInOut,
+                          enlargeCenterPage: true,
+                          viewportFraction: 0.5, // Adjust this value to show 2 or 3 images
+                          aspectRatio: 5, // Adjust this value based on your image aspect ratio
+                          onPageChanged: (index, reason) {
+                            setState(() {
+                              activeIndex = index;
+                            });
+                          },
+                        ),
+                      )
+                    : Center(child: CircularProgressIndicator()),
+              ),
+
+            SizedBox(height: height / 80),
+
+            if (flag && imageUrls.isNotEmpty) // Conditionally render the CarouselIndicator
+              Container(
+                child: CarouselIndicator(
+                  count: imageUrls.length,
+                  index: activeIndex,
+                  color: Colors.orange,
+                  activeColor: Colors.deepOrange,
+                  space: 4,
+                  width: 4,
+                  height: 4,
+                ),
+              ),
+
+            SizedBox(
+              height: height / 80,
+              ),
+              SizedBox(
+                height: 200,
+                width: width-30,
+                child: SliderPage(),),
+               SizedBox(
+              height: height / 80,
+              ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: width / 18),
               child: Row(

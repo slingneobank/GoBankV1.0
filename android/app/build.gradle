@@ -8,8 +8,10 @@ if (localPropertiesFile.exists()) {
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
+
     // throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
     throw new FileNotFoundException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+
 }
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
@@ -50,6 +52,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+
         applicationId "com.sling.slingone"
         multiDexEnabled true
         minSdkVersion 20
@@ -76,4 +79,6 @@ dependencies {
     implementation platform('com.google.firebase:firebase-auth')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    
+
 }
