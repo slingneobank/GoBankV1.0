@@ -54,7 +54,7 @@ dependencies:
   syncfusion_flutter_gauges:
 
   get: ^4.6.5
-  firebase_auth: ^4.4.0
+  
   firebase_database: ^10.1.0
   firebase_storage: ^11.1.0
   image_picker: ^0.8.7+1
@@ -71,14 +71,10 @@ dependencies:
 
   # flutter_localizations:
   # sdk: flutter
-
-  carousel_slider: ^4.2.1
-  firebase_core: ^2.13.1
-  firebase_storage: ^11.2.2
   firebase_auth: ^4.6.2
+  carousel_slider: ^4.2.1
   carousel_indicator: ^1.0.6
   lottie: ^2.4.0
-  cloud_firestore: ^4.8.0
   sqflite: ^2.2.8+4
   connectivity: ^3.0.6
   permission_handler: ^10.3.0

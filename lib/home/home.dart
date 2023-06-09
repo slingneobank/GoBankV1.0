@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gobank/bottombar/bottombar.dart';
 import 'package:gobank/card/mycard.dart';
+import 'package:gobank/home/sliders.dart';
+import 'package:gobank/home/sling_store/sling_store.dart';
 import 'package:gobank/slingsaverclub/ListViewWithSideIndicator.dart';
 import 'package:gobank/home/notifications.dart';
 import 'package:gobank/home/request/request.dart';
@@ -15,6 +17,7 @@ import 'package:gobank/home/savers_club_sliders.dart';
 import 'package:gobank/home/savings/savings_story_page.dart';
 import 'package:gobank/home/scanpay/scan.dart';
 import 'package:gobank/home/seealltransaction.dart';
+import 'package:gobank/slingsaverclub/bottomsheetpage.dart';
 import 'package:gobank/slingsaverclub/offerdetailspage.dart';
 import 'package:gobank/slingsaverclub/sliderpage.dart';
 
@@ -27,6 +30,7 @@ import 'package:gobank/login/auth_ctrl.dart';
 
 import '../profile/helpsupport.dart';
 import '../profile/legalandpolicy.dart';
+import '../slingsaverclub/bannerpage.dart';
 import 'home_ctrl.dart';
 import 'seeallpayment.dart';
 import 'transfer/sendmoney.dart';
@@ -40,8 +44,9 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final homeCtrl = Get.put<HomeCtrl>(HomeCtrl());
+  final authCtrl = Get.find<AuthCtrl>();
   late ColorNotifire notifire;
-
+ PersistentBottomSheetController? _bottomSheetController;
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
     bool? previusstate = prefs.getBool("setIsDark");
@@ -129,7 +134,8 @@ class _HomeState extends State<Home> {
   ];
   bool selection = true;
   int activeIndex = 0;
-
+  late ScrollController _scrollController;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final FirebaseStorage storage = FirebaseStorage.instance;
   final String folderPath = 'offer_images'; // Path to your Firebase Storage folder
   List<String> imageUrls = [];
@@ -181,6 +187,32 @@ class _HomeState extends State<Home> {
 
   return imageUrls;
 }
+void _onImageTap(int index) {
+    setState(() {
+      activeIndex = index;
+    });
+
+    if (index == 0) {
+      // Navigate to the page view
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => OfferDetailsPage(
+            imageUrl: imageUrls[index],
+            currentindex: index,
+          ),
+        ),
+      );
+    } else {
+      if (_scaffoldKey.currentState != null) {
+        _bottomSheetController = _scaffoldKey.currentState!.showBottomSheet(
+          (context) => bottomsheetpage(),
+          elevation: 10,
+          backgroundColor: Colors.transparent,
+        );
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);

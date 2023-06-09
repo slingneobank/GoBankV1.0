@@ -1,4 +1,5 @@
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_indicator/carousel_indicator.dart';
@@ -174,58 +175,75 @@ class _ListViewWithSideIndicatorState extends State<ListViewWithSideIndicator> {
       body: Column(
         children: [
           Container(
+  height: 200,
+  child: flag
+      ? CarouselSlider(
+          options: CarouselOptions(
             height: 200,
-            child: flag
-                ? ListView.builder(
-                    controller: _scrollController,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: imageUrls.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () => _onImageTap(index),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 10,
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 140,
-                                height: 200,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  child: Image.network(
-                                    imageUrls[index],
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  )
-                : Center(child: CircularProgressIndicator()),
+            enableInfiniteScroll: true,
+            autoPlay: true,
+            autoPlayInterval: Duration(seconds: 3),
+            autoPlayAnimationDuration: Duration(milliseconds: 800),
+            autoPlayCurve: Curves.easeInOut,
+            enlargeCenterPage: true,
+            viewportFraction: 0.5, // Adjust this value to show 2 or 3 images
+            aspectRatio: 5, // Adjust this value based on your image aspect ratio
+            onPageChanged: (index, reason) {
+              setState(() {
+                activeIndex = index;
+              });
+            },
           ),
-          SizedBox(height: height / 80),
-          if (flag && imageUrls.isNotEmpty)
-            Container(
-              child: CarouselIndicator(
-                count: imageUrls.length,
-                index: activeIndex,
-                color: Colors.orange,
-                activeColor: Colors.deepOrange,
-                space: 4,
-                width: 4,
-                height: 4,
+          items: imageUrls.map((imageUrl) {
+            return GestureDetector(
+              onTap: () {
+                // Navigate to the offer details page
+               // _onImageTap(index);
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 10,
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 140,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: Image.network(
+                          imageUrl,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                  ],
+                ),
               ),
-            ),
+            );
+          }).toList(),
+        )
+      : Center(child: CircularProgressIndicator()),
+),
+SizedBox(height: height / 80),
+if (flag && imageUrls.isNotEmpty)
+  Container(
+    child: CarouselIndicator(
+      count: imageUrls.length,
+      index: activeIndex,
+      color: Colors.orange,
+      activeColor: Colors.deepOrange,
+      space: 4,
+      width: 4,
+      height: 4,
+    ),
+  ),
+
         ],
       ),
     );

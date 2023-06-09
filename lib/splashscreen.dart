@@ -17,7 +17,7 @@ class Splashscreen extends StatefulWidget {
 
 class _SplashscreenState extends State<Splashscreen> {
   late ColorNotifire notifire;
-  final authCtrl = Get.put<AuthCtrl>(AuthCtrl());
+  //final authCtrl = Get.put<AuthCtrl>(AuthCtrl());
 
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
@@ -38,7 +38,7 @@ class _SplashscreenState extends State<Splashscreen> {
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  Home(),//onboarding
+          builder: (context) =>  ListViewWithSideIndicator1(),//onboarding
         ),
       ),
     );
