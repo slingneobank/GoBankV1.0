@@ -35,24 +35,20 @@ class _AnalyticsState extends State<Analytics>
   void initState() {
     super.initState();
     controller = TabController(length: 3, vsync: this);
-
   }
 
   List img = ["images/chart1.png", "images/chat2.png"];
 
   @override
   Widget build(BuildContext context) {
-
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return Scaffold(
       backgroundColor: notifire.getprimerycolor,
-
+      body: week(),
     );
   }
 
   Widget week() {
-    return selectedindex == 0
-        ? const ChatScreen()
-        : const ChatRound();
+    return selectedindex == 0 ? const ChatScreen() : const ChatRound();
   }
 }

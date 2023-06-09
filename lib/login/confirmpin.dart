@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:gobank/utils/string.dart';
@@ -7,6 +8,7 @@ import 'package:pinput/pin_put/pin_put.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/button.dart';
+import 'auth_ctrl.dart';
 
 class ConfirmPin extends StatefulWidget {
   const ConfirmPin({Key? key}) : super(key: key);
@@ -17,6 +19,7 @@ class ConfirmPin extends StatefulWidget {
 
 class _ConfirmPinState extends State<ConfirmPin> {
   late ColorNotifire notifire;
+  final authCtrl = Get.find<AuthCtrl>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,10 @@ class _ConfirmPinState extends State<ConfirmPin> {
               height: height,
               width: width,
               color: notifire.getprimerycolor,
-              child: Image.asset("images/background.png",fit: BoxFit.cover,),
+              child: Image.asset(
+                "images/background.png",
+                fit: BoxFit.cover,
+              ),
             ),
             Column(
               children: [
@@ -42,7 +48,10 @@ class _ConfirmPinState extends State<ConfirmPin> {
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: Icon(Icons.arrow_back,color: notifire.getdarkscolor,),
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: notifire.getdarkscolor,
+                      ),
                     ),
                   ],
                 ),
@@ -87,8 +96,8 @@ class _ConfirmPinState extends State<ConfirmPin> {
                       ),
                     );
                   },
-                  child: Custombutton.button(
-                      notifire.getbluecolor, CustomStrings.savepin, width / 1.1),
+                  child: Custombutton.button(notifire.getbluecolor,
+                      CustomStrings.savepin, width / 1.1),
                 ),
               ],
             ),
@@ -104,6 +113,7 @@ class _ConfirmPinState extends State<ConfirmPin> {
       height: height / 14,
       width: width / 1.2,
       child: PinPut(
+        controller: authCtrl.pin2Ctrl,
         textStyle: TextStyle(
             color: Colors.black,
             fontFamily: "Gilroy Bold",

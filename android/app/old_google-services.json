@@ -1,0 +1,295 @@
+{
+  "project_info": {
+    "project_number": "77409496012",
+    "firebase_url": "https://payvoy-1720c-default-rtdb.firebaseio.com",
+    "project_id": "payvoy-1720c",
+    "storage_bucket": "payvoy-1720c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77409496012:android:2096c5bc92728a4b170b69",
+        "android_client_info": {
+          "package_name": "com.example.sling_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77409496012-1l249j2gt6o3iujo9ditqq1p7mehbn9i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sling_admin",
+            "certificate_hash": "f30a4604038431a68ad272f31b74c76368b1b5e2"
+          }
+        },
+        {
+          "client_id": "77409496012-553tm2su6m3dovi2j219qrcnvo4pr7g3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIROl7B1Jib-aL6t63HA7Yne9maACG-g4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77409496012-553tm2su6m3dovi2j219qrcnvo4pr7g3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "77409496012-09ig8675oh6l9tu476u3jmv3d969be4o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.slingAgent"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77409496012:android:3b84d57913f42318170b69",
+        "android_client_info": {
+          "package_name": "com.example.sling_agent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77409496012-4iqaq0a36mo3vpvaj5isgk6fd8bk7uj5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sling_agent",
+            "certificate_hash": "f30a4604038431a68ad272f31b74c76368b1b5e2"
+          }
+        },
+        {
+          "client_id": "77409496012-553tm2su6m3dovi2j219qrcnvo4pr7g3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIROl7B1Jib-aL6t63HA7Yne9maACG-g4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77409496012-553tm2su6m3dovi2j219qrcnvo4pr7g3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "77409496012-09ig8675oh6l9tu476u3jmv3d969be4o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.slingAgent"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77409496012:android:ec414b5329ce19b8170b69",
+        "android_client_info": {
+          "package_name": "com.payvoy.slingneofinal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77409496012-2cmrptcs71d8v9c14hcmvse35c2lofms.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.payvoy.slingneofinal",
+            "certificate_hash": "f30a4604038431a68ad272f31b74c76368b1b5e2"
+          }
+        },
+        {
+          "client_id": "77409496012-99hb8h7jaamb6uuh2lmhuueu8qolktjc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.payvoy.slingneofinal",
+            "certificate_hash": "4d23557941b049df66971135fce8a0a08e453f26"
+          }
+        },
+        {
+          "client_id": "77409496012-o5mvme85r0t5e204jcgcejqqniuu3qtc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.payvoy.slingneofinal",
+            "certificate_hash": "9bd584f4c2ac887c34d36081c509ad23745c843e"
+          }
+        },
+        {
+          "client_id": "77409496012-ueobhe4cq99okok1kfebb1ujbdmts5s9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.payvoy.slingneofinal",
+            "certificate_hash": "a4f223c611231b56bba8a69285393ff0faf657e2"
+          }
+        },
+        {
+          "client_id": "77409496012-553tm2su6m3dovi2j219qrcnvo4pr7g3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIROl7B1Jib-aL6t63HA7Yne9maACG-g4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77409496012-553tm2su6m3dovi2j219qrcnvo4pr7g3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "77409496012-09ig8675oh6l9tu476u3jmv3d969be4o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.slingAgent"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77409496012:android:c0ca14fadb6c30cc170b69",
+        "android_client_info": {
+          "package_name": "com.payvoy.slingprototype"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77409496012-bqp101ctqulfjnvvlue7sdj3gnsobbk6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.payvoy.slingprototype",
+            "certificate_hash": "e22a60f87437a41343e4c2a26c4811c7cc84aca5"
+          }
+        },
+        {
+          "client_id": "77409496012-elpalupkgv03cpk8bmutabnjvo74cpui.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.payvoy.slingprototype",
+            "certificate_hash": "f30a4604038431a68ad272f31b74c76368b1b5e2"
+          }
+        },
+        {
+          "client_id": "77409496012-hnli614ns58h7q7cbu41gipmjq5latak.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.payvoy.slingprototype",
+            "certificate_hash": "9bd584f4c2ac887c34d36081c509ad23745c843e"
+          }
+        },
+        {
+          "client_id": "77409496012-l001b77hgu9brg9tp709kk35gjdnkt2b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.payvoy.slingprototype",
+            "certificate_hash": "a4f223c611231b56bba8a69285393ff0faf657e2"
+          }
+        },
+        {
+          "client_id": "77409496012-qsc0b88e205mtsirr8f45m77jqhmrkqg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.payvoy.slingprototype",
+            "certificate_hash": "4d23557941b049df66971135fce8a0a08e453f26"
+          }
+        },
+        {
+          "client_id": "77409496012-u31dqu5amkk8655ae6rhnrc5nro0o1o2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.payvoy.slingprototype",
+            "certificate_hash": "5082ea5beb3dd68b6e9a57d3af5419369fbccb4d"
+          }
+        },
+        {
+          "client_id": "77409496012-553tm2su6m3dovi2j219qrcnvo4pr7g3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIROl7B1Jib-aL6t63HA7Yne9maACG-g4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77409496012-553tm2su6m3dovi2j219qrcnvo4pr7g3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "77409496012-09ig8675oh6l9tu476u3jmv3d969be4o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.slingAgent"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77409496012:android:51ebf64bd6f43a34170b69",
+        "android_client_info": {
+          "package_name": "com.sling.slingone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77409496012-9bb8uu30m1rbkhb9hbnj58omq02q6l2h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sling.slingone",
+            "certificate_hash": "f30a4604038431a68ad272f31b74c76368b1b5e2"
+          }
+        },
+        {
+          "client_id": "77409496012-553tm2su6m3dovi2j219qrcnvo4pr7g3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIROl7B1Jib-aL6t63HA7Yne9maACG-g4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77409496012-553tm2su6m3dovi2j219qrcnvo4pr7g3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "77409496012-09ig8675oh6l9tu476u3jmv3d969be4o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.slingAgent"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

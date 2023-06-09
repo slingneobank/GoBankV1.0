@@ -4,7 +4,7 @@ import 'media.dart';
 
 class NormalCustomtextfilds {
   static Widget textField(
-      textclr,hintclr,borderclr,hinttext,w,fillcolor) {
+      textclr,hintclr,borderclr,hinttext,w,fillcolor,{ctrl}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal:w),
       child: Container(
@@ -12,6 +12,7 @@ class NormalCustomtextfilds {
 
         height: height / 15,
         child: TextField(
+          controller: ctrl,
           autofocus: false,
           style: TextStyle(fontSize: height / 50, color:textclr,),
           decoration: InputDecoration(

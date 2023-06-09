@@ -4,16 +4,19 @@ import 'media.dart';
 
 class Customtextfilds {
   static Widget textField(
-      textclr,hintclr,borderclr,img,hinttext,fillcolor) {
+      textclr,hintclr,borderclr,img,hinttext,fillcolor,{inputType=TextInputType.text,controller}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: width / 18),
       child: Container(
         color: Colors.transparent,
         height: height / 15,
         child: TextField(
+          controller: controller,
+      keyboardType: inputType,
           autofocus: false,
           style: TextStyle(fontSize: height / 50, color:textclr,),
           decoration: InputDecoration(
+            
             filled: true,
             fillColor: fillcolor,
             hintText: hinttext,
