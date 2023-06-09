@@ -1,3 +1,4 @@
+import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gobank/slingsaverclub/offerwidgets.dart';
@@ -20,7 +21,7 @@ class SliderPage extends StatelessWidget {
             // }
 
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              print(snapshot.data!.docs.length);
+             // print(snapshot.data!.docs.length);
               return Text('No data available');
                // Show a message when there is no data
             }
@@ -29,14 +30,19 @@ class SliderPage extends StatelessWidget {
 
             // Rest of your code to display the slides
 
-          print(slides.length);
+          //print(slides.length);
+          indicator.clear();
+          indicator.addAll(slides);
+          
           return ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: slides.length,
               itemBuilder: (context, index) {
                 final slide = slides[index].data() as Map<String, dynamic>?;
-
+                activeindexslideroffers=index;
+                print(activeindexslideroffers);
                 if (slide == null) {
+                  
                   return SizedBox.shrink(
                     child: Text("data null"),
                   );
@@ -46,6 +52,8 @@ class SliderPage extends StatelessWidget {
                 final description = slide['description'] as String?;
                 final description2 = slide['description2'] as String?;
                 final imageURL = slide['imageURL'] as String?;
+                final button = slide['button'] as String?;
+                
 
                 if (title == null || description == null || description2 == null ||imageURL == null) {
                   return SizedBox.shrink(
@@ -54,8 +62,8 @@ class SliderPage extends StatelessWidget {
                 }
 
                 return Container(
-                height: 170,
-                width: width-30,
+                height: 150,
+                width: width-50,
                 child: Card(
                    color: Color.fromARGB(255, 59, 8, 68),
                    shape: RoundedRectangleBorder(
@@ -103,10 +111,11 @@ class SliderPage extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(10),
                                       ),
                                     backgroundColor: Colors.amber[700],
-                                    padding: EdgeInsets.symmetric(vertical: 13,horizontal: 18),
+                                    padding: EdgeInsets.symmetric(vertical: height * 0.025, horizontal: width * 0.04),
+                        
                                     ),
                                   child: Text(
-                                    'Start Learning',
+                                    button!,
                                     style: TextStyle(
                                         fontFamily: "Gilroy Medium",
                                         color: Colors.black,

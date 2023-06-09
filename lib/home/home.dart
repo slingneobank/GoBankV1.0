@@ -1,13 +1,18 @@
+
+
 import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gobank/card/mycard.dart';
+import 'package:gobank/slingsaverclub/ListViewWithSideIndicator.dart';
 import 'package:gobank/home/notifications.dart';
 import 'package:gobank/home/request/request.dart';
 import 'package:gobank/home/scanpay/scan.dart';
 import 'package:gobank/home/seealltransaction.dart';
+import 'package:gobank/slingsaverclub/bannerpage.dart';
+import 'package:gobank/slingsaverclub/bottomsheetpage.dart';
 import 'package:gobank/slingsaverclub/offerdetailspage.dart';
 import 'package:gobank/slingsaverclub/sliderpage.dart';
 import 'package:gobank/utils/colornotifire.dart';
@@ -31,6 +36,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late ColorNotifire notifire;
+  // Define a GlobalKey for the BottomSheet to control its state
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  // Define a variable to store the bottom sheet state
+  PersistentBottomSheetController? _bottomSheetController;
+  ScrollController _scrollController = ScrollController();
+  int activeIndex = 0;
 
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
@@ -112,8 +124,7 @@ class _HomeState extends State<Home> {
     CustomStrings.relatedpaytm2,
   ];
   bool selection = true;
-  int activeIndex = 0;
-
+  
   final FirebaseStorage storage = FirebaseStorage.instance;
   final String folderPath = 'offer_images'; // Path to your Firebase Storage folder
   List<String> imageUrls = [];
@@ -123,7 +134,11 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     super.initState();
     fetchImageUrls();
-    
+    _scrollController.addListener(() {
+    setState(() {
+      activeIndex = (_scrollController.offset / _scrollController.position.viewportDimension).round();
+    });
+  });
   }
   Future<void> fetchImageUrls() async {
   imageUrls = await getImageUrls(); // Wait for the asynchronous operation to complete
@@ -161,10 +176,38 @@ class _HomeState extends State<Home> {
 
   return imageUrls;
 }
+
+void _onImageTap(int index) {
+    setState(() {
+      activeIndex = index;
+    });
+
+    if (index == 0) {
+      // Navigate to the page view
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => OfferDetailsPage(
+            imageUrl: imageUrls[index],
+            currentindex: index,
+          ),
+        ),
+      );
+    } else {
+      if (_scaffoldKey.currentState != null) {
+        _bottomSheetController = _scaffoldKey.currentState!.showBottomSheet(
+          (context) => bottomsheetpage(),
+          elevation: 10,
+          backgroundColor: Colors.transparent,
+        );
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: notifire.getprimerycolor,
       body: SingleChildScrollView(
         child: Column(
@@ -581,6 +624,11 @@ class _HomeState extends State<Home> {
             SizedBox(
               height: height / 30,
             ),
+            SizedBox(
+              child: BannerPage(),),
+             SizedBox(
+              height: height / 30,
+            ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: width / 18),
               child: Row(
@@ -686,6 +734,8 @@ class _HomeState extends State<Home> {
             SizedBox(
               height: height / 80,
             ),
+            
+
             Padding(
               padding: EdgeInsets.symmetric(horizontal: width/18),
               child:
@@ -705,78 +755,59 @@ class _HomeState extends State<Home> {
               height: height / 80,
               ),
                Container(
-                height: 200,
-                child: flag
-                    ? CarouselSlider.builder(
-                        itemCount: imageUrls.length,
-                        itemBuilder: (context, index, realIndex) {
-                          return GestureDetector(
-                            onTap: () {
-                              // Navigate to the offer details page
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => OfferDetailsPage(imageUrl: imageUrls[index],currentindex:index),
+            height: 200,
+            child: flag
+                ? ListView.builder(
+                    controller: _scrollController,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: imageUrls.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () => _onImageTap(index),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 10,
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 140,
+                                height: 200,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
                                 ),
-                              );
-                            },
-                            child: Row(
-                              children: [
-                                SizedBox(width: 10),
-                                Container(
-                                  width: 140,
-                                  height: 200,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    child: Image.network(
-                                      imageUrls[index],
-                                      fit: BoxFit.cover,
-                                    ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Image.network(
+                                    imageUrls[index],
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
-                                SizedBox(width: 10),
-                              ],
-                            ),
-                          );
-                        },
-                        options: CarouselOptions(
-                          height: 200,
-                          enableInfiniteScroll: true,
-                          autoPlay: true,
-                          autoPlayInterval: Duration(seconds: 3),
-                          autoPlayAnimationDuration: Duration(milliseconds: 800),
-                          autoPlayCurve: Curves.easeInOut,
-                          enlargeCenterPage: true,
-                          viewportFraction: 0.5, // Adjust this value to show 2 or 3 images
-                          aspectRatio: 5, // Adjust this value based on your image aspect ratio
-                          onPageChanged: (index, reason) {
-                            setState(() {
-                              activeIndex = index;
-                            });
-                          },
+                              ),
+                              SizedBox(width: 10),
+                            ],
+                          ),
                         ),
-                      )
-                    : Center(child: CircularProgressIndicator()),
+                      );
+                    },
+                  )
+                : Center(child: CircularProgressIndicator()),
+          ),
+          SizedBox(height: height / 80),
+          if (flag && imageUrls.isNotEmpty)
+            Container(
+              child: CarouselIndicator(
+                count: imageUrls.length,
+                index: activeIndex,
+                color: Colors.orange,
+                activeColor: Colors.deepOrange,
+                space: 4,
+                width: 4,
+                height: 4,
               ),
-
-            SizedBox(height: height / 80),
-
-            if (flag && imageUrls.isNotEmpty) // Conditionally render the CarouselIndicator
-              Container(
-                child: CarouselIndicator(
-                  count: imageUrls.length,
-                  index: activeIndex,
-                  color: Colors.orange,
-                  activeColor: Colors.deepOrange,
-                  space: 4,
-                  width: 4,
-                  height: 4,
-                ),
-              ),
-
+            ),
+ 
             SizedBox(
               height: height / 80,
               ),
@@ -785,6 +816,24 @@ class _HomeState extends State<Home> {
                 width: width-30,
                 child: SliderPage(),),
                SizedBox(
+              height: height / 80,
+              ),
+              SizedBox(height: height / 80),
+        
+            if (indicator.isNotEmpty) // Conditionally render the CarouselIndicator
+              Container(
+                child: CarouselIndicator(
+                  count: indicator.length,
+                  index: activeindexslideroffers,
+                  color: Colors.orange,
+                  activeColor: Colors.deepOrange,
+                  space: 4,
+                  width: 5,
+                  height: 4,
+                ),
+              ),
+        
+            SizedBox(
               height: height / 80,
               ),
             Padding(
@@ -832,6 +881,7 @@ class _HomeState extends State<Home> {
                 physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
                 itemCount: transaction.length,
+              
                 itemBuilder: (context, index) => Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: width / 20, vertical: height / 100),
