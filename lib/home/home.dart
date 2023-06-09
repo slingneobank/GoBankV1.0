@@ -3,23 +3,34 @@ import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:gobank/bottombar/bottombar.dart';
 import 'package:gobank/card/mycard.dart';
 import 'package:gobank/home/notifications.dart';
 import 'package:gobank/home/request/request.dart';
+import 'package:gobank/home/savers_club_sliders.dart';
+import 'package:gobank/home/savings/savings_story_page.dart';
 import 'package:gobank/home/scanpay/scan.dart';
 import 'package:gobank/home/seealltransaction.dart';
+
+import 'package:gobank/home/sliders.dart';
+import 'package:gobank/home/sling_store/sling_store.dart';
+import 'package:gobank/models/sling_user.dart';
+
 import 'package:gobank/slingsaverclub/offerdetailspage.dart';
 import 'package:gobank/slingsaverclub/sliderpage.dart';
+
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:gobank/utils/string.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gobank/login/auth_ctrl.dart';
 
 import '../profile/helpsupport.dart';
 import '../profile/legalandpolicy.dart';
+import 'home_ctrl.dart';
 import 'seeallpayment.dart';
-import 'topup/topupcard/topup.dart';
 import 'transfer/sendmoney.dart';
 
 class Home extends StatefulWidget {
@@ -30,8 +41,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final homeCtrl = Get.put<HomeCtrl>(HomeCtrl());
   late ColorNotifire notifire;
-
+  // String setname(){
+  //   return  ;
+  // }
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
     bool? previusstate = prefs.getBool("setIsDark");
@@ -46,23 +60,29 @@ class _HomeState extends State<Home> {
   List img = [
     "images/mobile.png",
     "images/shopping.png",
-    "images/water.png",
+    "images/ticket.png",
     "images/wifi1.png",
     "images/assurance.png", 
     "images/ticket.png",
     "images/bill.png",
-    "images/categories.png",
+    "images/mastercard.png",
   ];
 
   List paymentname = [
     CustomStrings.nearbystores,
-    CustomStrings.onlineshopping,
-    CustomStrings.travelflight,
-    CustomStrings.eventsmovies,
-    CustomStrings.buyinsurance,
-    CustomStrings.getfastag,
-    CustomStrings.buyelectronic,
-    CustomStrings.allservices,
+    "Sling Store",
+    // CustomStrings.travelflight,
+    "Bus Booking",
+    // CustomStrings.eventsmovies,
+    "Recharges",
+    // CustomStrings.buyinsurance,
+    "Bharat Bill Payment",
+    // CustomStrings.getfastag,
+    "Fees Payment",
+    // CustomStrings.buyelectronic,
+    "Buy Coupons",
+    // CustomStrings.allservices,
+    "Credit Card"
   ];
 
   List transaction = [
@@ -93,7 +113,7 @@ class _HomeState extends State<Home> {
   ];
   List cashbankname = [
     CustomStrings.cashback,
-    CustomStrings.becomemerchant,
+    "Refer A Friend",
     CustomStrings.helpandsuppors,
   ];
   List cashbankdiscription = [
@@ -112,6 +132,9 @@ class _HomeState extends State<Home> {
     CustomStrings.relatedpaytm2,
   ];
   bool selection = true;
+
+  final authCtrl = Get.find<AuthCtrl>();
+
   int activeIndex = 0;
 
   final FirebaseStorage storage = FirebaseStorage.instance;
@@ -161,6 +184,7 @@ class _HomeState extends State<Home> {
 
   return imageUrls;
 }
+
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
@@ -191,7 +215,7 @@ class _HomeState extends State<Home> {
                       height: height / 100,
                     ),
                     Text(
-                      CustomStrings.hello,
+                      authCtrl.auth.currentUser!.phoneNumber ?? 'mynumber',
                       style: TextStyle(
                           color: notifire.getdarkscolor,
                           fontSize: height / 40,
@@ -375,7 +399,7 @@ class _HomeState extends State<Home> {
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: width / 30),
                         child: Container(
-                          height: height / 7,
+                          height: height / 6.5,
                           width: width,
                           decoration: BoxDecoration(
                             borderRadius: const BorderRadius.all(
@@ -399,46 +423,86 @@ class _HomeState extends State<Home> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  Column(
+                                  Stack(
                                     children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const Scan(),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          height: height / 15,
-                                          width: width / 7,
-                                          decoration: BoxDecoration(
-                                            color: notifire.gettabwhitecolor,
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                              Radius.circular(10),
+                                      Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const Scan(),
+                                                ),
+                                              );
+                                            },
+                                            child: Container(
+                                              height: height / 15,
+                                              width: width / 7,
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    notifire.gettabwhitecolor,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                              child: Center(
+                                                child: Image.asset(
+                                                  "images/scanpay.png",
+                                                  height: height / 20,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                          child: Center(
-                                            child: Image.asset(
-                                              "images/scanpay.png",
-                                              height: height / 20,
+                                          SizedBox(
+                                            height: height / 60,
+                                          ),
+                                          Text(
+                                            "Order\nPhysical Card",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontFamily: "Gilroy Bold",
+                                                color: notifire.getdarkscolor,
+                                                fontSize: height / 65),
+                                          ),
+                                        ],
+                                      ),
+                                      Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: Container(
+                                          padding: const EdgeInsets.all(4.0),
+                                          decoration: BoxDecoration(
+                                            color: Colors.yellow[300],
+                                            borderRadius:
+                                                BorderRadius.circular(32.0),
+                                            boxShadow: [
+                                              const BoxShadow(
+                                                color: Colors.white,
+                                                offset: Offset(-4.0, -4.0),
+                                                blurRadius: 16.0,
+                                              ),
+                                              BoxShadow(
+                                                color: Colors.black
+                                                    .withOpacity(0.2),
+                                                offset: const Offset(4.0, 4.0),
+                                                blurRadius: 16.0,
+                                              ),
+                                            ],
+                                          ),
+                                          // A text widget with some style
+                                          child: Text(
+                                            'Coming Soon',
+                                            style: TextStyle(
+                                              color: Colors.grey[800],
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 7,
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        height: height / 60,
-                                      ),
-                                      Text(
-                                        CustomStrings.scanpay,
-                                        style: TextStyle(
-                                            fontFamily: "Gilroy Bold",
-                                            color: notifire.getdarkscolor,
-                                            fontSize: height / 55),
-                                      ),
+                                      )
                                     ],
                                   ),
                                   Column(
@@ -475,7 +539,7 @@ class _HomeState extends State<Home> {
                                         height: height / 60,
                                       ),
                                       Text(
-                                        CustomStrings.transfer,
+                                        "Coins",
                                         style: TextStyle(
                                             fontFamily: "Gilroy Bold",
                                             color: notifire.getdarkscolor,
@@ -517,7 +581,7 @@ class _HomeState extends State<Home> {
                                         height: height / 60,
                                       ),
                                       Text(
-                                        CustomStrings.request,
+                                        "Debit Card",
                                         style: TextStyle(
                                             fontFamily: "Gilroy Bold",
                                             color: notifire.getdarkscolor,
@@ -533,7 +597,7 @@ class _HomeState extends State<Home> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  const Topup(),
+                                                  const SavingsStory(),
                                             ),
                                           );
                                         },
@@ -559,7 +623,7 @@ class _HomeState extends State<Home> {
                                         height: height / 60,
                                       ),
                                       Text(
-                                        CustomStrings.topup,
+                                        "Savings",
                                         style: TextStyle(
                                             fontFamily: "Gilroy Bold",
                                             color: notifire.getdarkscolor,
@@ -577,6 +641,20 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ],
+            ),
+            SizedBox(
+              height: height / 30,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: width / 30),
+              child: Container(
+                  height: height / 7,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  child: const CouponSliders()),
             ),
             SizedBox(
               height: height / 30,
@@ -639,12 +717,16 @@ class _HomeState extends State<Home> {
                     itemBuilder: (BuildContext ctx, index) {
                       return GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Scan(),
-                            ),
-                          );
+                          if (index == 1) {
+                            Get.to(() => const SlingStore());
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Scan(),
+                              ),
+                            );
+                          }
                         },
                         child: Column(
                           children: [
@@ -787,6 +869,38 @@ class _HomeState extends State<Home> {
                SizedBox(
               height: height / 80,
               ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: width / 18),
+              child: Row(
+                children: [
+                  Text(
+                    "Sling Savers Club💰",
+                    style: TextStyle(
+                        fontFamily: "Gilroy Bold",
+                        color: notifire.getdarkscolor,
+                        fontSize: height / 40),
+                  ),
+                  const Spacer(),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: height / 50,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: width / 30),
+              child: Container(
+                  height: height / 4.5,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  child: const SaversClubSliders()),
+            ),
+            SizedBox(
+              height: height / 50,
+            ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: width / 18),
               child: Row(
@@ -964,7 +1078,7 @@ class _HomeState extends State<Home> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => const HelpSupport(
-                              CustomStrings.becomemerchant,
+                              "Refer A Friend",
                             ),
                           ),
                         );

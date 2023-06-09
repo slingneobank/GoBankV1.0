@@ -1,15 +1,14 @@
 import 'dart:async';
-
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:gobank/login/auth_ctrl.dart';
+import 'package:gobank/login/loginCheck.dart';
 import 'package:gobank/home/home.dart';
 import 'package:gobank/slingsaverclub/sliderpage.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'onbonding.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({Key? key}) : super(key: key);
@@ -20,6 +19,7 @@ class Splashscreen extends StatefulWidget {
 
 class _SplashscreenState extends State<Splashscreen> {
   late ColorNotifire notifire;
+  final authCtrl = Get.put<AuthCtrl>(AuthCtrl());
 
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
@@ -40,7 +40,8 @@ class _SplashscreenState extends State<Splashscreen> {
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  Home(),//onboarding
+          builder: (context) => LoginCheck(),
+
         ),
       ),
     );
@@ -48,7 +49,6 @@ class _SplashscreenState extends State<Splashscreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;

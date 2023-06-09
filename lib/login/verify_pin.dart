@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gobank/login/setupprofile.dart';
+import 'package:gobank/bottombar/bottombar.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,14 +9,14 @@ import '../utils/colornotifire.dart';
 import '../utils/media.dart';
 import '../utils/string.dart';
 
-class Verify extends StatefulWidget {
-  const Verify({Key? key}) : super(key: key);
+class VerifyPin extends StatefulWidget {
+  const VerifyPin({Key? key}) : super(key: key);
 
   @override
-  State<Verify> createState() => _VerifyState();
+  State<VerifyPin> createState() => _VerifyPinState();
 }
 
-class _VerifyState extends State<Verify> {
+class _VerifyPinState extends State<VerifyPin> {
   late ColorNotifire notifire;
 
   getdarkmodepreviousstate() async {
@@ -44,7 +44,7 @@ class _VerifyState extends State<Verify> {
                   width: width,
                   color: Colors.transparent,
                   child: Image.asset(
-                    "assets/img1.png",
+                    "images/background.png",
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -73,17 +73,7 @@ class _VerifyState extends State<Verify> {
                       height: height / 40,
                     ),
                     Text(
-                      CustomStrings.verification1,
-                      style: TextStyle(
-                          color: notifire.getdarkgreycolor,
-                          fontSize: height / 65,
-                          fontFamily: 'Gilroy Medium'),
-                    ),
-                    SizedBox(
-                      height: height / 100,
-                    ),
-                    Text(
-                      CustomStrings.verification2,
+                      "Please enter the pin below to verify it’s you!'",
                       style: TextStyle(
                           color: notifire.getdarkgreycolor,
                           fontSize: height / 65,
@@ -96,28 +86,28 @@ class _VerifyState extends State<Verify> {
                     SizedBox(
                       height: height / 30,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          CustomStrings.code,
-                          style: TextStyle(
-                            color: notifire.getdarkgreycolor.withOpacity(0.6),
-                            fontSize: height / 60,
-                          ),
-                        ),
-                        SizedBox(
-                          width: width / 100,
-                        ),
-                        Text(
-                          CustomStrings.resendcode,
-                          style: TextStyle(
-                            color: notifire.getbluecolor,
-                            fontSize: height / 60,
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     Text(
+                    //       CustomStrings.code,
+                    //       style: TextStyle(
+                    //         color: notifire.getdarkgreycolor.withOpacity(0.6),
+                    //         fontSize: height / 60,
+                    //       ),
+                    //     ),
+                    //     SizedBox(
+                    //       width: width / 100,
+                    //     ),
+                    //     Text(
+                    //       CustomStrings.resendcode,
+                    //       style: TextStyle(
+                    //         color: notifire.getbluecolor,
+                    //         fontSize: height / 60,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     SizedBox(
                       height: height / 30,
                     ),
@@ -126,7 +116,7 @@ class _VerifyState extends State<Verify> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const SetupProfile(),
+                            builder: (context) => const Bottombar(),
                           ),
                         );
                       },

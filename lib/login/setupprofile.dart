@@ -1,13 +1,17 @@
+
 import 'package:flutter/material.dart';
-import 'package:gobank/verification/indetyfiyverifiy.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:gobank/login/verify_kyc_otp.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../constants.dart';
 import '../utils/button.dart';
 import '../utils/colornotifire.dart';
 import '../utils/media.dart';
 import '../utils/normaltextfild.dart';
 import '../utils/string.dart';
+import 'auth_ctrl.dart';
 
 class SetupProfile extends StatefulWidget {
   const SetupProfile({Key? key}) : super(key: key);
@@ -18,6 +22,8 @@ class SetupProfile extends StatefulWidget {
 
 class _SetupProfileState extends State<SetupProfile> {
   late ColorNotifire notifire;
+  final authCtrl = Get.find<AuthCtrl>();
+  bool loading = false;
 
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
@@ -30,35 +36,19 @@ class _SetupProfileState extends State<SetupProfile> {
   }
 
   String dropdownvalue = '01';
-  String monthvalue = 'Jan';
+  String monthvalue = '01';
   String yearvalue = '2018';
   String gendervalue = CustomStrings.male;
 
-  var items = [
-    '01',
-    '02',
-    '03',
-    '04',
-    '05',
-  ];
-  var monthitems = [
-    'Jan',
-    'feb',
-    'mar',
-    'ape',
-    'may',
-  ];
-  var yearitems = [
-    '2018',
-    '2019',
-    '2020',
-    '2021',
-    '2022',
-  ];
   var genderitems = [
     CustomStrings.male,
     CustomStrings.female,
   ];
+  @override
+  void initState() {
+    super.initState();
+    loading = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,13 +96,13 @@ class _SetupProfileState extends State<SetupProfile> {
                                 fontFamily: 'Gilroy Bold'),
                           ),
                           const Spacer(),
-                          Text(
-                            CustomStrings.skip,
-                            style: TextStyle(
-                                color: notifire.getdarkscolor,
-                                fontSize: height / 50,
-                                fontFamily: 'Gilroy Bold'),
-                          ),
+                          // Text(
+                          //   CustomStrings.skip,
+                          //   style: TextStyle(
+                          //       color: notifire.getdarkscolor,
+                          //       fontSize: height / 50,
+                          //       fontFamily: 'Gilroy Bold'),
+                          // ),
                         ],
                       ),
                     )
@@ -187,13 +177,14 @@ class _SetupProfileState extends State<SetupProfile> {
                                           notifire.getbluecolor,
                                           CustomStrings.antorpaul,
                                           width / 20,
-                                          notifire.gettabwhitecolor),
+                                          notifire.gettabwhitecolor,
+                                          ctrl: authCtrl.fullnameCtrl),
                                       SizedBox(height: height / 45),
                                       Row(
                                         children: [
                                           SizedBox(width: width / 20),
                                           Text(
-                                            CustomStrings.contactnumber,
+                                            CustomStrings.email,
                                             style: TextStyle(
                                                 color: notifire.getdarkscolor,
                                                 fontSize: height / 50,
@@ -206,9 +197,10 @@ class _SetupProfileState extends State<SetupProfile> {
                                           notifire.getdarkscolor,
                                           notifire.getdarkgreycolor,
                                           notifire.getbluecolor,
-                                          "+1 59405 5946",
+                                          "anc@xyz.com",
                                           width / 20,
-                                          notifire.gettabwhitecolor),
+                                          notifire.gettabwhitecolor,
+                                          ctrl: authCtrl.mblCtrl),
                                       SizedBox(height: height / 50),
                                       Row(
                                         children: [
@@ -474,19 +466,73 @@ class _SetupProfileState extends State<SetupProfile> {
                                 ),
                                 SizedBox(height: height / 32),
                                 GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const VerifiyIdenty(),
-                                      ),
-                                    );
+                                  onTap: () async {
+                                    if (loading == false) {
+                                      if (authCtrl.mblCtrl.text.length == 10) {
+                                        loading = true;
+                                        setState(() {});
+                                        authCtrl.slingUser.dob = DateTime.parse(
+                                                yearvalue +
+                                                    "-" +
+                                                    monthvalue +
+                                                    "-" +
+                                                    dropdownvalue)
+                                            .toIso8601String();
+                                        await authCtrl.createUser();
+                                        await authCtrl
+                                            .genTokenApi()
+                                            .then((value) {
+                                          loading = false;
+                                          setState(() {});
+                                          if (value == false) {
+                                            debugPrint(
+                                                "generate token api not working");
+
+                                            return;
+                                          } else {
+                                            // await authCtrl.initMinKyc();
+                                            // await authCtrl.genMinKyc();
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const VerifyKycOtp()
+                                                  //   const VerifiyIdenty(),
+                                                  ),
+                                            );
+                                          }
+                                        });
+                                      } else {
+                                        loading = false;
+                                        setState(() {});
+                                        Fluttertoast.showToast(
+                                            msg: "Please check the values");
+                                      }
+                                    }
                                   },
-                                  child: Custombutton.button(
-                                      notifire.getbluecolor,
-                                      CustomStrings.continues,
-                                      width / 2),
+                                  child: loading
+                                      ? Center(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                Radius.circular(30),
+                                              ),
+                                              color: notifire.getbluecolor,
+                                            ),
+                                            height: height / 15,
+                                            width: width / 5,
+                                            child: const Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                              color: Colors.white,
+                                            )),
+                                          ),
+                                        )
+                                      : Custombutton.button(
+                                          notifire.getbluecolor,
+                                          CustomStrings.continues,
+                                          width / 2),
                                 ),
                               ],
                             ),
