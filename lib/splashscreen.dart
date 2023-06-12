@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:gobank/home/home.dart';
 import 'package:gobank/onbonding.dart';
 import 'package:gobank/slingsaverclub/demo.dart';
-import 'package:gobank/slingsaverclub/demo2.dart';
 import 'package:gobank/slingsaverclub/sliderpage.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
@@ -40,7 +39,7 @@ class _SplashscreenState extends State<Splashscreen> {
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  ListViewWithSideIndicator1(),//onboarding
+          builder: (context) =>  Home(),//onboarding
         ),
       ),
     );

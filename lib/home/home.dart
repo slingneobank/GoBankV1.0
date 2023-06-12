@@ -161,16 +161,10 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     super.initState();
      requestStoragePermission();
-    fetchImageUrls();
-    _scrollController = ScrollController(); // Initialize the scroll controller here
-    _scrollController.addListener(() {
-    setState(() {
-      activeIndex = (_scrollController.offset / _scrollController.position.viewportDimension).round();
-    });
-  });
-  _scrollController.addListener(_scrollListener);
-  checkInternetConnectivity(); // Check the initial internet connectivity state
+   
+   checkInternetConnectivity(); // Check the initial internet connectivity state
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      print(result);
       if (result != ConnectivityResult.none) {
         setState(() {
           isConnected = true;
@@ -186,6 +180,10 @@ class _HomeState extends State<Home> {
       }
     });
     fetchImageUrls();
+    _scrollController = ScrollController(); // Initialize the scroll controller here
+    _scrollController.addListener(_scrollListener);
+  
+    
   }
   void dispose() {
     _scrollController.dispose();
@@ -197,21 +195,33 @@ class _HomeState extends State<Home> {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Internet Connection'),
-        content: Text('Internet connection is not available.'),
-        actions: <Widget>[
-          TextButton(
-            child: Text('Retry'),
-            onPressed: () {
-              Navigator.of(context).pop();
-              fetchImageUrls();
-            },
-          ),
-          TextButton(
-            child: Text('Cancel'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+        title: Text('NO Internet Connection'),
+        content: Text('Try Turning on your WIFI or MOBILEDATA for using the App'),
+        actions: [
+          Column(
+            //mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  OutlinedButton(
+                    child: Text('Retry'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      fetchImageUrls();
+                    },
+                  ),
+                  SizedBox(width: 20,),
+                OutlinedButton(
+                child: Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+                ],
+              ),
+              
+            ],
           ),
         ],
       );
