@@ -37,7 +37,7 @@ class _BannerPageState extends State<BannerPage> {
   @override
   void initState() {
     super.initState();
-    requestStoragePermission();
+   // requestStoragePermission();
     //fetchImageUrls();
   
     checkInternetConnectivity(); // Check the initial internet connectivity state
@@ -52,7 +52,7 @@ class _BannerPageState extends State<BannerPage> {
           isConnected = false;
           
         });
-        showInternetConnectionDialog(); // Show the internet connection dialog
+      //  showInternetConnectionDialog(); // Show the internet connection dialog
    
       }
     });
