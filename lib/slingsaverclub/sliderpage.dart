@@ -62,7 +62,7 @@ class SliderPage extends StatelessWidget {
                 }
 
                 return Container(
-                height: 150,
+                height: 160,
                 width: width-50,
                 child: Card(
                    color: Color.fromARGB(255, 59, 8, 68),
@@ -83,25 +83,34 @@ class SliderPage extends StatelessWidget {
                                     title,
                                     style: TextStyle(
                                         fontFamily: "Gilroy Medium",
-                                        color: Colors.purple[100],
+                                        color: const Color.fromARGB(255, 112, 91, 116),
                                         fontSize: height / 50),
                                   ),
                                   SizedBox(height:height/60,),
-                                  Text(
-                                    description,
-                                    style: TextStyle(
-                                        fontFamily: "Gilroy Bold",
-                                        color: Colors.purple[50],
-                                        fontSize: height / 35),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          description,
+                                          style: TextStyle(
+                                            fontFamily: "Gilroy Bold",
+                                            color: Colors.purple[50],
+                                            fontSize: height / 35,
+                                          ),
+                                        ),
+                                        Text(
+                                          description2,
+                                          style: TextStyle(
+                                            fontFamily: "Gilroy Bold",
+                                            color: Colors.purple[50],
+                                            fontSize: height / 35,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  Text(
-                                    description2,
-                                    style: TextStyle(
-                                        fontFamily: "Gilroy Bold",
-                                        color: Colors.purple[50],
-                                        fontSize: height / 35),
-                                  ),
-                                  SizedBox(height:height/40,),
+                                  //SizedBox(height:height/30,),
                                   OutlinedButton(
                                     onPressed: () {
                                     
@@ -111,7 +120,7 @@ class SliderPage extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(10),
                                       ),
                                     backgroundColor: Colors.amber[700],
-                                    padding: EdgeInsets.symmetric(vertical: height * 0.025, horizontal: width * 0.04),
+                                    padding: EdgeInsets.symmetric(vertical: height * 0.015, horizontal: width * 0.04),
                         
                                     ),
                                   child: Text(

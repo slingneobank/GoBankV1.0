@@ -1,16 +1,19 @@
 
 
+import 'dart:io';
+
 import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gobank/bottombar/bottombar.dart';
 import 'package:gobank/card/mycard.dart';
+import 'package:gobank/databasehelper.dart';
 import 'package:gobank/home/sliders.dart';
 import 'package:gobank/home/sling_store/sling_store.dart';
-import 'package:gobank/slingsaverclub/ListViewWithSideIndicator.dart';
 import 'package:gobank/home/notifications.dart';
 import 'package:gobank/home/request/request.dart';
 import 'package:gobank/home/savers_club_sliders.dart';
@@ -24,6 +27,8 @@ import 'package:gobank/slingsaverclub/sliderpage.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:gobank/utils/string.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gobank/login/auth_ctrl.dart';
@@ -34,6 +39,9 @@ import '../slingsaverclub/bannerpage.dart';
 import 'home_ctrl.dart';
 import 'seeallpayment.dart';
 import 'transfer/sendmoney.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as httpPackage;
+import 'package:path/path.dart' as path;
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -44,7 +52,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final homeCtrl = Get.put<HomeCtrl>(HomeCtrl());
-  final authCtrl = Get.find<AuthCtrl>();
+ // final authCtrl = Get.find<AuthCtrl>();
+ late ScrollController _scrollController;
   late ColorNotifire notifire;
  PersistentBottomSheetController? _bottomSheetController;
   getdarkmodepreviousstate() async {
@@ -133,60 +142,232 @@ class _HomeState extends State<Home> {
     CustomStrings.relatedpaytm2,
   ];
   bool selection = true;
+  
   int activeIndex = 0;
-  late ScrollController _scrollController;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final FirebaseStorage storage = FirebaseStorage.instance;
   final String folderPath = 'offer_images'; // Path to your Firebase Storage folder
   List<String> imageUrls = [];
   bool flag=false;
+  bool isLoading = true;
+  bool isConnected = false;
+  List<String> localImageUrls = [];
+   final List<String> localImagesList = []; // Create an empty list to store local paths
+ 
+  final DatabaseHelper databaseHelper = DatabaseHelper();
+  Directory? appDir;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+     requestStoragePermission();
     fetchImageUrls();
+    _scrollController = ScrollController(); // Initialize the scroll controller here
     _scrollController.addListener(() {
     setState(() {
       activeIndex = (_scrollController.offset / _scrollController.position.viewportDimension).round();
     });
   });
-  }
-  Future<void> fetchImageUrls() async {
-  imageUrls = await getImageUrls(); // Wait for the asynchronous operation to complete
-  print(imageUrls.length); 
-  setState(() {
-    
-  });
-  } 
-  Future<List<String>> getImageUrls() async {
-
-  try {
-    final Reference ref = storage.ref().child(folderPath);
-    final ListResult result = await ref.listAll();
-
-    if (result.items.isNotEmpty) {
-      for (final Reference imageRef in result.items) {
-        final String downloadUrl = await imageRef.getDownloadURL();
-        imageUrls.add(downloadUrl);
+  _scrollController.addListener(_scrollListener);
+  checkInternetConnectivity(); // Check the initial internet connectivity state
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      if (result != ConnectivityResult.none) {
         setState(() {
+          isConnected = true;
+        });
+        fetchImageUrls();
+      } else {
+        setState(() {
+          isConnected = false;
           
         });
-        print(imageUrls);
-
+        showInternetConnectionDialog(); // Show the internet connection dialog
+   
       }
-      flag=true;
-      setState(() {
-        
-      });
-    } else {
-      print('No images found in the specified folder.');
-    }
-  } catch (e) {
-    print('Error getting image URLs: $e');
+    });
+    fetchImageUrls();
+  }
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
-  return imageUrls;
+  void showInternetConnectionDialog() {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Internet Connection'),
+        content: Text('Internet connection is not available.'),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Retry'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              fetchImageUrls();
+            },
+          ),
+          TextButton(
+            child: Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
+    Future<void> requestStoragePermission() async {
+    final PermissionStatus status = await Permission.storage.request();
+    if (status.isGranted) {
+      // Permission granted, fetch image URLs
+      fetchImageUrls();
+    } else if (status.isDenied) {
+      // Permission denied
+      // Handle accordingly (show an error message, disable features, etc.)
+      print('Storage permission is denied.');
+    } else if (status.isPermanentlyDenied) {
+      // Permission permanently denied
+      // Open app settings to enable permission manually
+      openAppSettings();
+    }
+  }
+  Future<void> fetchImageUrls() async {
+  if (isConnected) {
+    imageUrls = await getImageUrls();
+    await saveImageUrlsToDatabase(imageUrls);
+    print("Images are retrieved from Firebase Storage.");
+  } else {
+    localImageUrls = await getImageUrlsFromDatabase();
+    print("Images are retrieved from the local database.");
+  }
+
+  setState(() {
+    flag = true;
+    isLoading = false;
+  });
+}
+  Future<List<String>> getImageUrlsFromDatabase() async {
+  final databaseHelper = DatabaseHelper();
+  final List<Map<String, dynamic>> imageUrlData = await databaseHelper.getImageUrls();
+  final List<String> localImageUrls = [];
+
+  for (var data in imageUrlData) {
+    String? url = data[DatabaseHelper.columnLiveUrl];
+    String? localPath = data[DatabaseHelper.columnLocalUrl];
+
+    if (url != null && localPath != null) {
+      localImageUrls.add(localPath);
+    }
+  }
+
+  if (localImageUrls.isNotEmpty) {
+    print("Images are retrieved from the database.");
+  } else {
+    print("No images found in the database.");
+  }
+
+  return localImageUrls;
+}
+
+
+  Future<void> saveImageUrlsToDatabase(List<String> urls) async {
+  final databaseHelper = DatabaseHelper();
+
+  for (final url in urls) {
+    final String fileName = path.basename(url);
+    final Directory appDir = await getApplicationDocumentsDirectory();
+    final String localPath = '${appDir.path}/$fileName';
+    final File localFile = File(localPath);
+
+    try {
+      if (!localFile.existsSync()) {
+        await localFile.create(recursive: true);
+        final httpPackage.Response response = await httpPackage.get(Uri.parse(url));
+        await localFile.writeAsBytes(response.bodyBytes);
+        print('Image downloaded and saved at: ${localFile.path}');
+        await databaseHelper.insertImageUrl(url, localPath);
+        print("Image URL inserted into the database: $localPath");
+      }
+    } catch (e) {
+      print('Error downloading and saving image: $e');
+    }
+  }
+}
+  Future<void> downloadAndSaveImage(String imageUrl, List<String> localImagesList) async {
+  final String fileName = path.basename(imageUrl);
+  final Directory appDir = await getApplicationDocumentsDirectory();
+  final String localPath = '${appDir.path}/$fileName';
+  final File localFile = File(localPath);
+
+  try {
+    if (!localFile.existsSync()) {
+      await localFile.create(recursive: true);
+      final httpPackage.Response response = await httpPackage.get(Uri.parse(imageUrl));
+      await localFile.writeAsBytes(response.bodyBytes);
+      print('Image downloaded and saved at: ${localFile.path}');
+      localImagesList.add(localPath); // Add local path to the list
+      //Insert the image URL and local path into the database
+      await databaseHelper.insertImageUrl(imageUrl, localPath);
+      print("Image URL inserted into the database: $localPath");
+    } else {
+      localImagesList.add(localPath); // Add existing local path to the list
+    }
+  } catch (e) {
+    print('Error downloading and saving image: $e');
+  }
+}
+ void checkInternetConnectivity() async {
+  var connectivityResult = await Connectivity().checkConnectivity();
+  if (connectivityResult != ConnectivityResult.none) {
+    setState(() {
+      isConnected = true;
+    });
+  } else {
+    setState(() {
+      isConnected = false;
+    });
+    showInternetConnectionDialog(); // Show the internet connection dialog
+  }
+}
+  Future<List<String>> getImageUrls() async {
+    try {
+      final Reference ref = storage.ref().child(folderPath);
+      final ListResult result = await ref.listAll();
+
+      if (result.items.isNotEmpty) {
+        final List<String> urls = [];
+
+        for (final Reference imageRef in result.items) {
+          final String downloadUrl = await imageRef.getDownloadURL();
+          urls.add(downloadUrl);
+        }
+
+        return urls;
+      } else {
+        print('No images found in the specified folder.');
+      }
+    } catch (e) {
+      print('Error getting image URLs: $e');
+    }
+
+    return [];
+  }
+
+ void _scrollListener() {
+    ///final screenWidth = MediaQuery.of(context).size.width;
+    final containerWidth = 150.0;
+    final itemWidth = containerWidth + 8;
+    final index = (_scrollController.offset / itemWidth).round();
+    if (activeIndex != index) {
+      setState(() {
+        activeIndex = index;
+      });
+    }
+    print(" active index$activeIndex");
+    print(" index $index");
+  }
 void _onImageTap(int index) {
     setState(() {
       activeIndex = index;
@@ -243,13 +424,13 @@ void _onImageTap(int index) {
                     SizedBox(
                       height: height / 100,
                     ),
-                    Text(
-                      authCtrl.auth.currentUser!.phoneNumber ?? 'mynumber',
-                      style: TextStyle(
-                          color: notifire.getdarkscolor,
-                          fontSize: height / 40,
-                          fontFamily: 'Gilroy Bold'),
-                    ),
+                    // Text(
+                    //   authCtrl.auth.currentUser!.phoneNumber ?? 'mynumber',
+                    //   style: TextStyle(
+                    //       color: notifire.getdarkscolor,
+                    //       fontSize: height / 40,
+                    //       fontFamily: 'Gilroy Bold'),
+                    // ),
                   ],
                 ),
                 const Spacer(),
@@ -671,20 +852,20 @@ void _onImageTap(int index) {
                 ),
               ],
             ),
-            SizedBox(
-              height: height / 30,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: width / 30),
-              child: Container(
-                  height: height / 7,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
-                  child: const CouponSliders()),
-            ),
+            // SizedBox(
+            //   height: height / 30,
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: width / 30),
+            //   child: Container(
+            //       height: height / 7,
+            //       decoration: const BoxDecoration(
+            //         borderRadius: BorderRadius.all(
+            //           Radius.circular(10),
+            //         ),
+            //       ),
+            //       child: const CouponSliders()),
+            // ),
             SizedBox(
               height: height / 30,
             ),
@@ -822,9 +1003,11 @@ void _onImageTap(int index) {
             SizedBox(
               height: height / 80,
               ),
-               Container(
-            height: 200,
-            child: flag
+              Container(
+       height: 200,
+        child: isLoading
+            ? Center(child: CircularProgressIndicator())
+            : (isConnected && imageUrls.isNotEmpty)
                 ? ListView.builder(
                     controller: _scrollController,
                     scrollDirection: Axis.horizontal,
@@ -832,36 +1015,78 @@ void _onImageTap(int index) {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () => _onImageTap(index),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 10,
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 140,
-                                height: 200,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  child: Image.network(
-                                    imageUrls[index],
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                            ],
+                        child: Container(
+                          margin: EdgeInsets.all(4),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: buildImageWidget(imageUrls[index]),
+                           
                           ),
                         ),
                       );
                     },
                   )
-                : Center(child: CircularProgressIndicator()),
-          ),
+                : (localImageUrls.isNotEmpty)
+                    ? ListView.builder(
+                        controller: _scrollController,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: localImageUrls.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () => _onImageTap(index),
+                            child: Container(
+                              margin: EdgeInsets.all(4),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: buildImageWidget(localImageUrls[index]),
+                                
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                    : Center(child: Text("No images available.")),
+      ),
+          //      Container(
+          //   height: 200,
+          //   child: flag
+          //       ? ListView.builder(
+          //           controller: _scrollController,
+          //           scrollDirection: Axis.horizontal,
+          //           itemCount: imageUrls.length,
+          //           itemBuilder: (context, index) {
+          //             return GestureDetector(
+          //               onTap: () => _onImageTap(index),
+          //               child: Padding(
+          //                 padding: EdgeInsets.symmetric(
+          //                   vertical: 10,
+          //                   horizontal: 10,
+          //                 ),
+          //                 child: Row(
+          //                   children: [
+          //                     Container(
+          //                       width: 140,
+          //                       height: 200,
+          //                       decoration: BoxDecoration(
+          //                         borderRadius: BorderRadius.circular(10.0),
+          //                       ),
+          //                       child: ClipRRect(
+          //                         borderRadius: BorderRadius.circular(10.0),
+          //                         child: Image.network(
+          //                           imageUrls[index],
+          //                           fit: BoxFit.cover,
+          //                         ),
+          //                       ),
+          //                     ),
+          //                     SizedBox(width: 10),
+          //                   ],
+          //                 ),
+          //               ),
+          //             );
+          //           },
+          //         )
+          //       : Center(child: CircularProgressIndicator()),
+          // ),
           SizedBox(height: height / 80),
           if (flag && imageUrls.isNotEmpty)
             Container(
@@ -1188,4 +1413,32 @@ void _onImageTap(int index) {
 //       ? const ChatScreen()
 //       : const ChatRound();
 // }
+Widget buildImageWidget(String imageUrl) {
+  print(imageUrl);
+    if (imageUrl.startsWith('http') || imageUrl.startsWith('https')) {
+      // Firebase Storage URL
+      
+      print('Images are shown from Firebase Storage.');
+      return Image.network(
+        imageUrl,
+        fit: BoxFit.cover,
+        width: height * 0.15,
+        height: height * 0.15,
+      );
+    } else {
+      // Local file path
+      print('Images are shown from local storage.');
+      // return Container(
+      //   height: 10,
+      //   width: 10,
+      //   color: Colors.red,
+      // );
+      return Image.file(
+        File(imageUrl),
+        fit: BoxFit.cover,
+        width: height * 0.15,
+        height: height * 0.15,
+      );
+    }
+  }
 }
