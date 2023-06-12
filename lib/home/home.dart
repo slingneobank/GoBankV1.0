@@ -1026,6 +1026,8 @@ void _onImageTap(int index) {
                       return GestureDetector(
                         onTap: () => _onImageTap(index),
                         child: Container(
+                          height: 200,
+                          width: 140,
                           margin: EdgeInsets.all(4),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
@@ -1045,6 +1047,8 @@ void _onImageTap(int index) {
                           return GestureDetector(
                             onTap: () => _onImageTap(index),
                             child: Container(
+                              height: 200,
+                              width: 160,
                               margin: EdgeInsets.all(4),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
@@ -1057,46 +1061,7 @@ void _onImageTap(int index) {
                       )
                     : Center(child: Text("No images available.")),
       ),
-          //      Container(
-          //   height: 200,
-          //   child: flag
-          //       ? ListView.builder(
-          //           controller: _scrollController,
-          //           scrollDirection: Axis.horizontal,
-          //           itemCount: imageUrls.length,
-          //           itemBuilder: (context, index) {
-          //             return GestureDetector(
-          //               onTap: () => _onImageTap(index),
-          //               child: Padding(
-          //                 padding: EdgeInsets.symmetric(
-          //                   vertical: 10,
-          //                   horizontal: 10,
-          //                 ),
-          //                 child: Row(
-          //                   children: [
-          //                     Container(
-          //                       width: 140,
-          //                       height: 200,
-          //                       decoration: BoxDecoration(
-          //                         borderRadius: BorderRadius.circular(10.0),
-          //                       ),
-          //                       child: ClipRRect(
-          //                         borderRadius: BorderRadius.circular(10.0),
-          //                         child: Image.network(
-          //                           imageUrls[index],
-          //                           fit: BoxFit.cover,
-          //                         ),
-          //                       ),
-          //                     ),
-          //                     SizedBox(width: 10),
-          //                   ],
-          //                 ),
-          //               ),
-          //             );
-          //           },
-          //         )
-          //       : Center(child: CircularProgressIndicator()),
-          // ),
+         
           SizedBox(height: height / 80),
           if (flag && imageUrls.isNotEmpty)
             Container(
