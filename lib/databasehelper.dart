@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -10,6 +12,11 @@ class DatabaseHelper {
   static final _databaseVersion = 1;
 
   static final table = 'image_urls';
+  static final banner= 'banner_urls';
+
+  static final BannerLiveurl='bannerliveurl';
+  static final BannerLocalurl='bannerlocalurl';
+
   static final columnLiveUrl = 'liveUrl';
   static final columnLocalUrl = 'localUrl';
 
@@ -38,12 +45,43 @@ class DatabaseHelper {
         $columnLocalUrl TEXT NOT NULL
       )
       ''');
+
+      await db.execute('''
+      CREATE TABLE $banner (
+        $BannerLiveurl TEXT NOT NULL,
+        $BannerLocalurl TEXT NOT NULL
+      )
+      ''');
   }
+
+  
 
   Future<List<Map<String, dynamic>>> getImageUrls() async {
     final db = await database;
     return await db.query(table);
   }
+
+  Future<List<Map<String, dynamic>>> getbannerImageUrls() async {
+    final db = await database;
+    return await db.query(banner);
+  }
+
+
+// Future<List<Map<String, dynamic>>> getbannerImageUrls() async {
+//   final db = await database;
+//   final List<Map<String, dynamic>> allRows = await db.query(banner);
+//   final List<Map<String, dynamic>> filteredRows = [];
+  
+//   for (final row in allRows) {
+//     if (row[BannerLiveurl] == '') {
+//       filteredRows.add(row);
+//     }
+//   }
+  
+//   return filteredRows;
+// }
+
+
 
   Future<void> insertImageUrl(String liveUrl, String localUrl) async {
     final db = await database;
@@ -63,7 +101,30 @@ class DatabaseHelper {
       });
     }
   }
+
+
+  Future<void> insertbannerImageUrl(String liveurlbanner, String localurlbanner) async {
+    final db = await database;
+
+    // Check if the URL already exists in the table
+    final List<Map<String, dynamic>> existingUrls = await db.query(
+      banner,
+      where: '$BannerLiveurl = ?',
+      whereArgs: [liveurlbanner],
+    );
+
+    if (existingUrls.isEmpty) {
+      // If the URL does not exist, insert it into the table
+      await db.insert(banner, {
+        BannerLiveurl: liveurlbanner,
+        BannerLocalurl: localurlbanner,
+      });
+    }
+  }
+
+
 }
+
 
 // class DatabaseHelper {
 //   static final _databaseName = 'image_urls.db';
