@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gobank/home/home.dart';
+import 'package:gobank/login/login.dart';
+import 'package:gobank/login/loginCheck.dart';
 import 'package:gobank/onbonding.dart';
 import 'package:gobank/slingsaverclub/bannerpage.dart';
 import 'package:gobank/slingsaverclub/demo.dart';
@@ -40,7 +42,7 @@ class _SplashscreenState extends State<Splashscreen> {
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  Home(),//onboarding
+          builder: (context) =>  LoginCheck(),
         ),
       ),
     );
