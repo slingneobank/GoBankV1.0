@@ -27,7 +27,7 @@ class _sling_storesuggestimgState extends State<sling_storesuggestimg> {
 
   void _onScroll() {
     setState(() {
-      _currentPage = (_scrollController.offset / 110).round(); //140
+      _currentPage = (_scrollController.offset / 115).round(); //140
     });
   }
   @override

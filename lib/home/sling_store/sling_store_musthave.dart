@@ -26,7 +26,7 @@ class _sling_store_musthaveState extends State<sling_store_musthave> {
 
   void _onScroll() {
     setState(() {
-      _currentPage = (_scrollController.offset / 110).round(); //140
+      _currentPage = (_scrollController.offset / 115).round(); //140
     });
   }
   @override

@@ -20,6 +20,7 @@ import 'package:gobank/home/savers_club_sliders.dart';
 import 'package:gobank/home/savings/savings_story_page.dart';
 import 'package:gobank/home/scanpay/scan.dart';
 import 'package:gobank/home/seealltransaction.dart';
+import 'package:gobank/home/sling_store/sling_storemain.dart';
 import 'package:gobank/slingsaverclub/bottomsheetpage.dart';
 import 'package:gobank/slingsaverclub/offerdetailspage.dart';
 import 'package:gobank/slingsaverclub/sliderpage.dart';
@@ -180,8 +181,8 @@ class _HomeState extends State<Home> {
       }
     });
     fetchImageUrls();
-    _scrollController = ScrollController(); // Initialize the scroll controller here
-    _scrollController.addListener(_scrollListener);
+    _scrollController = ScrollController();
+    _scrollController.addListener(_onScroll);
   
     
   }
@@ -189,7 +190,11 @@ class _HomeState extends State<Home> {
     _scrollController.dispose();
     super.dispose();
   }
-
+  void _onScroll() {
+    setState(() {
+      activeIndex = (_scrollController.offset / 130).round(); //140
+    });
+  }
   void showInternetConnectionDialog() {
   showDialog(
     context: context,
@@ -365,19 +370,19 @@ class _HomeState extends State<Home> {
     return [];
   }
 
- void _scrollListener() {
-    ///final screenWidth = MediaQuery.of(context).size.width;
-    final containerWidth = 150.0;
-    final itemWidth = containerWidth + 8;
-    final index = (_scrollController.offset / itemWidth).round();
-    if (activeIndex != index) {
-      setState(() {
-        activeIndex = index;
-      });
-    }
-    print(" active index$activeIndex");
-    print(" index $index");
-  }
+//  void _scrollListener() {
+//     ///final screenWidth = MediaQuery.of(context).size.width;
+//     final containerWidth = 150.0;
+//     final itemWidth = containerWidth + 8;
+//     final index = (_scrollController.offset / itemWidth).round();
+//     if (activeIndex != index) {
+//       setState(() {
+//         activeIndex = index;
+//       });
+//     }
+//     print(" active index$activeIndex");
+//     print(" index $index");
+//   }
 void _onImageTap(int index) {
     setState(() {
       activeIndex = index;
@@ -943,7 +948,8 @@ void _onImageTap(int index) {
                       return GestureDetector(
                         onTap: () {
                           if (index == 1) {
-                            Get.to(() => const SlingStore());
+                           // Get.to(() => const SlingStore());
+                           navigator!.push(MaterialPageRoute(builder: (context) => sling_storemain(),));
                           } else {
                             Navigator.push(
                               context,
@@ -1014,74 +1020,95 @@ void _onImageTap(int index) {
               height: height / 80,
               ),
               Container(
-       height: 200,
-        child: isLoading
-            ? Center(child: CircularProgressIndicator())
-            : (isConnected && imageUrls.isNotEmpty)
-                ? ListView.builder(
-                    controller: _scrollController,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: imageUrls.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () => _onImageTap(index),
-                        child: Container(
-                          height: 200,
-                          width: 140,
-                          margin: EdgeInsets.all(4),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: buildImageWidget(imageUrls[index]),
-                           
-                          ),
-                        ),
-                      );
-                    },
-                  )
-                : (localImageUrls.isNotEmpty)
-                    ? ListView.builder(
-                        controller: _scrollController,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: localImageUrls.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () => _onImageTap(index),
-                            child: Container(
-                              height: 200,
-                              width: 160,
-                              margin: EdgeInsets.all(4),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: buildImageWidget(localImageUrls[index]),
-                                
+                  height: 230,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: isLoading
+                            ? Center(child: CircularProgressIndicator())
+                            : (isConnected && imageUrls.isNotEmpty)
+                                ? ListView.builder(
+                                    controller: _scrollController,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: imageUrls.length,
+                                    itemBuilder: (context, index) {
+                                      return GestureDetector(
+                                        onTap: () => _onImageTap(index),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                                          child: Container(
+                                            width: 150,
+                                            //height: 200,
+                                            margin: EdgeInsets.only(left: index != 0 ? 10.0 : 0.0),
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(8),
+                                              child: buildImageWidget(imageUrls[index]),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : (localImageUrls.isNotEmpty)
+                                    ? ListView.builder(
+                                        controller: _scrollController,
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: localImageUrls.length,
+                                        itemBuilder: (context, index) {
+                                          return GestureDetector(
+                                            onTap: () => _onImageTap(index),
+                                            child: Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                                              child: Container(
+                                                width: 150,
+                                                margin: EdgeInsets.only(left: index != 0 ? 10.0 : 0.0),
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(8),
+                                                  child: buildImageWidget(localImageUrls[index]),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      )
+                                    : Center(child: CircularProgressIndicator()),
+                      ),
+                      SizedBox(height: height / 40),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List<Widget>.generate(
+                          isConnected ? imageUrls.length : localImageUrls.length,
+                          (int index) {
+                            bool isActive = (index == activeIndex);
+                            bool isImageUrl = (isConnected && index < imageUrls.length);
+
+                            return AnimatedContainer(
+                              duration: Duration(milliseconds: 300),
+                              margin: EdgeInsets.symmetric(horizontal: 3.0),
+                              height: 7.0,
+                              width: isActive ? 7.0 : 7.0,
+                              decoration: BoxDecoration(
+                                color: isActive ? Colors.blue : Colors.grey,
+                                borderRadius: BorderRadius.circular(5.0),
                               ),
-                            ),
-                          );
-                        },
-                      )
-                    : Center(child: Text("No images available.")),
-      ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
          
           SizedBox(height: height / 80),
-          if (flag && imageUrls.isNotEmpty)
-            Container(
-              child: CarouselIndicator(
-                count: imageUrls.length,
-                index: activeIndex,
-                color: Colors.orange,
-                activeColor: Colors.deepOrange,
-                space: 4,
-                width: 4,
-                height: 4,
-              ),
-            ),
- 
+          //add here indicator
             SizedBox(
               height: height / 80,
               ),
               SizedBox(
                 height: 200,
-                width: width-30,
+                //width: width-30,
                 child: SliderPage(),),
                SizedBox(
               height: height / 80,

@@ -27,7 +27,7 @@ class _sling_storegeeks_gamesState extends State<sling_storegeeks_games> {
 
   void _onScroll() {
     setState(() {
-      _currentPage = (_scrollController.offset / 110).round(); //140
+      _currentPage = (_scrollController.offset / 115).round(); //140
     });
   }
   @override

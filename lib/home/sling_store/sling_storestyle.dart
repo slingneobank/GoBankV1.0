@@ -26,7 +26,7 @@ class _sling_storestyleState extends State<sling_storestyle> {
 
   void _onScroll() {
     setState(() {
-      _currentPage = (_scrollController.offset / 220).round();  //140  // below width when put then less -30 here
+      _currentPage = (_scrollController.offset / 225).round();  //140  // below width when put then less -30 here
     });
   }
   @override

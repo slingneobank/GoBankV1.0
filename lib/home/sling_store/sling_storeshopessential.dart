@@ -26,7 +26,7 @@ class _sling_storeshopessentialState extends State<sling_storeshopessential> {
 
   void _onScroll() {
     setState(() {
-      _currentPage = (_scrollController.offset / 110).round(); //140
+      _currentPage = (_scrollController.offset / 115).round(); //140
     });
   }
   @override
