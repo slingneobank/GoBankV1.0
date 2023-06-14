@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:gobank/apicalling/minkycnativevalidatedoc.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -74,6 +76,11 @@ class _minKycNativeOtpState extends State<minKycNativeOtp> {
             ElevatedButton(
               onPressed: makeApiRequest,
               child: Text('Submit'),
+            ),
+            SizedBox(height: 16.0),
+             ElevatedButton(
+              onPressed: () => navigator!.push(MaterialPageRoute(builder: (context) => Minkycnativevalidatedoc(),)),
+              child: Text('next to verify documnet'),
             ),
             SizedBox(height: 16.0),
             Text(responseMessage),

@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:gobank/apicalling/generatoken.dart';
 import 'package:gobank/home/home.dart';
+import 'package:gobank/home/sling_store/sling_store.dart';
+import 'package:gobank/home/sling_store/sling_storemain.dart';
 import 'package:gobank/login/login.dart';
 import 'package:gobank/login/loginCheck.dart';
 import 'package:gobank/onbonding.dart';
