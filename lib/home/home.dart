@@ -64,40 +64,40 @@ class _HomeState extends State<Home> {
   }
 
   List img = [
-    "images/mobile.png",
+    // "images/mobile.png",
     "images/shopping.png",
     "images/ticket.png",
     "images/wifi1.png",
-    "images/assurance.png",
+    //"images/assurance.png",
     "images/ticket.png",
-    "images/bill.png",
-    "images/mastercard.png",
-    "images/mobrecharge.png",
-    "images/pp.png",
-    "images/dth.png",
+    // "images/bill.png",
+    // "images/mastercard.png",
+    // "images/mobrecharge.png",
+    // "images/pp.png",
+    // "images/dth.png",
   ];
 
   List paymentname = [
-    CustomStrings.nearbystores,
+    // CustomStrings.nearbystores,
     "Sling Store",
     // CustomStrings.travelflight,
     "Bus Booking",
     // CustomStrings.eventsmovies,
-    "Recharges",
+    "Recharge",
     // CustomStrings.buyinsurance,
-    "Bharat Bill Payment",
+    //"Bharat Bill Payment",
     // CustomStrings.getfastag,
     "Fees Payment",
     // CustomStrings.buyelectronic,
-    "Buy Coupons",
+    //"Buy Coupons",
     // CustomStrings.allservices,
-    "Credit Card",
+    //"Credit Card",
     // CustomStrings.mobrecharge,
-    "Mobile Recharge",
+    //"Mobile Recharge",
     //CustomStrings.pp,
-    "PostPaid",
+    //"PostPaid",
     //CustomStrings.dth,
-    "DTH",
+    //"DTH",
   ];
 
   List transaction = [
@@ -107,8 +107,8 @@ class _HomeState extends State<Home> {
   ];
 
   List cashbankimg = [
-    "images/cashback.png",
-    "images/merchant1.png",
+    //"images/cashback.png",
+    //"images/merchant1.png",
     "images/helpandsupport.png"
   ];
   List transactionname = [
@@ -127,13 +127,13 @@ class _HomeState extends State<Home> {
     "-\$.34.000",
   ];
   List cashbankname = [
-    CustomStrings.cashback,
-    "Refer A Friend",
+    //CustomStrings.cashback,
+    //"Refer A Friend",
     CustomStrings.helpandsuppors,
   ];
   List cashbankdiscription = [
-    CustomStrings.scratchcards,
-    CustomStrings.startsccepting,
+    //CustomStrings.scratchcards,
+    //CustomStrings.startsccepting,
     CustomStrings.relatedpaytm,
   ];
   List transactiondate = [
@@ -142,8 +142,8 @@ class _HomeState extends State<Home> {
     "4 Oct 2021 . 09:25",
   ];
   List cashbankdiscription2 = [
-    CustomStrings.scratchcards2,
-    CustomStrings.startsccepting2,
+    //CustomStrings.scratchcards2,
+    //CustomStrings.startsccepting2,
     CustomStrings.relatedpaytm2,
   ];
   bool selection = true;
@@ -945,7 +945,7 @@ class _HomeState extends State<Home> {
               padding: EdgeInsets.symmetric(horizontal: width / 20),
               child: Container(
                 color: Colors.transparent,
-                height: height / 2.3,
+                height: height / 7.5,
                 width: width,
                 child: GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
@@ -1256,7 +1256,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             Container(
-              height: height / 2.5,
+              height: height / 7.8,
               color: Colors.transparent,
               child: ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
@@ -1267,24 +1267,25 @@ class _HomeState extends State<Home> {
                       horizontal: width / 20, vertical: height / 100),
                   child: InkWell(
                     onTap: () {
+                      // if (index == 0) {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) =>
+                      //           const Notificationindex(CustomStrings.cashback),
+                      //     ),
+                      //   );
+                      // } else if (index == 1) {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => const HelpSupport(
+                      //         "Refer A Friend",
+                      //       ),
+                      //     ),
+                      //   );
+                      // } else
                       if (index == 0) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const Notificationindex(CustomStrings.cashback),
-                          ),
-                        );
-                      } else if (index == 1) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HelpSupport(
-                              "Refer A Friend",
-                            ),
-                          ),
-                        );
-                      } else if (index == 2) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
