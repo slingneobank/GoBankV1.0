@@ -1,7 +1,4 @@
-
-
 import 'dart:io';
-
 import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -12,6 +9,8 @@ import 'package:get/get.dart';
 import 'package:gobank/bottombar/bottombar.dart';
 import 'package:gobank/card/mycard.dart';
 import 'package:gobank/databasehelper.dart';
+import 'package:gobank/home/helpandsupport.dart';
+import 'package:gobank/home/rating.dart';
 import 'package:gobank/home/sliders.dart';
 import 'package:gobank/home/sling_store/sling_store.dart';
 import 'package:gobank/home/notifications.dart';
@@ -23,7 +22,6 @@ import 'package:gobank/home/seealltransaction.dart';
 import 'package:gobank/slingsaverclub/bottomsheetpage.dart';
 import 'package:gobank/slingsaverclub/offerdetailspage.dart';
 import 'package:gobank/slingsaverclub/sliderpage.dart';
-
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:gobank/utils/string.dart';
@@ -32,7 +30,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gobank/login/auth_ctrl.dart';
-
 import '../profile/helpsupport.dart';
 import '../profile/legalandpolicy.dart';
 import '../slingsaverclub/bannerpage.dart';
@@ -52,10 +49,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final homeCtrl = Get.put<HomeCtrl>(HomeCtrl());
- // final authCtrl = Get.find<AuthCtrl>();
- late ScrollController _scrollController;
+  // final authCtrl = Get.find<AuthCtrl>();
+  late ScrollController _scrollController;
   late ColorNotifire notifire;
- PersistentBottomSheetController? _bottomSheetController;
+  PersistentBottomSheetController? _bottomSheetController;
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
     bool? previusstate = prefs.getBool("setIsDark");
@@ -65,17 +62,19 @@ class _HomeState extends State<Home> {
       notifire.setIsDark = previusstate;
     }
   }
-  
-  
+
   List img = [
     "images/mobile.png",
     "images/shopping.png",
     "images/ticket.png",
     "images/wifi1.png",
-    "images/assurance.png", 
+    "images/assurance.png",
     "images/ticket.png",
     "images/bill.png",
     "images/mastercard.png",
+    "images/mobrecharge.png",
+    "images/pp.png",
+    "images/dth.png",
   ];
 
   List paymentname = [
@@ -92,7 +91,13 @@ class _HomeState extends State<Home> {
     // CustomStrings.buyelectronic,
     "Buy Coupons",
     // CustomStrings.allservices,
-    "Credit Card"
+    "Credit Card",
+    // CustomStrings.mobrecharge,
+    "Mobile Recharge",
+    //CustomStrings.pp,
+    "PostPaid",
+    //CustomStrings.dth,
+    "DTH",
   ];
 
   List transaction = [
@@ -100,7 +105,7 @@ class _HomeState extends State<Home> {
     "images/spotify.png",
     "images/netflix.png"
   ];
-  
+
   List cashbankimg = [
     "images/cashback.png",
     "images/merchant1.png",
@@ -142,27 +147,29 @@ class _HomeState extends State<Home> {
     CustomStrings.relatedpaytm2,
   ];
   bool selection = true;
-  
+
   int activeIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final FirebaseStorage storage = FirebaseStorage.instance;
-  final String folderPath = 'offer_images'; // Path to your Firebase Storage folder
+  final String folderPath =
+      'offer_images'; // Path to your Firebase Storage folder
   List<String> imageUrls = [];
-  bool flag=false;
+  bool flag = false;
   bool isLoading = true;
   bool isConnected = false;
   List<String> localImageUrls = [];
-   final List<String> localImagesList = []; // Create an empty list to store local paths
- 
+  final List<String> localImagesList =
+      []; // Create an empty list to store local paths
+
   final DatabaseHelper databaseHelper = DatabaseHelper();
   Directory? appDir;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-     requestStoragePermission();
-   
-   checkInternetConnectivity(); // Check the initial internet connectivity state
+    requestStoragePermission();
+
+    checkInternetConnectivity(); // Check the initial internet connectivity state
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       print(result);
       if (result != ConnectivityResult.none) {
@@ -173,62 +180,63 @@ class _HomeState extends State<Home> {
       } else {
         setState(() {
           isConnected = false;
-          
         });
         showInternetConnectionDialog(); // Show the internet connection dialog
-   
       }
     });
     fetchImageUrls();
-    _scrollController = ScrollController(); // Initialize the scroll controller here
+    _scrollController =
+        ScrollController(); // Initialize the scroll controller here
     _scrollController.addListener(_scrollListener);
-  
-    
   }
+
   void dispose() {
     _scrollController.dispose();
     super.dispose();
   }
 
   void showInternetConnectionDialog() {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('NO Internet Connection'),
-        content: Text('Try Turning on your WIFI or MOBILEDATA for using the App'),
-        actions: [
-          Column(
-            //mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  OutlinedButton(
-                    child: Text('Retry'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      fetchImageUrls();
-                    },
-                  ),
-                  SizedBox(width: 20,),
-                OutlinedButton(
-                child: Text('Cancel'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-                ],
-              ),
-              
-            ],
-          ),
-        ],
-      );
-    },
-  );
-}
-    Future<void> requestStoragePermission() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('NO Internet Connection'),
+          content:
+              Text('Try Turning on your WIFI or MOBILEDATA for using the App'),
+          actions: [
+            Column(
+              //mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    OutlinedButton(
+                      child: Text('Retry'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        fetchImageUrls();
+                      },
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    OutlinedButton(
+                      child: Text('Cancel'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> requestStoragePermission() async {
     final PermissionStatus status = await Permission.storage.request();
     if (status.isGranted) {
       // Permission granted, fetch image URLs
@@ -243,50 +251,75 @@ class _HomeState extends State<Home> {
       openAppSettings();
     }
   }
+
   Future<void> fetchImageUrls() async {
-  if (isConnected) {
-    imageUrls = await getImageUrls();
-    await saveImageUrlsToDatabase(imageUrls);
-    print("Images are retrieved from Firebase Storage.");
-  } else {
-    localImageUrls = await getImageUrlsFromDatabase();
-    print("Images are retrieved from the local database.");
+    if (isConnected) {
+      imageUrls = await getImageUrls();
+      await saveImageUrlsToDatabase(imageUrls);
+      print("Images are retrieved from Firebase Storage.");
+    } else {
+      localImageUrls = await getImageUrlsFromDatabase();
+      print("Images are retrieved from the local database.");
+    }
+
+    setState(() {
+      flag = true;
+      isLoading = false;
+    });
   }
 
-  setState(() {
-    flag = true;
-    isLoading = false;
-  });
-}
   Future<List<String>> getImageUrlsFromDatabase() async {
-  final databaseHelper = DatabaseHelper();
-  final List<Map<String, dynamic>> imageUrlData = await databaseHelper.getImageUrls();
-  final List<String> localImageUrls = [];
+    final databaseHelper = DatabaseHelper();
+    final List<Map<String, dynamic>> imageUrlData =
+        await databaseHelper.getImageUrls();
+    final List<String> localImageUrls = [];
 
-  for (var data in imageUrlData) {
-    String? url = data[DatabaseHelper.columnLiveUrl];
-    String? localPath = data[DatabaseHelper.columnLocalUrl];
+    for (var data in imageUrlData) {
+      String? url = data[DatabaseHelper.columnLiveUrl];
+      String? localPath = data[DatabaseHelper.columnLocalUrl];
 
-    if (url != null && localPath != null) {
-      localImageUrls.add(localPath);
+      if (url != null && localPath != null) {
+        localImageUrls.add(localPath);
+      }
+    }
+
+    if (localImageUrls.isNotEmpty) {
+      print("Images are retrieved from the database.");
+    } else {
+      print("No images found in the database.");
+    }
+
+    return localImageUrls;
+  }
+
+  Future<void> saveImageUrlsToDatabase(List<String> urls) async {
+    final databaseHelper = DatabaseHelper();
+
+    for (final url in urls) {
+      final String fileName = path.basename(url);
+      final Directory appDir = await getApplicationDocumentsDirectory();
+      final String localPath = '${appDir.path}/$fileName';
+      final File localFile = File(localPath);
+
+      try {
+        if (!localFile.existsSync()) {
+          await localFile.create(recursive: true);
+          final httpPackage.Response response =
+              await httpPackage.get(Uri.parse(url));
+          await localFile.writeAsBytes(response.bodyBytes);
+          print('Image downloaded and saved at: ${localFile.path}');
+          await databaseHelper.insertImageUrl(url, localPath);
+          print("Image URL inserted into the database: $localPath");
+        }
+      } catch (e) {
+        print('Error downloading and saving image: $e');
+      }
     }
   }
 
-  if (localImageUrls.isNotEmpty) {
-    print("Images are retrieved from the database.");
-  } else {
-    print("No images found in the database.");
-  }
-
-  return localImageUrls;
-}
-
-
-  Future<void> saveImageUrlsToDatabase(List<String> urls) async {
-  final databaseHelper = DatabaseHelper();
-
-  for (final url in urls) {
-    final String fileName = path.basename(url);
+  Future<void> downloadAndSaveImage(
+      String imageUrl, List<String> localImagesList) async {
+    final String fileName = path.basename(imageUrl);
     final Directory appDir = await getApplicationDocumentsDirectory();
     final String localPath = '${appDir.path}/$fileName';
     final File localFile = File(localPath);
@@ -294,53 +327,36 @@ class _HomeState extends State<Home> {
     try {
       if (!localFile.existsSync()) {
         await localFile.create(recursive: true);
-        final httpPackage.Response response = await httpPackage.get(Uri.parse(url));
+        final httpPackage.Response response =
+            await httpPackage.get(Uri.parse(imageUrl));
         await localFile.writeAsBytes(response.bodyBytes);
         print('Image downloaded and saved at: ${localFile.path}');
-        await databaseHelper.insertImageUrl(url, localPath);
+        localImagesList.add(localPath); // Add local path to the list
+        //Insert the image URL and local path into the database
+        await databaseHelper.insertImageUrl(imageUrl, localPath);
         print("Image URL inserted into the database: $localPath");
+      } else {
+        localImagesList.add(localPath); // Add existing local path to the list
       }
     } catch (e) {
       print('Error downloading and saving image: $e');
     }
   }
-}
-  Future<void> downloadAndSaveImage(String imageUrl, List<String> localImagesList) async {
-  final String fileName = path.basename(imageUrl);
-  final Directory appDir = await getApplicationDocumentsDirectory();
-  final String localPath = '${appDir.path}/$fileName';
-  final File localFile = File(localPath);
 
-  try {
-    if (!localFile.existsSync()) {
-      await localFile.create(recursive: true);
-      final httpPackage.Response response = await httpPackage.get(Uri.parse(imageUrl));
-      await localFile.writeAsBytes(response.bodyBytes);
-      print('Image downloaded and saved at: ${localFile.path}');
-      localImagesList.add(localPath); // Add local path to the list
-      //Insert the image URL and local path into the database
-      await databaseHelper.insertImageUrl(imageUrl, localPath);
-      print("Image URL inserted into the database: $localPath");
+  void checkInternetConnectivity() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult != ConnectivityResult.none) {
+      setState(() {
+        isConnected = true;
+      });
     } else {
-      localImagesList.add(localPath); // Add existing local path to the list
+      setState(() {
+        isConnected = false;
+      });
+      showInternetConnectionDialog(); // Show the internet connection dialog
     }
-  } catch (e) {
-    print('Error downloading and saving image: $e');
   }
-}
- void checkInternetConnectivity() async {
-  var connectivityResult = await Connectivity().checkConnectivity();
-  if (connectivityResult != ConnectivityResult.none) {
-    setState(() {
-      isConnected = true;
-    });
-  } else {
-    setState(() {
-      isConnected = false;
-    });
-    showInternetConnectionDialog(); // Show the internet connection dialog
-  }
-}
+
   Future<List<String>> getImageUrls() async {
     try {
       final Reference ref = storage.ref().child(folderPath);
@@ -365,7 +381,7 @@ class _HomeState extends State<Home> {
     return [];
   }
 
- void _scrollListener() {
+  void _scrollListener() {
     ///final screenWidth = MediaQuery.of(context).size.width;
     final containerWidth = 150.0;
     final itemWidth = containerWidth + 8;
@@ -378,7 +394,8 @@ class _HomeState extends State<Home> {
     print(" active index$activeIndex");
     print(" index $index");
   }
-void _onImageTap(int index) {
+
+  void _onImageTap(int index) {
     setState(() {
       activeIndex = index;
     });
@@ -404,6 +421,7 @@ void _onImageTap(int index) {
       }
     }
   }
+
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
@@ -880,8 +898,9 @@ void _onImageTap(int index) {
               height: height / 30,
             ),
             SizedBox(
-              child: BannerPage(),),
-             SizedBox(
+              child: BannerPage(),
+            ),
+            SizedBox(
               height: height / 30,
             ),
             Padding(
@@ -926,7 +945,7 @@ void _onImageTap(int index) {
               padding: EdgeInsets.symmetric(horizontal: width / 20),
               child: Container(
                 color: Colors.transparent,
-                height: height / 3.5,
+                height: height / 2.3,
                 width: width,
                 child: GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
@@ -993,99 +1012,97 @@ void _onImageTap(int index) {
             SizedBox(
               height: height / 80,
             ),
-            
 
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: width/18),
-              child:
-                  Row(
-                    children: [
-                      Text(
-                        CustomStrings.slingsaverclub,
-                        style: TextStyle(
-                            fontFamily: "Gilroy Bold",
-                            color: notifire.getdarkscolor,
-                            fontSize: height / 40),
-                      ),
-                    ],
+              padding: EdgeInsets.symmetric(horizontal: width / 18),
+              child: Row(
+                children: [
+                  Text(
+                    CustomStrings.slingsaverclub,
+                    style: TextStyle(
+                        fontFamily: "Gilroy Bold",
+                        color: notifire.getdarkscolor,
+                        fontSize: height / 40),
                   ),
+                ],
+              ),
             ),
             SizedBox(
               height: height / 80,
-              ),
-              Container(
-       height: 200,
-        child: isLoading
-            ? Center(child: CircularProgressIndicator())
-            : (isConnected && imageUrls.isNotEmpty)
-                ? ListView.builder(
-                    controller: _scrollController,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: imageUrls.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () => _onImageTap(index),
-                        child: Container(
-                          height: 200,
-                          width: 140,
-                          margin: EdgeInsets.all(4),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: buildImageWidget(imageUrls[index]),
-                           
-                          ),
-                        ),
-                      );
-                    },
-                  )
-                : (localImageUrls.isNotEmpty)
-                    ? ListView.builder(
-                        controller: _scrollController,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: localImageUrls.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () => _onImageTap(index),
-                            child: Container(
-                              height: 200,
-                              width: 160,
-                              margin: EdgeInsets.all(4),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: buildImageWidget(localImageUrls[index]),
-                                
-                              ),
-                            ),
-                          );
-                        },
-                      )
-                    : Center(child: Text("No images available.")),
-      ),
-         
-          SizedBox(height: height / 80),
-          if (flag && imageUrls.isNotEmpty)
+            ),
             Container(
-              child: CarouselIndicator(
-                count: imageUrls.length,
-                index: activeIndex,
-                color: Colors.orange,
-                activeColor: Colors.deepOrange,
-                space: 4,
-                width: 4,
-                height: 4,
-              ),
+              height: 200,
+              child: isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : (isConnected && imageUrls.isNotEmpty)
+                      ? ListView.builder(
+                          controller: _scrollController,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: imageUrls.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () => _onImageTap(index),
+                              child: Container(
+                                height: 200,
+                                width: 140,
+                                margin: EdgeInsets.all(4),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: buildImageWidget(imageUrls[index]),
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      : (localImageUrls.isNotEmpty)
+                          ? ListView.builder(
+                              controller: _scrollController,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: localImageUrls.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () => _onImageTap(index),
+                                  child: Container(
+                                    height: 200,
+                                    width: 160,
+                                    margin: EdgeInsets.all(4),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: buildImageWidget(
+                                          localImageUrls[index]),
+                                    ),
+                                  ),
+                                );
+                              },
+                            )
+                          : Center(child: Text("No images available.")),
             ),
- 
+
+            SizedBox(height: height / 80),
+            if (flag && imageUrls.isNotEmpty)
+              Container(
+                child: CarouselIndicator(
+                  count: imageUrls.length,
+                  index: activeIndex,
+                  color: Colors.orange,
+                  activeColor: Colors.deepOrange,
+                  space: 4,
+                  width: 4,
+                  height: 4,
+                ),
+              ),
+
             SizedBox(
               height: height / 80,
-              ),
-              SizedBox(
-                height: 200,
-                width: width-30,
-                child: SliderPage(),),
-               SizedBox(
+            ),
+            SizedBox(
+              height: 200,
+              width: width - 30,
+              child: SliderPage(),
+            ),
+            SizedBox(
               height: height / 80,
-              ),
+            ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: width / 18),
               child: Row(
@@ -1131,10 +1148,9 @@ void _onImageTap(int index) {
                 physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
                 itemCount: transaction.length,
-              
                 itemBuilder: (context, index) => Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: width / 20, vertical: height / 100),
+                      horizontal: width / 22, vertical: height / 100),
                   child: Container(
                     height: height / 11,
                     width: width,
@@ -1272,8 +1288,7 @@ void _onImageTap(int index) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                const LegalPolicy(CustomStrings.helps),
+                            builder: (context) => const HelpAndSupport(),
                           ),
                         );
                       }
@@ -1346,7 +1361,7 @@ void _onImageTap(int index) {
                                               fontFamily: "Gilroy Medium",
                                               color: notifire.getdarkgreycolor
                                                   .withOpacity(0.6),
-                                              fontSize: height / 60),
+                                              fontSize: height / 70),
                                         ),
                                         Text(
                                           cashbankdiscription2[index],
@@ -1374,9 +1389,108 @@ void _onImageTap(int index) {
                 ),
               ),
             ),
-            SizedBox(
-              height: height / 20,
+            Container(
+              height: height / 6,
+              color: Colors.transparent,
+              child: ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                itemCount: 1,
+                itemBuilder: (context, index) => Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: width / 20, vertical: height / 100),
+                  child: InkWell(
+                    onTap: () {},
+                    child: Container(
+                      height: height / 7,
+                      width: width,
+                      decoration: BoxDecoration(
+                        color: notifire.getdarkwhitecolor,
+                        border: Border.all(
+                          color: Colors.grey.withOpacity(0.2),
+                        ),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: width / 20),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: height / 10,
+                              width: width / 6,
+                              decoration: BoxDecoration(
+                                color: notifire.gettabwhitecolor,
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              child: Center(
+                                child: Image.asset(
+                                  'images/rating.png',
+                                  height: height / 5,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: width / 30,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: height / 70,
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      CustomStrings.lovingsling,
+                                      style: TextStyle(
+                                          fontFamily: "Gilroy Bold",
+                                          color: notifire.getdarkscolor,
+                                          fontSize: height / 50),
+                                    ),
+                                    // SizedBox(width: width / 7,),
+                                  ],
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    openRatingDialog(context);
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        CustomStrings.rating,
+                                        style: TextStyle(
+                                          fontFamily: "Gilroy Bold",
+                                          color: const Color.fromARGB(
+                                              255, 210, 194, 51),
+                                          fontSize: height / 50,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            const Spacer(),
+                            Icon(Icons.arrow_forward_ios,
+                                color: notifire.getdarkscolor,
+                                size: height / 40),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
+            // SizedBox(
+            //   height: height / 20,
+            // ),
           ],
         ),
       ),
@@ -1388,11 +1502,11 @@ void _onImageTap(int index) {
 //       ? const ChatScreen()
 //       : const ChatRound();
 // }
-Widget buildImageWidget(String imageUrl) {
-  print(imageUrl);
+  Widget buildImageWidget(String imageUrl) {
+    print(imageUrl);
     if (imageUrl.startsWith('http') || imageUrl.startsWith('https')) {
       // Firebase Storage URL
-      
+
       print('Images are shown from Firebase Storage.');
       return Image.network(
         imageUrl,
@@ -1416,4 +1530,24 @@ Widget buildImageWidget(String imageUrl) {
       );
     }
   }
+}
+
+openRatingDialog(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return MaterialApp(
+          theme: ThemeData(
+            dialogTheme: DialogTheme(
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
+              ),
+            ),
+          ),
+          home: const Dialog(
+            child: Rating(),
+          ),
+        );
+      });
 }

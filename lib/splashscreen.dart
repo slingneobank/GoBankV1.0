@@ -45,7 +45,7 @@ class _SplashscreenState extends State<Splashscreen> {
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  sling_storemain(),
+          builder: (context) => LoginCheck(),
         ),
       ),
     );
