@@ -66,10 +66,13 @@ class _SplashscreenState extends State<Splashscreen> {
                 color: Colors.transparent,
                 height: height,
                 width: width,
-                child: Image.asset(
-                  "images/splash.png",
-                  fit: BoxFit.cover,
+                child: Container(
+                  color: Colors.white,
                 ),
+                // Image.asset(
+                //   "images/splash.png",
+                //   fit: BoxFit.cover,
+                // ),
               ),
               Column(
                 children: [
@@ -78,7 +81,7 @@ class _SplashscreenState extends State<Splashscreen> {
                   ),
                   Center(
                     child: Image.asset(
-                      "images/logos.png",
+                      "images/logo1.png",
                       height: height / 7,
                     ),
                   ),
