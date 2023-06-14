@@ -382,3 +382,59 @@ Future<void> saveImageUrlsToDatabase(List<String> urls) async {
   }
 }
 
+// @override
+// Widget build(BuildContext context) {
+//   notifire = Provider.of<ColorNotifire>(context, listen: true);
+//   return Container(
+//     height: 160,
+//     child: (isConnected && imageUrls.isNotEmpty) || localImageUrls.isNotEmpty
+//         ? PageView.builder(
+//             controller: _pageController,
+//             itemCount: isConnected ? imageUrls.length : localImageUrls.length,
+//             itemBuilder: (BuildContext context, int index) {
+//               final imageUrl = isConnected ? imageUrls[index] : localImageUrls[index];
+//               return Padding(
+//                 padding: EdgeInsets.symmetric(horizontal: 20.0),
+//                 child: Stack(
+//                   children: [
+//                     Container(
+//                       width: 350,
+//                       height: 200,
+//                       decoration: BoxDecoration(
+//                         borderRadius: BorderRadius.circular(10.0),
+//                       ),
+//                       child: ClipRRect(
+//                         borderRadius: BorderRadius.circular(10.0),
+//                         child: buildImageWidget(imageUrl),
+//                       ),
+//                     ),
+//                     Positioned(
+//                       bottom: 10.0,
+//                       left: 0,
+//                       right: 0,
+//                       child: DotsIndicator(
+//                         dotsCount: isConnected ? imageUrls.length : localImageUrls.length,
+//                         position: currentPage.toDouble(),
+//                         decorator: DotsDecorator(
+//                           color: Colors.grey, // Inactive dot color
+//                           activeColor: Colors.blue, // Active dot color
+//                           spacing: EdgeInsets.all(3.0),
+//                           size: const Size.square(7.0),
+//                           activeSize: const Size(10.0, 8.0),
+//                           activeShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+//                         ),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               );
+//             },
+//             onPageChanged: (int index) {
+//               setState(() {
+//                 currentPage = index;
+//               });
+//             },
+//           )
+//         : Center(child: CircularProgressIndicator()),
+//   );
+// }

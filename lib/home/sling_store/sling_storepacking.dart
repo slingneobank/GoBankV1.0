@@ -1,16 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
-class sling_storesuggestimg extends StatefulWidget {
-  const sling_storesuggestimg({Key? key}) : super(key: key);
+class sling_storepacking extends StatefulWidget {
+  const sling_storepacking({Key? key}) : super(key: key);
 
   @override
-  State<sling_storesuggestimg> createState() => _sling_storesuggestimgState();
+  State<sling_storepacking> createState() => _sling_storepackingState();
 }
 
-class _sling_storesuggestimgState extends State<sling_storesuggestimg> {
-   late ScrollController _scrollController;
+class _sling_storepackingState extends State<sling_storepacking> {
+ late ScrollController _scrollController;
   int _currentPage = 0;
   @override
   void initState() {
@@ -27,7 +26,7 @@ class _sling_storesuggestimgState extends State<sling_storesuggestimg> {
 
   void _onScroll() {
     setState(() {
-      _currentPage = (_scrollController.offset / 110).round(); //140
+      _currentPage = (_scrollController.offset / 220).round();  //140  // below width when put then less -30 here
     });
   }
   @override
@@ -38,7 +37,7 @@ class _sling_storesuggestimgState extends State<sling_storesuggestimg> {
         height: 230,
         child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
-              .collection('sling_store_suggest')
+              .collection('sling_store_packing')
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
@@ -64,11 +63,15 @@ class _sling_storesuggestimgState extends State<sling_storesuggestimg> {
                         return Padding(
                           padding: EdgeInsets.symmetric(horizontal: 5.0),
                           child: Container(
-                            width: 150, // Set the desired width here //170
+                            width: 250, // Set the desired width here //170
                             margin: EdgeInsets.only(left: index != 0 ? 10.0 : 0.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.0),
-                              
+                              border: Border.all(
+                                color: const Color.fromARGB(255, 241, 126, 118),
+                                style: BorderStyle.solid,
+                                width: 2,
+                                ),
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),

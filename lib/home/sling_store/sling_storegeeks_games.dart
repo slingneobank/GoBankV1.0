@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
-class sling_storesuggestimg extends StatefulWidget {
-  const sling_storesuggestimg({Key? key}) : super(key: key);
+class sling_storegeeks_games extends StatefulWidget {
+  const sling_storegeeks_games({Key? key}) : super(key: key);
 
   @override
-  State<sling_storesuggestimg> createState() => _sling_storesuggestimgState();
+  State<sling_storegeeks_games> createState() => _sling_storegeeks_gamesState();
 }
 
-class _sling_storesuggestimgState extends State<sling_storesuggestimg> {
-   late ScrollController _scrollController;
+class _sling_storegeeks_gamesState extends State<sling_storegeeks_games> {
+
+  late ScrollController _scrollController;
   int _currentPage = 0;
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _sling_storesuggestimgState extends State<sling_storesuggestimg> {
         height: 230,
         child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
-              .collection('sling_store_suggest')
+              .collection('sling_store_geeks&games')
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
@@ -68,7 +68,11 @@ class _sling_storesuggestimgState extends State<sling_storesuggestimg> {
                             margin: EdgeInsets.only(left: index != 0 ? 10.0 : 0.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.0),
-                              
+                              border: Border.all(
+                                color: const Color.fromARGB(255, 227, 162, 157),
+                                style: BorderStyle.solid,
+                                width: 2,
+                                ), 
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),

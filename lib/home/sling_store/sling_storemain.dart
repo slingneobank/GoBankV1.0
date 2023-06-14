@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gobank/home/sling_store/sling_store_musthave.dart';
 import 'package:gobank/home/sling_store/sling_storebannerpage.dart';
+import 'package:gobank/home/sling_store/sling_storegeeks_games.dart';
+import 'package:gobank/home/sling_store/sling_storepacking.dart';
+import 'package:gobank/home/sling_store/sling_storeshopessential.dart';
+import 'package:gobank/home/sling_store/sling_storestyle.dart';
 import 'package:gobank/home/sling_store/sling_storesuggestimg.dart';
 import 'package:gobank/slingsaverclub/bannerpage.dart';
 import 'package:gobank/utils/colornotifire.dart';
@@ -82,8 +87,8 @@ class _sling_storemainState extends State<sling_storemain> {
                 flex: 6,
                 child: SingleChildScrollView(
                 child: Container(
-                  height: MediaQuery.sizeOf(context).height,
-                  width: MediaQuery.sizeOf(context).width,
+                  //height: MediaQuery.sizeOf(context).height,
+                  //width: MediaQuery.sizeOf(context).width,
                   decoration: BoxDecoration(color: Colors.black87),
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10),
@@ -103,7 +108,7 @@ class _sling_storemainState extends State<sling_storemain> {
                           height: height / 30,
                         ),
                         SizedBox(
-                          height: 230,
+                          height: 220,
                           child: sling_storebannerpage(),),
                         
                         Padding(
@@ -121,8 +126,116 @@ class _sling_storemainState extends State<sling_storemain> {
                         Padding(
                           padding: const EdgeInsets.only(left: 15,right: 15),
                           child: SizedBox(
-                            height: 230,
+                            height: 200,
                             child: sling_storesuggestimg(),),
+                        ),
+                        SizedBox(
+                          height: height / 40,
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: Text("Shop Essentials",
+                              style: TextStyle(
+                                      fontFamily: "Gilroy Bold",
+                                      color: notifire.getdarkwhitecolor,
+                                      fontSize: height / 40,),
+                            ),
+                          ),
+                          SizedBox(
+                          height: height / 30,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15,right: 15),
+                          child: SizedBox(
+                            height: 200,
+                            child: sling_storeshopessential(),),
+                        ),
+                        SizedBox(
+                          height: height / 40,
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: Text("Find Your Style 👠",
+                              style: TextStyle(
+                                      fontFamily: "Gilroy Bold",
+                                      color: notifire.getdarkwhitecolor,
+                                      fontSize: height / 40,),
+                            ),
+                          ),
+                          SizedBox(
+                          height: height / 30,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15,right: 15),
+                          child: SizedBox(
+                            height: 200,
+                            child: sling_storestyle(),),
+                        ),
+                        SizedBox(
+                          height: height / 40,
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: Text("For Geeks & Games 🎮",
+                              style: TextStyle(
+                                      fontFamily: "Gilroy Bold",
+                                      color: notifire.getdarkwhitecolor,
+                                      fontSize: height / 40,),
+                            ),
+                          ),
+                          SizedBox(
+                          height: height / 30,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15,right: 15),
+                          child: SizedBox(
+                            height: 200,
+                            child: sling_storegeeks_games(),),
+                        ),
+                        SizedBox(
+                          height: height / 40,
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: Text("Let's start packing🧳",
+                              style: TextStyle(
+                                      fontFamily: "Gilroy Bold",
+                                      color: notifire.getdarkwhitecolor,
+                                      fontSize: height / 40,),
+                            ),
+                          ),
+                          SizedBox(
+                          height: height / 30,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15,right: 15),
+                          child: SizedBox(
+                            height: 160,
+                            child: sling_storepacking(),),
+                        ),
+                        SizedBox(
+                          height: height / 40,
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: Text("Must Haves by Amazon 🛒 ",
+                              style: TextStyle(
+                                      fontFamily: "Gilroy Bold",
+                                      color: notifire.getdarkwhitecolor,
+                                      fontSize: height / 40,),
+                            ),
+                          ),
+                          SizedBox(
+                          height: height / 30,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15,right: 15),
+                          child: SizedBox(
+                            height: 200,
+                            child: sling_store_musthave(),),
+                        ),
+                         SizedBox(
+                          height: height / 30,
                         ),
                       ],
                     ),

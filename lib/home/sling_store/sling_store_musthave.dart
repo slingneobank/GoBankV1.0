@@ -1,16 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
-class sling_storesuggestimg extends StatefulWidget {
-  const sling_storesuggestimg({Key? key}) : super(key: key);
+class sling_store_musthave extends StatefulWidget {
+  const sling_store_musthave({Key? key}) : super(key: key);
 
   @override
-  State<sling_storesuggestimg> createState() => _sling_storesuggestimgState();
+  State<sling_store_musthave> createState() => _sling_store_musthaveState();
 }
 
-class _sling_storesuggestimgState extends State<sling_storesuggestimg> {
-   late ScrollController _scrollController;
+class _sling_store_musthaveState extends State<sling_store_musthave> {
+  late ScrollController _scrollController;
   int _currentPage = 0;
   @override
   void initState() {
@@ -38,7 +37,7 @@ class _sling_storesuggestimgState extends State<sling_storesuggestimg> {
         height: 230,
         child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
-              .collection('sling_store_suggest')
+              .collection('sling_store_musthave')
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
