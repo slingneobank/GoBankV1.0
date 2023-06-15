@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gobank/apicalling/minkycnative.dart';
+import 'package:gobank/login/minkycpage.dart';
+import 'package:gobank/login/minkycpage.dart';
 import 'package:gobank/login/phone.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,7 +44,7 @@ class _MyVerifyState extends State<MyVerify> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const Home(),
+            builder: (context) =>  minkycpage(), // Home
           ),
         );
       }

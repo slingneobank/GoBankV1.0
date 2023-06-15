@@ -1,15 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:gobank/apicalling/generatoken.dart';
-import 'package:gobank/home/home.dart';
-import 'package:gobank/home/sling_store/sling_store.dart';
-import 'package:gobank/home/sling_store/sling_storemain.dart';
-import 'package:gobank/login/login.dart';
-import 'package:gobank/login/loginCheck.dart';
-import 'package:gobank/onbonding.dart';
-import 'package:gobank/slingsaverclub/bannerpage.dart';
-import 'package:gobank/slingsaverclub/demo.dart';
-import 'package:gobank/slingsaverclub/sliderpage.dart';
+
+import 'package:gobank/login/minkycpage.dart';
+
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +38,7 @@ class _SplashscreenState extends State<Splashscreen> {
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  Home(),
+          builder: (context) =>  minkycpage(),//onbonding  
         ),
       ),
     );
