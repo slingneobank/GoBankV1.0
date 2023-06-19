@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -35,11 +37,45 @@ class _minnativekycdetailsState extends State<minnativekycdetails> {
 
   int selectedDocumentType = 4; // Default value for Driving License
   String responseMessage = '';
+    late DatabaseReference kycDetailsRef; // Declare the kycDetailsRef variable
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    initializeFirebase();
    // print(widget.storekycid);
+  }
+   // Initialize Firebase
+  void initializeFirebase() async {
+    await Firebase.initializeApp();
+    kycDetailsRef = FirebaseDatabase.instance.reference().child('kyc_details');
+  }
+ void verifyDocument() async{
+ 
+    // Validate document and retrieve necessary parameters
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    
+    String? minKycUniqueId = sharedPreferences.getString('minKycUniqueId');
+    
+    int selectedDocument = selectedDocumentType; // Replace with your implementation
+
+    // Store the KYC details in the database
+    final newKycDetailsRef = kycDetailsRef.push();
+    newKycDetailsRef.set({
+      'minKycUniqueId': minKycUniqueId,
+      'documentType': selectedDocument,
+      'nameOnDocument': _fullNameController.text,
+      'documentNumber': documentNumberController.text,
+      'dateOfBirth': _selectedDate.toString(),
+    }).then((value) {
+      setState(() {
+        responseMessage = 'KYC details stored successfully!';
+      });
+    }).catchError((error) {
+      setState(() {
+        responseMessage = 'Failed to store KYC details.';
+      });
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -380,6 +416,7 @@ class _minnativekycdetailsState extends State<minnativekycdetails> {
                   //Expanded(child: SizedBox()),
                   GestureDetector(
                     onTap: () {
+                      verifyDocument();
                       navigator!.push(MaterialPageRoute(builder: (context) => Home(),));
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('next section')),
