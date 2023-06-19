@@ -1,16 +1,17 @@
-import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:gobank/login/auth_controller.dart';
 import 'package:gobank/login/minnativekycdetails.dart';
 import 'package:gobank/login/minnativekycotp.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
+
 class FirebaseHelper {
   final databaseReference = FirebaseDatabase.instance.reference();
 
   void storeData(String firebaseToken, String minKycUniqueId, String phoneNumber, String username) {
-    databaseReference.child('kyc_users').push().set({
+    databaseReference.child('kyc_users').child(phoneNumber).set({
       'firebaseToken': firebaseToken,
       'minKycUniqueId': minKycUniqueId,
       'phoneNumber': phoneNumber,
@@ -18,21 +19,34 @@ class FirebaseHelper {
     });
   }
 }
-class minnativekyclogin extends StatefulWidget {
-  const minnativekyclogin({Key? key}) : super(key: key);
+// class FirestoreHelper {
+//   final CollectionReference kycUsersCollection =
+//       FirebaseFirestore.instance.collection('kyc_users_data');
+
+//   Future<void> storeData(
+//       String firebaseToken, String minKycUniqueId, String phoneNumber, String username) async {
+//     await kycUsersCollection.doc(phoneNumber).set({
+//       'firebaseToken': firebaseToken,
+//       'minKycUniqueId': minKycUniqueId,
+//       'phoneNumber': phoneNumber,
+//       'username': username,
+//     });
+//   }
+// }
+class minnativekycloginfirebase extends StatefulWidget {
+  const minnativekycloginfirebase({Key? key}) : super(key: key);
 
   @override
-  State<minnativekyclogin> createState() => _minnativekycloginState();
+  State<minnativekycloginfirebase> createState() => _minnativekycloginfirebaseState();
 }
 
-class _minnativekycloginState extends State<minnativekyclogin> {
-    final TextEditingController _mobileController = TextEditingController();
+class _minnativekycloginfirebaseState extends State<minnativekycloginfirebase> {
+  final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   String _response = '';
 
-
-   @override
+  @override
   void dispose() {
     _usernameController.dispose();
     _mobileController.dispose();
@@ -40,7 +54,7 @@ class _minnativekycloginState extends State<minnativekyclogin> {
     super.dispose();
   }
 
-   Future<String?> _getAuthorizationToken() async {
+  Future<String?> _getAuthorizationToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
     print(token);
@@ -72,28 +86,37 @@ class _minnativekycloginState extends State<minnativekyclogin> {
 
     try {
       Map<String, dynamic> responseData = await ApiService.makeApiCall(apiUrl, headers, requestBody);
-    
-        String minKycUniqueId = responseData['minKycUniqueId'];
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('minKycUniqueId', minKycUniqueId);
-         String responseMessage = responseData['responseMessage'];
-          setState(() {
-            _response = responseData.toString();
-          });
-          print(_response);
+      //FirestoreHelper firestoreHelper = FirestoreHelper();
+
+      String minKycUniqueId = responseData['minKycUniqueId'];
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('minKycUniqueId', minKycUniqueId);
+      String responseMessage = responseData['responseMessage'];
+      setState(() {
+        _response = responseData.toString();
+      });
+      print(_response);
       if (responseMessage == "Customer with the given mobile number is already Min KYC compliant") {
-      // Redirect to KYC details screen
-     // Navigator.push(context, MaterialPageRoute(builder: (_) => minnativekycdetails()));
-        } else {
-          // Redirect to OTP screen
-          Navigator.push(context, MaterialPageRoute(builder: (_) => minnativekycotp()));
-        }
+        // Redirect to KYC details screen
+        // await firestoreHelper.storeData(
+        // token, minKycUniqueId, _mobileController.text, _usernameController.text);
+    
+        FirebaseHelper().storeData(token, minKycUniqueId, _mobileController.text, _usernameController.text);
+        Navigator.push(context, MaterialPageRoute(builder: (_) => minnativekycdetails()));
+      } else {
+        // Redirect to OTP screen
+        // await firestoreHelper.storeData(
+        // token, minKycUniqueId, _mobileController.text, _usernameController.text);
+   
+        FirebaseHelper().storeData(token, minKycUniqueId, _mobileController.text, _usernameController.text);
+        Navigator.push(context, MaterialPageRoute(builder: (_) => minnativekycotp()));
+      }
     } catch (error) {
       setState(() {
         _response = 'Error in API call: $error';
       });
-           print(_response);
-        showDialog(
+      print(_response);
+      showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: Text(_response),
@@ -103,8 +126,8 @@ class _minnativekycloginState extends State<minnativekyclogin> {
               onPressed: () {
                 // Exit the app
                 Navigator.of(context).pop();
-                //SystemNavigator.pop(); 
-               // exit(0);//forcefully terminate app to background
+                //SystemNavigator.pop();
+                // exit(0);//forcefully terminate app to background
               },
               child: Text('Exit'),
             ),
@@ -121,21 +144,12 @@ class _minnativekycloginState extends State<minnativekyclogin> {
       );
     }
   }
-  
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        // leading: IconButton(
-        //   onPressed: () {},
-        //   icon: Icon(
-        //     Icons.arrow_back_outlined,
-        //     color: Colors.black,
-        //   ),
-        // ),
         iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
         elevation: 0,
@@ -155,12 +169,9 @@ class _minnativekycloginState extends State<minnativekyclogin> {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          bool _hasContentOverflow =
-              constraints.maxHeight < MediaQuery.of(context).size.height;
+          bool _hasContentOverflow = constraints.maxHeight < MediaQuery.of(context).size.height;
           return SingleChildScrollView(
-            physics: _hasContentOverflow
-                ? AlwaysScrollableScrollPhysics()
-                : NeverScrollableScrollPhysics(),
+            physics: _hasContentOverflow ? AlwaysScrollableScrollPhysics() : NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(20, 10, 10, 30),
             child: ConstrainedBox(
               constraints: BoxConstraints(minHeight: constraints.maxHeight),
@@ -197,13 +208,12 @@ class _minnativekycloginState extends State<minnativekyclogin> {
                                       controller: _usernameController,
                                       decoration: InputDecoration(
                                         hintText: 'Username(can be different than FullName)',
-                                        contentPadding:
-                                            EdgeInsets.only(top: 12.0, bottom: 8.0),
+                                        contentPadding: EdgeInsets.only(top: 12.0, bottom: 8.0),
                                         border: InputBorder.none,
                                       ),
                                       maxLength: 40,
                                       onChanged: (value) {
-                                      //  _username = value;
+                                        //  _username = value;
                                       },
                                     ),
                                   ),
@@ -223,15 +233,14 @@ class _minnativekycloginState extends State<minnativekyclogin> {
                                     child: TextFormField(
                                       controller: _mobileController,
                                       decoration: InputDecoration(
-                                        contentPadding:
-                                            EdgeInsets.only(top: 12.0, bottom: 8.0),
+                                        contentPadding: EdgeInsets.only(top: 12.0, bottom: 8.0),
                                         hintText: 'Mobile No.',
                                         border: InputBorder.none,
                                       ),
                                       maxLength: 10,
                                       keyboardType: TextInputType.number,
                                       onChanged: (value) {
-                                       // _mobile = "+91" + value;
+                                        // _mobile = "+91" + value;
                                       },
                                     ),
                                   ),
@@ -251,54 +260,30 @@ class _minnativekycloginState extends State<minnativekyclogin> {
                                     child: TextFormField(
                                       controller: _emailController,
                                       decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.only(top: 12.0, bottom: 8.0),
                                         hintText: 'Email',
-                                        contentPadding:
-                                            EdgeInsets.only(top: 12.0, bottom: 8.0),
                                         border: InputBorder.none,
                                       ),
-                                      maxLength: 40,
                                       onChanged: (value) {
-                                       // _email = value;
+                                        // _email = value;
                                       },
                                     ),
                                   ),
                                 ),
                               ),
+                              SizedBox(height: 8.0),
+                              ElevatedButton(
+                                onPressed: _makeApiCall,
+                                child: Text('Submit'),
+                              ),
+                              SizedBox(height: 16.0),
+                              Text(_response),
                             ],
                           );
                         },
                       ),
                     ),
                   ),
-                  // Expanded(child: SizedBox()),
-                  GestureDetector(
-                    onTap: () {
-                      _makeApiCall();
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (_) => minnativekycotp()));
-                      // ScaffoldMessenger.of(context).showSnackBar(
-                      //   SnackBar(content: Text('next section')),
-                      // );
-                    },
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Continue',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                   
                 ],
               ),
             ),
@@ -308,5 +293,8 @@ class _minnativekycloginState extends State<minnativekyclogin> {
     );
   }
 }
-  
-  
+
+
+
+
+

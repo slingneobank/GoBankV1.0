@@ -18,6 +18,12 @@ class _minnativekycotpState extends State<minnativekycotp> {
   String responseMessage = '';
   List<TextEditingController?> controls = List.filled(6, null);
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -122,7 +128,7 @@ class _minnativekycotpState extends State<minnativekycotp> {
     String? authorizationToken = sharedPreferences.getString('token');
     String? minKycUniqueId = sharedPreferences.getString('minKycUniqueId');
    List<String> otp = controls.map((controller) => controller?.text ?? '').toList();
-
+    print("minkycid:$minKycUniqueId");
     if (authorizationToken == null || minKycUniqueId == null) {
       setState(() {
         responseMessage = 'Authorization token or minKycUniqueId not found';
@@ -167,8 +173,8 @@ class _minnativekycotpState extends State<minnativekycotp> {
             TextButton(
               onPressed: () {
                 // Exit the app
-                //Navigator.of(context).pop();
-                SystemNavigator.pop(); 
+                Navigator.of(context).pop();
+               // SystemNavigator.pop(); 
                // exit(0);//forcefully terminate app to background
               },
               child: Text('Exit'),

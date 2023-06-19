@@ -8,7 +8,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class minnativekycdetails extends StatefulWidget {
-  const minnativekycdetails({Key? key}) : super(key: key);
+  //String storekycid;
+   minnativekycdetails({Key? key,
+   // required this.storekycid
+    }) : super(key: key);
 
   @override
   State<minnativekycdetails> createState() => _minnativekycdetailsState();
@@ -32,7 +35,12 @@ class _minnativekycdetailsState extends State<minnativekycdetails> {
 
   int selectedDocumentType = 4; // Default value for Driving License
   String responseMessage = '';
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+   // print(widget.storekycid);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

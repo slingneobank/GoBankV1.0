@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart' as httpPackage;
 import 'package:path/path.dart' as path;
+import 'package:shimmer/shimmer.dart';
 
 class BannerPage extends StatefulWidget {
   const BannerPage({Key? key}) : super(key: key);
@@ -45,12 +46,13 @@ class _BannerPageState extends State<BannerPage> {
       if (result != ConnectivityResult.none) {
         setState(() {
           isConnected = true;
+          isLoading=false;
         });
         fetchImageUrls();
       } else {
         setState(() {
           isConnected = false;
-          
+          isLoading=false;
         });
       //  showInternetConnectionDialog(); // Show the internet connection dialog
    
@@ -273,7 +275,28 @@ Future<void> saveImageUrlsToDatabase(List<String> urls) async {
     return Container(
       height: 160,
       child: isLoading
-            ? Center(child: CircularProgressIndicator())
+              ?
+              Shimmer.fromColors(
+            baseColor: Colors.grey.shade300,
+            highlightColor: Colors.grey.shade100,
+            enabled: true,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: imageUrls.length, // Specify the number of shimmer placeholders you want
+              itemBuilder: (context, index) => Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Container(
+                  width: 350,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+            ),
+          )
+            // ? Center(child: CircularProgressIndicator())
             : (isConnected && imageUrls.isNotEmpty)
                 ?PageView.builder(
               controller: _pageController,

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gobank/apicalling/minkycnative.dart';
 import 'package:gobank/login/minkycpage.dart';
-import 'package:gobank/login/minkycpage.dart';
+
 import 'package:gobank/login/phone.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gobank/login/register.dart';
 import 'package:gobank/login/auth_ctrl.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

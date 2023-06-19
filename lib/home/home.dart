@@ -33,6 +33,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gobank/login/auth_ctrl.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../profile/helpsupport.dart';
 import '../profile/legalandpolicy.dart';
@@ -1026,7 +1027,25 @@ void _onImageTap(int index) {
                       Expanded(
                         flex: 1,
                         child: isLoading
-                            ? Center(child: CircularProgressIndicator())
+                            ? Shimmer.fromColors(
+                              baseColor: Colors.grey,
+                              highlightColor: Colors.grey,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: imageUrls.length, // Specify the number of shimmer placeholders you want
+                                itemBuilder: (context, index) => Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                  child: Container(
+                                    width: 150,
+                                    //height: 200,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
                             : (isConnected && imageUrls.isNotEmpty)
                                 ? ListView.builder(
                                     controller: _scrollController,
