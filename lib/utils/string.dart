@@ -240,6 +240,7 @@ class CustomStrings {
   static const String seeall = 'See all';
   static const String discoverservices = 'Discover Services';
   static const String slingsaverclub = 'Sling Saver Club💰';
+  static const String giftcardsection = 'Gift Card Section';
   static const String totalwalletbalance = 'Total Wallet Balance';
   static const String scanpay = 'Scan & Pay';
   static const String hello = 'Hello Johan shaikh';

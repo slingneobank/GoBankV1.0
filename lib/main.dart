@@ -24,6 +24,7 @@ void main() async {
         ),
       ],
       child: const GetMaterialApp(
+        
         home: Splashscreen(),
         debugShowCheckedModeBanner: false,
       ),

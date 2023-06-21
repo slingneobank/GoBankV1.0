@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:gobank/cardAPI/cardschema.dart';
 import 'package:gobank/home/home.dart';
 
 import 'package:gobank/login/minkycpage.dart';
@@ -40,7 +41,7 @@ class _SplashscreenState extends State<Splashscreen> {
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  minkycpage(),//onbonding  
+          builder: (context) =>  Home(),//onbonding  
         ),
       ),
     );

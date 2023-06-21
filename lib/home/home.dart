@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:gobank/bottombar/bottombar.dart';
 import 'package:gobank/card/mycard.dart';
 import 'package:gobank/databasehelper.dart';
+import 'package:gobank/home/giftcard/buyvoucher.dart';
 import 'package:gobank/home/sliders.dart';
 import 'package:gobank/home/sling_store/sling_store.dart';
 import 'package:gobank/home/notifications.dart';
@@ -21,6 +22,7 @@ import 'package:gobank/home/savings/savings_story_page.dart';
 import 'package:gobank/home/scanpay/scan.dart';
 import 'package:gobank/home/seealltransaction.dart';
 import 'package:gobank/home/sling_store/sling_storemain.dart';
+import 'package:gobank/pages/CardDetails.dart';
 import 'package:gobank/slingsaverclub/bottomsheetpage.dart';
 import 'package:gobank/slingsaverclub/offerdetailspage.dart';
 import 'package:gobank/slingsaverclub/sliderpage.dart';
@@ -70,31 +72,60 @@ class _HomeState extends State<Home> {
   
   
   List img = [
-    "images/mobile.png",
+   // "images/mobile.png",
     "images/shopping.png",
     "images/ticket.png",
     "images/wifi1.png",
-    "images/assurance.png", 
+    //"images/assurance.png", 
     "images/ticket.png",
-    "images/bill.png",
-    "images/mastercard.png",
+    //"images/bill.png",
+   // "images/mastercard.png",
   ];
-
+  List giftimg = [
+   "asset/images/amazon.png",
+   "asset/images/bigbasket.png",
+   "asset/images/myntra.png",
+   "asset/images/nykaa.png",
+   "asset/images/swiggy.png",
+   "asset/images/zomato.png",
+   "asset/images/flipkart.png",
+    "asset/images/more.png",
+  ];
+  List giftname = [
+   "Amazon",
+   "Bigbasket",
+   "Myntra",
+   "Nykaa",
+   "Swiggy",
+   "Zomato",
+   "Flipkart",
+   "100+\nMore"
+  ];
+  List giftdiscount = [
+   "5% off",
+   "5% off",
+   "5% off",
+   "5% off" ,
+   "2% off",
+   "5% off",
+   "3% off",
+   ""
+  ];
   List paymentname = [
-    CustomStrings.nearbystores,
-    "Sling Store",
+    //CustomStrings.nearbystores,
+    "Fees pay",
     // CustomStrings.travelflight,
     "Bus Booking",
     // CustomStrings.eventsmovies,
     "Recharges",
     // CustomStrings.buyinsurance,
-    "Bharat Bill Payment",
+    //"Bharat Bill Payment",
     // CustomStrings.getfastag,
     "Fees Payment",
     // CustomStrings.buyelectronic,
-    "Buy Coupons",
+    //"Buy Coupons",
     // CustomStrings.allservices,
-    "Credit Card"
+    //"Credit Card"
   ];
 
   List transaction = [
@@ -659,7 +690,7 @@ void _onImageTap(int index) {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const Scan(),
+                                                      const CardDetails(),
                                                 ),
                                               );
                                             },
@@ -932,16 +963,16 @@ void _onImageTap(int index) {
               padding: EdgeInsets.symmetric(horizontal: width / 20),
               child: Container(
                 color: Colors.transparent,
-                height: height / 3.5,
+                height: height / 7,
                 width: width,
                 child: GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.only(bottom: height / 15),
                     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: height / 10,
+                      maxCrossAxisExtent: height / 9,
                       mainAxisExtent: height / 8,
                       childAspectRatio: 3 / 2,
-                      crossAxisSpacing: height / 50,
+                      crossAxisSpacing: height / 30,
                       mainAxisSpacing: height / 50,
                     ),
                     itemCount: img.length,
@@ -974,7 +1005,7 @@ void _onImageTap(int index) {
                               child: Center(
                                 child: Image.asset(
                                   img[index],
-                                  height: height / 30,
+                                  height: height / 20,
                                 ),
                               ),
                             ),
@@ -998,9 +1029,156 @@ void _onImageTap(int index) {
               ),
             ),
             SizedBox(
-              height: height / 80,
+              height: height / 100,
             ),
-            
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: width/18),
+              child:
+                  Row(
+                    children: [
+                      Text(
+                        CustomStrings.giftcardsection,
+                        style: TextStyle(
+                            fontFamily: "Gilroy Bold",
+                            color: notifire.getdarkscolor,
+                            fontSize: height / 40),
+                      ),
+                    ],
+                  ),
+            ),
+            SizedBox(
+              height: height / 60,
+            ),
+            Padding(
+                padding: EdgeInsets.only(top: 10, left: width / 20, right: width / 20),
+                child: Container(
+                  height: height / 2.5,
+                  width: width,
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 239, 251, 253),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: height / 30,
+                        width: width, // Adjust the width as needed
+                        // Add your content for the first child here
+                        child: SizedBox(),
+                      ),
+                      // SizedBox(
+                      //   height: height / 90,
+                      // ),
+                      Expanded(
+                        child: GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.only(bottom: height / 20),
+                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: height / 9,
+                            mainAxisExtent: height / 8,
+                            childAspectRatio: 3 / 2,
+                            crossAxisSpacing: height / 30,
+                            mainAxisSpacing: height / 30,
+                          ),
+                          itemCount: giftimg.length,
+                          itemBuilder: (BuildContext ctx, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                if (index == 7) {
+                                  navigator!.push(MaterialPageRoute(builder: (context) => buyvoucher()));
+                                }
+                              },
+                              child: Column(
+                                children: [
+                                  giftdiscount[index].isNotEmpty
+                                      ? Container(
+                                          height: 15,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: Colors.amber[300],
+                                            borderRadius: BorderRadius.circular(2),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              giftdiscount[index],
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily: "Gilroy Bold",
+                                                color: notifire.getdarkscolor,
+                                                fontSize: height / 55,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : SizedBox(),
+                                  Container(
+                                    height: height / 15,
+                                    width: width / 7,
+                                    decoration: BoxDecoration(
+                                      color: notifire.gettabwhitecolor,
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Image.asset(
+                                        giftimg[index],
+                                        height: height / 20,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: height / 90,
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      giftname[index],
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: "Gilroy Bold",
+                                        color: notifire.getdarkscolor,
+                                        fontSize: height / 55,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      Container(
+                      height: height / 25,
+                      width: width, // Adjust the width as needed
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                        ),
+                        child: Container(
+                          color: const Color.fromARGB(255, 142, 219, 145),
+                          child: Center(
+                            child: Text(
+                              'Instant Discount. No Limits. 100+ Brands!',
+                              style: TextStyle(
+                                color: notifire.getdarkscolor,
+                                fontSize: height / 55,
+                                fontFamily: 'Gilroy Bold',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    ],
+                  ),
+                ),
+              ),
+
+             SizedBox(
+              height: height / 40,
+            ),
 
             Padding(
               padding: EdgeInsets.symmetric(horizontal: width/18),
