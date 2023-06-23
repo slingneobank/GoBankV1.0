@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:gobank/home/home.dart';
 import 'package:gobank/login/auth_controller.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -31,7 +32,7 @@ class _minnativekycdetailsState extends State<minnativekycdetails> {
   String _addLine2 = '';
   String _pincode = '';
 
-  DateTime? _selectedDate;
+  String? _selectedDate;
   String? _selectedGender;
   bool isSelected = false;
 
@@ -48,7 +49,8 @@ class _minnativekycdetailsState extends State<minnativekycdetails> {
    // Initialize Firebase
   void initializeFirebase() async {
     await Firebase.initializeApp();
-    kycDetailsRef = FirebaseDatabase.instance.reference().child('kyc_details');
+    //kycDetailsRef = FirebaseDatabase.instance.reference().child('kyc_details').child('documentNumber');
+  kycDetailsRef = FirebaseDatabase.instance.reference().child('kyc_details');
   }
  void verifyDocument() async{
  
@@ -278,8 +280,9 @@ class _minnativekycdetailsState extends State<minnativekycdetails> {
                                                   lastDate: DateTime.now(),
                                                 ).then((selectedDate) {
                                                   if (selectedDate != null) {
-                                                    _selectedDate = selectedDate;
+                                                    _selectedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
                                                   }
+                                                  print({_selectedDate});
                                                 });
                                               },
                                               child: Row(
@@ -290,6 +293,7 @@ class _minnativekycdetailsState extends State<minnativekycdetails> {
                                                     _selectedDate != null
                                                         ? _selectedDate.toString()
                                                         : 'D.O.B',
+                                                        overflow: TextOverflow.ellipsis,
                                                   ),
                                                 ],
                                               ),
@@ -417,7 +421,7 @@ class _minnativekycdetailsState extends State<minnativekycdetails> {
                   GestureDetector(
                     onTap: () {
                       verifyDocument();
-                      navigator!.push(MaterialPageRoute(builder: (context) => Home(),));
+                      verifykycdocument();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('next section')),
                       );
@@ -448,7 +452,7 @@ class _minnativekycdetailsState extends State<minnativekycdetails> {
       ),
     );
   }
-  Future<void> verifydocument() async {
+  Future<void> verifykycdocument() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? authorizationToken = sharedPreferences.getString('token');
     String? minKycUniqueId = sharedPreferences.getString('minKycUniqueId');
@@ -499,8 +503,8 @@ class _minnativekycdetailsState extends State<minnativekycdetails> {
             TextButton(
               onPressed: () {
                 // Exit the app
-                //Navigator.of(context).pop();
-                SystemNavigator.pop(); 
+                Navigator.of(context).pop();
+                //SystemNavigator.pop(); 
                // exit(0);//forcefully terminate app to background
               },
               child: Text('Exit'),
@@ -508,7 +512,7 @@ class _minnativekycdetailsState extends State<minnativekycdetails> {
             TextButton(
               onPressed: () {
                 // Retry the token generation
-                verifydocument();
+                verifykycdocument();
                 Navigator.of(context).pop();
               },
               child: Text('Retry'),

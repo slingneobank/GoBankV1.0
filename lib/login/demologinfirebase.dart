@@ -20,25 +20,24 @@ class FirebaseHelper {
     });
   }
 
-Future<String?> getMinKycUniqueId(String phoneNumber) async {
+Future<String?> retrieveMinKycUniqueId(String phoneNumber) async {
   try {
-    DatabaseReference reference = databaseReference.child('kyc_users').child(phoneNumber);
+    DatabaseReference reference = databaseReference.child('kyc_users').child(phoneNumber).child('minKycUniqueId');
     DataSnapshot snapshot = await reference.once().then((event) => event.snapshot);
-
     dynamic value = snapshot.value;
-
-    if (value != null && value is Map<String, dynamic>) {
-      Map<String, dynamic> data = value;
-
-      return data['minKycUniqueId'] as String?;
+    print(value);
+    if (value != null) {
+      return value.toString();
     }
-
     return null;
   } catch (error) {
-    print('Error retrieving minKycUniqueId: $error');
+    print('Error retrieving value: $error');
     return null;
   }
 }
+
+
+
 
 
   Future<bool> checkPhoneNumber(String phoneNumber) async {
@@ -119,27 +118,31 @@ class _demologinfirebaseState extends State<demologinfirebase> {
       });
       print(_response);
       
-      if (responseMessage == "Customer with the given mobile number is already Min KYC compliant") {
-        String enteredPhoneNumber = _mobileController.text;
-        bool isPhoneNumberMatched = await FirebaseHelper().checkPhoneNumber(enteredPhoneNumber);
-        print("isPhoneNumberMatched: $isPhoneNumberMatched");
-        if (isPhoneNumberMatched) {
-          String? storedminKycUniqueId = await FirebaseHelper().getMinKycUniqueId(enteredPhoneNumber);
-          
-          print("minkycid is $storedminKycUniqueId");
-          
-          if (storedminKycUniqueId != null) {
-            await prefs.setString('storedminKycUniqueId', storedminKycUniqueId);
-           // FirebaseHelper().storeData(token, minKycUniqueId, enteredPhoneNumber, _usernameController.text);
-            Navigator.push(context, MaterialPageRoute(builder: (_) => Home()));
-            return;
-          } else {
-            print("Stored minKycUniqueId is null.");
-          }
-        }
+      
+       if (responseMessage == "Customer with the given mobile number is already Min KYC compliant") {
+                String enteredPhoneNumber = _mobileController.text;
+                bool isPhoneNumberMatched = await FirebaseHelper().checkPhoneNumber(enteredPhoneNumber);
+                print("isPhoneNumberMatched: $isPhoneNumberMatched");
+                
+                if (isPhoneNumberMatched==true) {
+                  String? storedminKycUniqueId = await FirebaseHelper().retrieveMinKycUniqueId(enteredPhoneNumber);
+                  if (storedminKycUniqueId != null) {
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        await prefs.setString('storedminKycUniqueId', storedminKycUniqueId);
+                        print("minkycid is $storedminKycUniqueId");
 
-      }
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => Home()));
+                        return; // Return after navigating to the home screen
+                      } 
+                      else {
+                        print("Value for key 'minKycUniqueId' is null.");
+                      }
 
+                  } else {
+                  
+                    print("phone number not matched");
+                  }
+              }
       FirebaseHelper().storeData(token, minKycUniqueId, _mobileController.text, _usernameController.text);
       Navigator.push(context, MaterialPageRoute(builder: (_) => minnativekycotp()));
     } catch (error) {

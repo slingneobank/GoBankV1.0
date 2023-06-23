@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gobank/home/giftcard/giftofferform.dart';
 import 'package:gobank/utils/media.dart';
 
 class voucherbanner extends StatefulWidget {
@@ -73,84 +74,91 @@ class _voucherbannerState extends State<voucherbanner> {
                         String storename=document['storename'];
                         return Padding(
                           padding: EdgeInsets.symmetric(horizontal: 15.0),
-                          child:  Container(
-                          width: 300,
-                         // height: 160,
-                          decoration: BoxDecoration(
-                            color: color[index],
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15.0),
-                            child: Stack(
-                              children: [
-                                  Positioned(
-                                  bottom: 0,
-                                  right: 0,
-                                  child: Container(
-                                    height: 120,
-                                    width: 120,
-                                    decoration:const BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(15.0),
+                          child:  GestureDetector(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => giftofferform(
+                                icon:imgurl,storename:storename,discount:discountpercent
+                              ),));
+                            },
+                            child: Container(
+                            width: 300,
+                                                   // height: 160,
+                            decoration: BoxDecoration(
+                              color: color[index],
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15.0),
+                              child: Stack(
+                                children: [
+                                    Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: Container(
+                                      height: 120,
+                                      width: 120,
+                                      decoration:const BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(15.0),
+                                        ),
                                       ),
+                                      child: Image.network(bannerimgurl),
                                     ),
-                                    child: Image.network(bannerimgurl),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 20,left: 20,right: 10,bottom: 20),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                            height: 30,
-                                            child: Image.network(
-                                              imgurl,
-                                              fit: BoxFit.cover,
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 20,left: 20,right: 10,bottom: 20),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                              height: 30,
+                                              child: Image.network(
+                                                imgurl,
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            '$storename',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: height / 40,
-                                              fontFamily: 'Gilroy bold'),
-                                          ),
-                                        ],
-                                      ),
-                                     // SizedBox(height: 3,),
-                                       Text(
-                                            '$discountpercent',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: height / 25,
-                                              fontFamily: 'Gilroy bold'),
-                                          ),
-                                         // SizedBox(height: 2,),
-                                       Text(
-                                            '$discountdescription',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: height / 25,
-                                              fontFamily: 'Gilroy bold'),
-                                          ),
-                                          Text(
-                                            '$description',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: height / 45,
-                                              fontFamily: 'Gilroy bold'),
-                                          ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            )
+                                            Text(
+                                              '$storename',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: height / 40,
+                                                fontFamily: 'Gilroy bold'),
+                                            ),
+                                          ],
+                                        ),
+                                       // SizedBox(height: 3,),
+                                         Text(
+                                              '${discountpercent}%',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: height / 25,
+                                                fontFamily: 'Gilroy bold'),
+                                            ),
+                                           // SizedBox(height: 2,),
+                                         Text(
+                                              '$discountdescription',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: height / 25,
+                                                fontFamily: 'Gilroy bold'),
+                                            ),
+                                            Text(
+                                              '$description',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: height / 45,
+                                                fontFamily: 'Gilroy bold'),
+                                            ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              )
+                            ),
+                                                  ),
                           ),
-                        ),
                         );
                       },
                     )

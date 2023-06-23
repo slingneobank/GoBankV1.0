@@ -13,6 +13,7 @@ import 'package:gobank/bottombar/bottombar.dart';
 import 'package:gobank/card/mycard.dart';
 import 'package:gobank/databasehelper.dart';
 import 'package:gobank/home/giftcard/buyvoucher.dart';
+import 'package:gobank/home/giftcard/giftofferform.dart';
 import 'package:gobank/home/sliders.dart';
 import 'package:gobank/home/sling_store/sling_store.dart';
 import 'package:gobank/home/notifications.dart';
@@ -102,13 +103,13 @@ class _HomeState extends State<Home> {
    "100+\nMore"
   ];
   List giftdiscount = [
-   "5% off",
-   "5% off",
-   "5% off",
-   "5% off" ,
-   "2% off",
-   "5% off",
-   "3% off",
+   "5",
+   "5",
+   "5",
+   "5" ,
+   "2",
+   "5",
+   "3",
    ""
   ];
   List paymentname = [
@@ -1084,8 +1085,15 @@ void _onImageTap(int index) {
                           itemBuilder: (BuildContext ctx, index) {
                             return GestureDetector(
                               onTap: () {
+
                                 if (index == 7) {
                                   navigator!.push(MaterialPageRoute(builder: (context) => buyvoucher()));
+                                }
+                                else
+                                {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => giftofferform(
+                                icon:giftimg[index],storename:giftname[index],discount:giftdiscount[index]
+                              ),));
                                 }
                               },
                               child: Column(
@@ -1100,7 +1108,7 @@ void _onImageTap(int index) {
                                           ),
                                           child: Center(
                                             child: Text(
-                                              giftdiscount[index],
+                                              "${giftdiscount[index]}% Off",
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontFamily: "Gilroy Bold",

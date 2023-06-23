@@ -127,7 +127,8 @@ class _minnativekycotpState extends State<minnativekycotp> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? authorizationToken = sharedPreferences.getString('token');
     String? minKycUniqueId = sharedPreferences.getString('minKycUniqueId');
-   List<String> otp = controls.map((controller) => controller?.text ?? '').toList();
+   String otp = controls.map((controller) => controller?.text ?? '').join('');
+   print(otp);
     print("minkycid:$minKycUniqueId");
     if (authorizationToken == null || minKycUniqueId == null) {
       setState(() {
