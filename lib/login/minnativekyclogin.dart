@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gobank/home/home.dart';
 import 'package:gobank/login/auth_controller.dart';
 import 'package:gobank/login/minnativekycdetails.dart';
 import 'package:gobank/login/minnativekycotp.dart';
@@ -10,13 +11,45 @@ class FirebaseHelper {
   final databaseReference = FirebaseDatabase.instance.reference();
 
   void storeData(String firebaseToken, String minKycUniqueId, String phoneNumber, String username) {
-    databaseReference.child('kyc_users').push().set({
+    databaseReference.child('kyc_users').child(phoneNumber).set({
       'firebaseToken': firebaseToken,
       'minKycUniqueId': minKycUniqueId,
       'phoneNumber': phoneNumber,
       'username': username,
     });
   }
+
+Future<String?> retrieveMinKycUniqueId(String phoneNumber) async {
+  try {
+    DatabaseReference reference = databaseReference.child('kyc_users').child(phoneNumber).child('minKycUniqueId');
+    DataSnapshot snapshot = await reference.once().then((event) => event.snapshot);
+    dynamic value = snapshot.value;
+    print(value);
+    if (value != null) {
+      return value.toString();
+    }
+    return null;
+  } catch (error) {
+    print('Error retrieving value: $error');
+    return null;
+  }
+}
+
+
+
+
+
+  Future<bool> checkPhoneNumber(String phoneNumber) async {
+  try {
+    DatabaseReference reference = databaseReference.child('kyc_users').child(phoneNumber);
+    DataSnapshot snapshot = await reference.once().then((event) => event.snapshot);
+    return snapshot.value != null;
+  } catch (error) {
+    print('Error retrieving DataSnapshot: $error');
+    return false;
+  }
+}
+
 }
 class minnativekyclogin extends StatefulWidget {
   const minnativekyclogin({Key? key}) : super(key: key);
@@ -40,7 +73,7 @@ class _minnativekycloginState extends State<minnativekyclogin> {
     super.dispose();
   }
 
-   Future<String?> _getAuthorizationToken() async {
+    Future<String?> _getAuthorizationToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
     print(token);
@@ -72,57 +105,52 @@ class _minnativekycloginState extends State<minnativekyclogin> {
 
     try {
       Map<String, dynamic> responseData = await ApiService.makeApiCall(apiUrl, headers, requestBody);
-    
-        String minKycUniqueId = responseData['minKycUniqueId'];
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('minKycUniqueId', minKycUniqueId);
-         String responseMessage = responseData['responseMessage'];
-          setState(() {
-            _response = responseData.toString();
-          });
-          print(_response);
-      if (responseMessage == "Customer with the given mobile number is already Min KYC compliant") {
-      // Redirect to KYC details screen
-     // Navigator.push(context, MaterialPageRoute(builder: (_) => minnativekycdetails()));
-        } else {
-          // Redirect to OTP screen
-          Navigator.push(context, MaterialPageRoute(builder: (_) => minnativekycotp()));
-        }
+      //FirestoreHelper firestoreHelper = FirestoreHelper();
+
+      String minKycUniqueId = responseData['minKycUniqueId'] ?? '' ; //?? ''
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('minKycUniqueId', minKycUniqueId);
+      String responseMessage = responseData['responseMessage'];
+      setState(() {
+        _response = responseData.toString();
+      });
+      print(_response);
+      
+      
+       if (responseMessage == "Customer with the given mobile number is already Min KYC compliant") {
+                String enteredPhoneNumber = _mobileController.text;
+                bool isPhoneNumberMatched = await FirebaseHelper().checkPhoneNumber(enteredPhoneNumber);
+                print("isPhoneNumberMatched: $isPhoneNumberMatched");
+                
+                if (isPhoneNumberMatched==true) {
+                  String? storedminKycUniqueId = await FirebaseHelper().retrieveMinKycUniqueId(enteredPhoneNumber);
+                  if (storedminKycUniqueId != null) {
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        await prefs.setString('storedminKycUniqueId', storedminKycUniqueId);
+                        print("minkycid is $storedminKycUniqueId");
+
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => Home()));
+                        return; // Return after navigating to the home screen
+                      } 
+                      else {
+                        print("Value for key 'minKycUniqueId' is null.");
+                      }
+
+                  } else {
+                  
+                    print("phone number not matched");
+                  }
+              }
+      FirebaseHelper().storeData(token, minKycUniqueId, _mobileController.text, _usernameController.text);
+      Navigator.push(context, MaterialPageRoute(builder: (_) => minnativekycotp()));
     } catch (error) {
       setState(() {
-        _response = 'Error in API call: $error';
+        _response = 'Error: $error';
       });
-           print(_response);
-        showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text(_response),
-          content: Text('An error occurred. Please try again later.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                // Exit the app
-                Navigator.of(context).pop();
-                //SystemNavigator.pop(); 
-               // exit(0);//forcefully terminate app to background
-              },
-              child: Text('Exit'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Retry the token generation
-                _makeApiCall();
-                Navigator.of(context).pop();
-              },
-              child: Text('Retry'),
-            ),
-          ],
-        ),
-      );
+      print(_response);
     }
   }
-  
-
 
   @override
   Widget build(BuildContext context) {

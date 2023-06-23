@@ -4,7 +4,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gobank/login/auth_controller.dart';
-import 'package:gobank/login/demologinfirebase.dart';
 import 'package:gobank/login/minnativekycfirebase.dart';
 import 'package:gobank/login/minnativekyclogin.dart';
 import 'package:http/http.dart' as http;
@@ -37,7 +36,7 @@ class _minkycpageState extends State<minkycpage> {
       // Navigate to the next screen
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => demologinfirebase()),
+        MaterialPageRoute(builder: (context) => minnativekyclogin()),
       );
       print(responseMessage);
     } catch (e) {
