@@ -1,7 +1,4 @@
-
-
 import 'dart:io';
-
 import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -9,11 +6,14 @@ import 'package:connectivity/connectivity.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gobank/analytics/analytics.dart';
 import 'package:gobank/bottombar/bottombar.dart';
 import 'package:gobank/card/mycard.dart';
 import 'package:gobank/databasehelper.dart';
 import 'package:gobank/home/giftcard/buyvoucher.dart';
 import 'package:gobank/home/giftcard/giftofferform.dart';
+import 'package:gobank/home/helpandsupport.dart';
+import 'package:gobank/home/rating.dart';
 import 'package:gobank/home/sliders.dart';
 import 'package:gobank/home/sling_store/sling_store.dart';
 import 'package:gobank/home/notifications.dart';
@@ -24,10 +24,10 @@ import 'package:gobank/home/scanpay/scan.dart';
 import 'package:gobank/home/seealltransaction.dart';
 import 'package:gobank/home/sling_store/sling_storemain.dart';
 import 'package:gobank/pages/CardDetails.dart';
+import 'package:gobank/profile/profile.dart';
 import 'package:gobank/slingsaverclub/bottomsheetpage.dart';
 import 'package:gobank/slingsaverclub/offerdetailspage.dart';
 import 'package:gobank/slingsaverclub/sliderpage.dart';
-
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:gobank/utils/string.dart';
@@ -37,7 +37,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gobank/login/auth_ctrl.dart';
 import 'package:shimmer/shimmer.dart';
-
 import '../profile/helpsupport.dart';
 import '../profile/legalandpolicy.dart';
 import '../slingsaverclub/bannerpage.dart';
@@ -57,10 +56,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final homeCtrl = Get.put<HomeCtrl>(HomeCtrl());
- // final authCtrl = Get.find<AuthCtrl>();
- late ScrollController _scrollController;
+  // final authCtrl = Get.find<AuthCtrl>();
+  late ScrollController _scrollController;
   late ColorNotifire notifire;
- PersistentBottomSheetController? _bottomSheetController;
+  PersistentBottomSheetController? _bottomSheetController;
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
     bool? previusstate = prefs.getBool("setIsDark");
@@ -70,48 +69,47 @@ class _HomeState extends State<Home> {
       notifire.setIsDark = previusstate;
     }
   }
-  
-  
+
+  Widget currentScreen = const Home();
+  int currentTab = 0;
+  final List screens = [
+    const Home(),
+    const Analytics(),
+    const MyCard(),
+    const Profile(),
+  ];
+
   List img = [
-   // "images/mobile.png",
+    // "images/mobile.png",
     "images/shopping.png",
     "images/ticket.png",
     "images/wifi1.png",
-    //"images/assurance.png", 
+    //"images/assurance.png",
     "images/ticket.png",
     //"images/bill.png",
-   // "images/mastercard.png",
+    // "images/mastercard.png",
   ];
   List giftimg = [
-   "asset/images/amazon.png",
-   "asset/images/bigbasket.png",
-   "asset/images/myntra.png",
-   "asset/images/nykaa.png",
-   "asset/images/swiggy.png",
-   "asset/images/zomato.png",
-   "asset/images/flipkart.png",
+    "asset/images/amazon.png",
+    "asset/images/bigbasket.png",
+    "asset/images/myntra.png",
+    "asset/images/nykaa.png",
+    "asset/images/swiggy.png",
+    "asset/images/zomato.png",
+    "asset/images/flipkart.png",
     "asset/images/more.png",
   ];
   List giftname = [
-   "Amazon",
-   "Bigbasket",
-   "Myntra",
-   "Nykaa",
-   "Swiggy",
-   "Zomato",
-   "Flipkart",
-   "100+\nMore"
+    "Amazon",
+    "Bigbasket",
+    "Myntra",
+    "Nykaa",
+    "Swiggy",
+    "Zomato",
+    "Flipkart",
+    "100+\nMore"
   ];
-  List giftdiscount = [
-   "5",
-   "5",
-   "5",
-   "5" ,
-   "2",
-   "5",
-   "3",
-   ""
-  ];
+  List giftdiscount = ["5", "5", "5", "5", "2", "5", "3", ""];
   List paymentname = [
     //CustomStrings.nearbystores,
     "Fees pay",
@@ -134,10 +132,10 @@ class _HomeState extends State<Home> {
     "images/spotify.png",
     "images/netflix.png"
   ];
-  
+
   List cashbankimg = [
-    "images/cashback.png",
-    "images/merchant1.png",
+    //"images/cashback.png",
+    // "images/merchant1.png",
     "images/helpandsupport.png"
   ];
   List transactionname = [
@@ -156,13 +154,13 @@ class _HomeState extends State<Home> {
     "-\$.34.000",
   ];
   List cashbankname = [
-    CustomStrings.cashback,
-    "Refer A Friend",
+    // CustomStrings.cashback,
+    // "Refer A Friend",
     CustomStrings.helpandsuppors,
   ];
   List cashbankdiscription = [
-    CustomStrings.scratchcards,
-    CustomStrings.startsccepting,
+    // CustomStrings.scratchcards,
+    // CustomStrings.startsccepting,
     CustomStrings.relatedpaytm,
   ];
   List transactiondate = [
@@ -171,32 +169,34 @@ class _HomeState extends State<Home> {
     "4 Oct 2021 . 09:25",
   ];
   List cashbankdiscription2 = [
-    CustomStrings.scratchcards2,
-    CustomStrings.startsccepting2,
+    // CustomStrings.scratchcards2,
+    // CustomStrings.startsccepting2,
     CustomStrings.relatedpaytm2,
   ];
   bool selection = true;
-  
+
   int activeIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final FirebaseStorage storage = FirebaseStorage.instance;
-  final String folderPath = 'offer_images'; // Path to your Firebase Storage folder
+  final String folderPath =
+      'offer_images'; // Path to your Firebase Storage folder
   List<String> imageUrls = [];
-  bool flag=false;
+  bool flag = false;
   bool isLoading = true;
   bool isConnected = false;
   List<String> localImageUrls = [];
-   final List<String> localImagesList = []; // Create an empty list to store local paths
- 
+  final List<String> localImagesList =
+      []; // Create an empty list to store local paths
+
   final DatabaseHelper databaseHelper = DatabaseHelper();
   Directory? appDir;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-     requestStoragePermission();
-   
-   checkInternetConnectivity(); // Check the initial internet connectivity state
+    requestStoragePermission();
+
+    checkInternetConnectivity(); // Check the initial internet connectivity state
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       print(result);
       if (result != ConnectivityResult.none) {
@@ -207,66 +207,68 @@ class _HomeState extends State<Home> {
       } else {
         setState(() {
           isConnected = false;
-          
         });
         showInternetConnectionDialog(); // Show the internet connection dialog
-   
       }
     });
     fetchImageUrls();
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
-  
-    
   }
+
   void dispose() {
     _scrollController.dispose();
     super.dispose();
   }
+
   void _onScroll() {
     setState(() {
       activeIndex = (_scrollController.offset / 130).round(); //140
     });
   }
+
   void showInternetConnectionDialog() {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('NO Internet Connection'),
-        content: Text('Try Turning on your WIFI or MOBILEDATA for using the App'),
-        actions: [
-          Column(
-            //mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  OutlinedButton(
-                    child: Text('Retry'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      fetchImageUrls();
-                    },
-                  ),
-                  SizedBox(width: 20,),
-                OutlinedButton(
-                child: Text('Cancel'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-                ],
-              ),
-              
-            ],
-          ),
-        ],
-      );
-    },
-  );
-}
-    Future<void> requestStoragePermission() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('NO Internet Connection'),
+          content:
+              Text('Try Turning on your WIFI or MOBILEDATA for using the App'),
+          actions: [
+            Column(
+              //mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    OutlinedButton(
+                      child: Text('Retry'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        fetchImageUrls();
+                      },
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    OutlinedButton(
+                      child: Text('Cancel'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> requestStoragePermission() async {
     final PermissionStatus status = await Permission.storage.request();
     if (status.isGranted) {
       // Permission granted, fetch image URLs
@@ -281,50 +283,75 @@ class _HomeState extends State<Home> {
       openAppSettings();
     }
   }
+
   Future<void> fetchImageUrls() async {
-  if (isConnected) {
-    imageUrls = await getImageUrls();
-    await saveImageUrlsToDatabase(imageUrls);
-    print("Images are retrieved from Firebase Storage.");
-  } else {
-    localImageUrls = await getImageUrlsFromDatabase();
-    print("Images are retrieved from the local database.");
+    if (isConnected) {
+      imageUrls = await getImageUrls();
+      await saveImageUrlsToDatabase(imageUrls);
+      print("Images are retrieved from Firebase Storage.");
+    } else {
+      localImageUrls = await getImageUrlsFromDatabase();
+      print("Images are retrieved from the local database.");
+    }
+
+    setState(() {
+      flag = true;
+      isLoading = false;
+    });
   }
 
-  setState(() {
-    flag = true;
-    isLoading = false;
-  });
-}
   Future<List<String>> getImageUrlsFromDatabase() async {
-  final databaseHelper = DatabaseHelper();
-  final List<Map<String, dynamic>> imageUrlData = await databaseHelper.getImageUrls();
-  final List<String> localImageUrls = [];
+    final databaseHelper = DatabaseHelper();
+    final List<Map<String, dynamic>> imageUrlData =
+        await databaseHelper.getImageUrls();
+    final List<String> localImageUrls = [];
 
-  for (var data in imageUrlData) {
-    String? url = data[DatabaseHelper.columnLiveUrl];
-    String? localPath = data[DatabaseHelper.columnLocalUrl];
+    for (var data in imageUrlData) {
+      String? url = data[DatabaseHelper.columnLiveUrl];
+      String? localPath = data[DatabaseHelper.columnLocalUrl];
 
-    if (url != null && localPath != null) {
-      localImageUrls.add(localPath);
+      if (url != null && localPath != null) {
+        localImageUrls.add(localPath);
+      }
+    }
+
+    if (localImageUrls.isNotEmpty) {
+      print("Images are retrieved from the database.");
+    } else {
+      print("No images found in the database.");
+    }
+
+    return localImageUrls;
+  }
+
+  Future<void> saveImageUrlsToDatabase(List<String> urls) async {
+    final databaseHelper = DatabaseHelper();
+
+    for (final url in urls) {
+      final String fileName = path.basename(url);
+      final Directory appDir = await getApplicationDocumentsDirectory();
+      final String localPath = '${appDir.path}/$fileName';
+      final File localFile = File(localPath);
+
+      try {
+        if (!localFile.existsSync()) {
+          await localFile.create(recursive: true);
+          final httpPackage.Response response =
+              await httpPackage.get(Uri.parse(url));
+          await localFile.writeAsBytes(response.bodyBytes);
+          print('Image downloaded and saved at: ${localFile.path}');
+          await databaseHelper.insertImageUrl(url, localPath);
+          print("Image URL inserted into the database: $localPath");
+        }
+      } catch (e) {
+        print('Error downloading and saving image: $e');
+      }
     }
   }
 
-  if (localImageUrls.isNotEmpty) {
-    print("Images are retrieved from the database.");
-  } else {
-    print("No images found in the database.");
-  }
-
-  return localImageUrls;
-}
-
-
-  Future<void> saveImageUrlsToDatabase(List<String> urls) async {
-  final databaseHelper = DatabaseHelper();
-
-  for (final url in urls) {
-    final String fileName = path.basename(url);
+  Future<void> downloadAndSaveImage(
+      String imageUrl, List<String> localImagesList) async {
+    final String fileName = path.basename(imageUrl);
     final Directory appDir = await getApplicationDocumentsDirectory();
     final String localPath = '${appDir.path}/$fileName';
     final File localFile = File(localPath);
@@ -332,53 +359,36 @@ class _HomeState extends State<Home> {
     try {
       if (!localFile.existsSync()) {
         await localFile.create(recursive: true);
-        final httpPackage.Response response = await httpPackage.get(Uri.parse(url));
+        final httpPackage.Response response =
+            await httpPackage.get(Uri.parse(imageUrl));
         await localFile.writeAsBytes(response.bodyBytes);
         print('Image downloaded and saved at: ${localFile.path}');
-        await databaseHelper.insertImageUrl(url, localPath);
+        localImagesList.add(localPath); // Add local path to the list
+        //Insert the image URL and local path into the database
+        await databaseHelper.insertImageUrl(imageUrl, localPath);
         print("Image URL inserted into the database: $localPath");
+      } else {
+        localImagesList.add(localPath); // Add existing local path to the list
       }
     } catch (e) {
       print('Error downloading and saving image: $e');
     }
   }
-}
-  Future<void> downloadAndSaveImage(String imageUrl, List<String> localImagesList) async {
-  final String fileName = path.basename(imageUrl);
-  final Directory appDir = await getApplicationDocumentsDirectory();
-  final String localPath = '${appDir.path}/$fileName';
-  final File localFile = File(localPath);
 
-  try {
-    if (!localFile.existsSync()) {
-      await localFile.create(recursive: true);
-      final httpPackage.Response response = await httpPackage.get(Uri.parse(imageUrl));
-      await localFile.writeAsBytes(response.bodyBytes);
-      print('Image downloaded and saved at: ${localFile.path}');
-      localImagesList.add(localPath); // Add local path to the list
-      //Insert the image URL and local path into the database
-      await databaseHelper.insertImageUrl(imageUrl, localPath);
-      print("Image URL inserted into the database: $localPath");
+  void checkInternetConnectivity() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult != ConnectivityResult.none) {
+      setState(() {
+        isConnected = true;
+      });
     } else {
-      localImagesList.add(localPath); // Add existing local path to the list
+      setState(() {
+        isConnected = false;
+      });
+      showInternetConnectionDialog(); // Show the internet connection dialog
     }
-  } catch (e) {
-    print('Error downloading and saving image: $e');
   }
-}
- void checkInternetConnectivity() async {
-  var connectivityResult = await Connectivity().checkConnectivity();
-  if (connectivityResult != ConnectivityResult.none) {
-    setState(() {
-      isConnected = true;
-    });
-  } else {
-    setState(() {
-      isConnected = false;
-    });
-    showInternetConnectionDialog(); // Show the internet connection dialog
-  }
-}
+
   Future<List<String>> getImageUrls() async {
     try {
       final Reference ref = storage.ref().child(folderPath);
@@ -416,7 +426,7 @@ class _HomeState extends State<Home> {
 //     print(" active index$activeIndex");
 //     print(" index $index");
 //   }
-void _onImageTap(int index) {
+  void _onImageTap(int index) {
     setState(() {
       activeIndex = index;
     });
@@ -435,13 +445,14 @@ void _onImageTap(int index) {
     } else {
       if (_scaffoldKey.currentState != null) {
         _bottomSheetController = _scaffoldKey.currentState!.showBottomSheet(
-          (context) => bottomsheetpage(),
+          (context) => const bottomsheetpage(),
           elevation: 10,
           backgroundColor: Colors.transparent,
         );
       }
     }
   }
+
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
@@ -917,9 +928,10 @@ void _onImageTap(int index) {
             SizedBox(
               height: height / 30,
             ),
+            const SizedBox(
+              child: BannerPage(),
+            ),
             SizedBox(
-              child: BannerPage(),),
-             SizedBox(
               height: height / 30,
             ),
             Padding(
@@ -981,8 +993,10 @@ void _onImageTap(int index) {
                       return GestureDetector(
                         onTap: () {
                           if (index == 1) {
-                           // Get.to(() => const SlingStore());
-                           navigator!.push(MaterialPageRoute(builder: (context) => sling_storemain(),));
+                            // Get.to(() => const SlingStore());
+                            navigator!.push(MaterialPageRoute(
+                              builder: (context) => sling_storemain(),
+                            ));
                           } else {
                             Navigator.push(
                               context,
@@ -1033,129 +1047,133 @@ void _onImageTap(int index) {
               height: height / 100,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: width/18),
-              child:
-                  Row(
-                    children: [
-                      Text(
-                        CustomStrings.giftcardsection,
-                        style: TextStyle(
-                            fontFamily: "Gilroy Bold",
-                            color: notifire.getdarkscolor,
-                            fontSize: height / 40),
-                      ),
-                    ],
+              padding: EdgeInsets.symmetric(horizontal: width / 18),
+              child: Row(
+                children: [
+                  Text(
+                    CustomStrings.giftcardsection,
+                    style: TextStyle(
+                        fontFamily: "Gilroy Bold",
+                        color: notifire.getdarkscolor,
+                        fontSize: height / 40),
                   ),
+                ],
+              ),
             ),
             SizedBox(
               height: height / 60,
             ),
             Padding(
-                padding: EdgeInsets.only(top: 10, left: width / 20, right: width / 20),
-                child: Container(
-                  height: height / 2.5,
-                  width: width,
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 239, 251, 253),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: height / 30,
-                        width: width, // Adjust the width as needed
-                        // Add your content for the first child here
-                        child: SizedBox(),
-                      ),
-                      // SizedBox(
-                      //   height: height / 90,
-                      // ),
-                      Expanded(
-                        child: GridView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: EdgeInsets.only(bottom: height / 20),
-                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: height / 9,
-                            mainAxisExtent: height / 8,
-                            childAspectRatio: 3 / 2,
-                            crossAxisSpacing: height / 30,
-                            mainAxisSpacing: height / 30,
-                          ),
-                          itemCount: giftimg.length,
-                          itemBuilder: (BuildContext ctx, index) {
-                            return GestureDetector(
-                              onTap: () {
-
-                                if (index == 7) {
-                                  navigator!.push(MaterialPageRoute(builder: (context) => buyvoucher()));
-                                }
-                                else
-                                {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => giftofferform(
-                                icon:giftimg[index],storename:giftname[index],discount:giftdiscount[index]
-                              ),));
-                                }
-                              },
-                              child: Column(
-                                children: [
-                                  giftdiscount[index].isNotEmpty
-                                      ? Container(
-                                          height: 15,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                            color: Colors.amber[300],
-                                            borderRadius: BorderRadius.circular(2),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "${giftdiscount[index]}% Off",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: "Gilroy Bold",
-                                                color: notifire.getdarkscolor,
-                                                fontSize: height / 55,
-                                              ),
+              padding:
+                  EdgeInsets.only(top: 10, left: width / 20, right: width / 20),
+              child: Container(
+                height: height / 2.5,
+                width: width,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 239, 251, 253),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      height: height / 30,
+                      width: width, // Adjust the width as needed
+                      // Add your content for the first child here
+                      child: SizedBox(),
+                    ),
+                    // SizedBox(
+                    //   height: height / 90,
+                    // ),
+                    Expanded(
+                      child: GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.only(bottom: height / 20),
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: height / 9,
+                          mainAxisExtent: height / 8,
+                          childAspectRatio: 3 / 2,
+                          crossAxisSpacing: height / 30,
+                          mainAxisSpacing: height / 30,
+                        ),
+                        itemCount: giftimg.length,
+                        itemBuilder: (BuildContext ctx, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              if (index == 7) {
+                                navigator!.push(MaterialPageRoute(
+                                    builder: (context) => buyvoucher()));
+                              } else {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => giftofferform(
+                                          icon: giftimg[index],
+                                          storename: giftname[index],
+                                          discount: giftdiscount[index]),
+                                    ));
+                              }
+                            },
+                            child: Column(
+                              children: [
+                                giftdiscount[index].isNotEmpty
+                                    ? Container(
+                                        height: 15,
+                                        width: 50,
+                                        decoration: BoxDecoration(
+                                          color: Colors.amber[300],
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "${giftdiscount[index]}% Off",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontFamily: "Gilroy Bold",
+                                              color: notifire.getdarkscolor,
+                                              fontSize: height / 55,
                                             ),
                                           ),
-                                        )
-                                      : SizedBox(),
-                                  Container(
-                                    height: height / 15,
-                                    width: width / 7,
-                                    decoration: BoxDecoration(
-                                      color: notifire.gettabwhitecolor,
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(10),
-                                      ),
-                                    ),
-                                    child: Center(
-                                      child: Image.asset(
-                                        giftimg[index],
-                                        height: height / 20,
-                                      ),
+                                        ),
+                                      )
+                                    : SizedBox(),
+                                Container(
+                                  height: height / 15,
+                                  width: width / 7,
+                                  decoration: BoxDecoration(
+                                    color: notifire.gettabwhitecolor,
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(10),
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: height / 90,
-                                  ),
-                                  Center(
-                                    child: Text(
-                                      giftname[index],
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontFamily: "Gilroy Bold",
-                                        color: notifire.getdarkscolor,
-                                        fontSize: height / 55,
-                                      ),
+                                  child: Center(
+                                    child: Image.asset(
+                                      giftimg[index],
+                                      height: height / 20,
                                     ),
                                   ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
+                                ),
+                                SizedBox(
+                                  height: height / 90,
+                                ),
+                                Center(
+                                  child: Text(
+                                    giftname[index],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: "Gilroy Bold",
+                                      color: notifire.getdarkscolor,
+                                      fontSize: height / 55,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
-                      Container(
+                    ),
+                    Container(
                       height: height / 25,
                       width: width, // Adjust the width as needed
                       child: ClipRRect(
@@ -1178,146 +1196,154 @@ void _onImageTap(int index) {
                         ),
                       ),
                     ),
-
-                    ],
-                  ),
+                  ],
                 ),
               ),
+            ),
 
-             SizedBox(
+            SizedBox(
               height: height / 40,
             ),
 
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: width/18),
-              child:
-                  Row(
-                    children: [
-                      Text(
-                        CustomStrings.slingsaverclub,
-                        style: TextStyle(
-                            fontFamily: "Gilroy Bold",
-                            color: notifire.getdarkscolor,
-                            fontSize: height / 40),
-                      ),
-                    ],
+              padding: EdgeInsets.symmetric(horizontal: width / 18),
+              child: Row(
+                children: [
+                  Text(
+                    CustomStrings.slingsaverclub,
+                    style: TextStyle(
+                        fontFamily: "Gilroy Bold",
+                        color: notifire.getdarkscolor,
+                        fontSize: height / 40),
                   ),
+                ],
+              ),
             ),
             SizedBox(
               height: height / 80,
-              ),
-              Container(
-                  height: 230,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: isLoading
-                            ? Shimmer.fromColors(
-                              baseColor: Colors.grey,
-                              highlightColor: Colors.grey,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: imageUrls.length, // Specify the number of shimmer placeholders you want
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                                  child: Container(
-                                    width: 150,
-                                    //height: 200,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
+            ),
+            Container(
+              height: 230,
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: isLoading
+                        ? Shimmer.fromColors(
+                            baseColor: Colors.grey,
+                            highlightColor: Colors.grey,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: imageUrls
+                                  .length, // Specify the number of shimmer placeholders you want
+                              itemBuilder: (context, index) => Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                child: Container(
+                                  width: 150,
+                                  //height: 200,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.0),
                                   ),
                                 ),
                               ),
-                            )
-                            : (isConnected && imageUrls.isNotEmpty)
+                            ),
+                          )
+                        : (isConnected && imageUrls.isNotEmpty)
+                            ? ListView.builder(
+                                controller: _scrollController,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: imageUrls.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () => _onImageTap(index),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5.0),
+                                      child: Container(
+                                        width: 150,
+                                        //height: 200,
+                                        margin: EdgeInsets.only(
+                                            left: index != 0 ? 10.0 : 0.0),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: buildImageWidget(
+                                              imageUrls[index]),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )
+                            : (localImageUrls.isNotEmpty)
                                 ? ListView.builder(
                                     controller: _scrollController,
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: imageUrls.length,
+                                    itemCount: localImageUrls.length,
                                     itemBuilder: (context, index) {
                                       return GestureDetector(
                                         onTap: () => _onImageTap(index),
                                         child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
                                           child: Container(
                                             width: 150,
-                                            //height: 200,
-                                            margin: EdgeInsets.only(left: index != 0 ? 10.0 : 0.0),
+                                            margin: EdgeInsets.only(
+                                                left: index != 0 ? 10.0 : 0.0),
                                             child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(8),
-                                              child: buildImageWidget(imageUrls[index]),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              child: buildImageWidget(
+                                                  localImageUrls[index]),
                                             ),
                                           ),
                                         ),
                                       );
                                     },
                                   )
-                                : (localImageUrls.isNotEmpty)
-                                    ? ListView.builder(
-                                        controller: _scrollController,
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: localImageUrls.length,
-                                        itemBuilder: (context, index) {
-                                          return GestureDetector(
-                                            onTap: () => _onImageTap(index),
-                                            child: Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                                              child: Container(
-                                                width: 150,
-                                                margin: EdgeInsets.only(left: index != 0 ? 10.0 : 0.0),
-                                                child: ClipRRect(
-                                                  borderRadius: BorderRadius.circular(8),
-                                                  child: buildImageWidget(localImageUrls[index]),
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      )
-                                    : Center(child: CircularProgressIndicator()),
-                      ),
-                      SizedBox(height: height / 40),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List<Widget>.generate(
-                          isConnected ? imageUrls.length : localImageUrls.length,
-                          (int index) {
-                            bool isActive = (index == activeIndex);
-                            bool isImageUrl = (isConnected && index < imageUrls.length);
-
-                            return AnimatedContainer(
-                              duration: Duration(milliseconds: 300),
-                              margin: EdgeInsets.symmetric(horizontal: 3.0),
-                              height: 7.0,
-                              width: isActive ? 7.0 : 7.0,
-                              decoration: BoxDecoration(
-                                color: isActive ? Colors.blue : Colors.grey,
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
+                                : Center(child: CircularProgressIndicator()),
                   ),
-                ),
+                  SizedBox(height: height / 40),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List<Widget>.generate(
+                      isConnected ? imageUrls.length : localImageUrls.length,
+                      (int index) {
+                        bool isActive = (index == activeIndex);
+                        bool isImageUrl =
+                            (isConnected && index < imageUrls.length);
 
-         
-          SizedBox(height: height / 80),
-          //add here indicator
+                        return AnimatedContainer(
+                          duration: Duration(milliseconds: 300),
+                          margin: EdgeInsets.symmetric(horizontal: 3.0),
+                          height: 7.0,
+                          width: isActive ? 7.0 : 7.0,
+                          decoration: BoxDecoration(
+                            color: isActive ? Colors.blue : Colors.grey,
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: height / 80),
+            //add here indicator
             SizedBox(
               height: height / 80,
-              ),
-              SizedBox(
-                height: 200,
-                //width: width-30,
-                child: SliderPage(),),
-               SizedBox(
+            ),
+            SizedBox(
+              height: 200,
+              //width: width-30,
+              child: SliderPage(),
+            ),
+            SizedBox(
               height: height / 80,
-              ),
+            ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: width / 18),
               child: Row(
@@ -1363,10 +1389,9 @@ void _onImageTap(int index) {
                 physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
                 itemCount: transaction.length,
-              
                 itemBuilder: (context, index) => Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: width / 20, vertical: height / 100),
+                      horizontal: width / 22, vertical: height / 100),
                   child: Container(
                     height: height / 11,
                     width: width,
@@ -1472,7 +1497,7 @@ void _onImageTap(int index) {
               ),
             ),
             Container(
-              height: height / 2.5,
+              height: height / 7.8,
               color: Colors.transparent,
               child: ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
@@ -1483,29 +1508,29 @@ void _onImageTap(int index) {
                       horizontal: width / 20, vertical: height / 100),
                   child: InkWell(
                     onTap: () {
+                      // if (index == 0) {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) =>
+                      //           const Notificationindex(CustomStrings.cashback),
+                      //     ),
+                      //   );
+                      // } else if (index == 1) {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => const HelpSupport(
+                      //         "Refer A Friend",
+                      //       ),
+                      //     ),
+                      //   );
+                      // } else
                       if (index == 0) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                const Notificationindex(CustomStrings.cashback),
-                          ),
-                        );
-                      } else if (index == 1) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HelpSupport(
-                              "Refer A Friend",
-                            ),
-                          ),
-                        );
-                      } else if (index == 2) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const LegalPolicy(CustomStrings.helps),
+                            builder: (context) => const HelpAndSupport(),
                           ),
                         );
                       }
@@ -1578,7 +1603,7 @@ void _onImageTap(int index) {
                                               fontFamily: "Gilroy Medium",
                                               color: notifire.getdarkgreycolor
                                                   .withOpacity(0.6),
-                                              fontSize: height / 60),
+                                              fontSize: height / 70),
                                         ),
                                         Text(
                                           cashbankdiscription2[index],
@@ -1606,10 +1631,266 @@ void _onImageTap(int index) {
                 ),
               ),
             ),
-            SizedBox(
-              height: height / 20,
+            Container(
+              height: height / 6,
+              color: Colors.transparent,
+              child: ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                itemCount: 1,
+                itemBuilder: (context, index) => Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: width / 20, vertical: height / 100),
+                  child: InkWell(
+                    onTap: () {},
+                    child: Container(
+                      height: height / 7,
+                      width: width,
+                      decoration: BoxDecoration(
+                        color: notifire.getdarkwhitecolor,
+                        border: Border.all(
+                          color: Colors.grey.withOpacity(0.2),
+                        ),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: width / 20),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: height / 10,
+                              width: width / 6,
+                              decoration: BoxDecoration(
+                                color: notifire.gettabwhitecolor,
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              child: Center(
+                                child: Image.asset(
+                                  'images/rating.png',
+                                  height: height / 5,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: width / 30,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: height / 70,
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      CustomStrings.lovingsling,
+                                      style: TextStyle(
+                                          fontFamily: "Gilroy Bold",
+                                          color: notifire.getdarkscolor,
+                                          fontSize: height / 50),
+                                    ),
+                                    // SizedBox(width: width / 7,),
+                                  ],
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    openRatingDialog(context);
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        CustomStrings.rating,
+                                        style: TextStyle(
+                                          fontFamily: "Gilroy Bold",
+                                          color: const Color.fromARGB(
+                                              255, 210, 194, 51),
+                                          fontSize: height / 50,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            const Spacer(),
+                            Icon(Icons.arrow_forward_ios,
+                                color: notifire.getdarkscolor,
+                                size: height / 40),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
+        ),
+      ),
+      // backgroundColor: notifire.getprimerycolor,
+      //   body: PageStorage(
+      //     bucket: bucket,
+      //     child: currentScreen,
+      //   ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: notifire.getbluecolor,
+        child: Image.asset(
+          "images/scan1.png",
+          height: height / 30,
+        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const Scan(),
+            ),
+          );
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+      resizeToAvoidBottomInset: false,
+      bottomNavigationBar: BottomAppBar(
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 10,
+        child: Container(
+          color: notifire.getprimerydarkcolor,
+          height: 60,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: width / 30,
+                  ),
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(
+                        () {
+                          currentScreen = const Home();
+                          currentTab = 0;
+                        },
+                      );
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        currentTab == 0
+                            ? Image.asset(
+                                "images/home1.png",
+                                height: height / 34,
+                                color: notifire.getbluecolor,
+                              )
+                            : Image.asset(
+                                "images/home.png",
+                                height: height / 33,
+                                color: notifire.getdarkscolor,
+                              ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: width / 20,
+                  ),
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(
+                        () {
+                          currentScreen = const Analytics();
+                          currentTab = 1;
+                        },
+                      );
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        currentTab == 1
+                            ? Image.asset(
+                                "images/order1.png",
+                                height: height / 33,
+                                color: notifire.getbluecolor,
+                              )
+                            : Image.asset("images/variant.png",
+                                height: height / 33,
+                                color: notifire.getdarkscolor),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(
+                        () {
+                          currentScreen = const MyCard();
+                          currentTab = 3;
+                        },
+                      );
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        currentTab == 3
+                            ? Image.asset(
+                                "images/wallet.png",
+                                height: height / 30,
+                                color: notifire.getbluecolor,
+                              )
+                            : Image.asset("images/message1.png",
+                                height: height / 30,
+                                color: notifire.getdarkscolor),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: width / 20,
+                  ),
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(
+                        () {
+                          currentScreen = const Profile();
+                          currentTab = 4;
+                        },
+                      );
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        currentTab == 4
+                            ? Image.asset(
+                                "images/profile1.png",
+                                height: height / 30,
+                                color: notifire.getbluecolor,
+                              )
+                            : Image.asset("images/profile.png",
+                                height: height / 30,
+                                color: notifire.getdarkscolor),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: width / 30,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -1620,11 +1901,11 @@ void _onImageTap(int index) {
 //       ? const ChatScreen()
 //       : const ChatRound();
 // }
-Widget buildImageWidget(String imageUrl) {
-  print(imageUrl);
+  Widget buildImageWidget(String imageUrl) {
+    print(imageUrl);
     if (imageUrl.startsWith('http') || imageUrl.startsWith('https')) {
       // Firebase Storage URL
-      
+
       print('Images are shown from Firebase Storage.');
       return Image.network(
         imageUrl,
@@ -1648,4 +1929,24 @@ Widget buildImageWidget(String imageUrl) {
       );
     }
   }
+}
+
+openRatingDialog(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return MaterialApp(
+          theme: ThemeData(
+            dialogTheme: DialogTheme(
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
+              ),
+            ),
+          ),
+          home: const Dialog(
+            child: Rating(),
+          ),
+        );
+      });
 }
