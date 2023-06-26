@@ -10,8 +10,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-
-
 class minkycpage extends StatefulWidget {
   const minkycpage({Key? key}) : super(key: key);
 
@@ -20,10 +18,10 @@ class minkycpage extends StatefulWidget {
 }
 
 class _minkycpageState extends State<minkycpage> {
-   bool isSelected = false;
-   String responseMessage = '';
+  bool isSelected = false;
+  String responseMessage = '';
 
-   Future<void> generateToken(String username, String apiKey) async {
+  Future<void> generateToken(String username, String apiKey) async {
     AuthController authController = AuthController();
 
     try {
@@ -42,10 +40,9 @@ class _minkycpageState extends State<minkycpage> {
     } catch (e) {
       setState(() {
         responseMessage = 'Error: $e';
-       
       });
-       print(responseMessage);
-        showDialog(
+      print(responseMessage);
+      showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: Text(responseMessage),
@@ -55,8 +52,8 @@ class _minkycpageState extends State<minkycpage> {
               onPressed: () {
                 // Exit the app
                 //Navigator.of(context).pop();
-                SystemNavigator.pop(); 
-               // exit(0);//forcefully terminate app to background
+                SystemNavigator.pop();
+                // exit(0);//forcefully terminate app to background
               },
               child: Text('Exit'),
             ),
@@ -240,8 +237,8 @@ class _minkycpageState extends State<minkycpage> {
                       SizedBox(height: 80),
                       GestureDetector(
                         onTap: () {
-                       generateToken('payvoy.uatuser', 'X4oVUECF9EWhX9');
-                       //Navigator.push(context,MaterialPageRoute(builder: (context) => minnativekyclogin()));
+                          generateToken('payvoy.uatuser', 'X4oVUECF9EWhX9');
+                          //Navigator.push(context,MaterialPageRoute(builder: (context) => minnativekyclogin()));
                         },
                         child: Container(
                           height: 50,
