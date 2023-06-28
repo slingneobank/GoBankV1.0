@@ -335,4 +335,11 @@ class CustomStrings {
   static const String theaacountbeen =
       'The account has been successfully leveraged,\nenjoy to Managing your money feels guided';
   static const String done = 'Done';
+  static const String pp = 'PostPaid';
+  static const String mobrecharge = 'Mobile Recharge';
+  static const String dth = 'DTH';
+  static const String lovingsling = '''Loving Sling? Give us a
+rating to show your love!
+                                      ''';
+  static const String rating = 'Rate your experience';
 }
