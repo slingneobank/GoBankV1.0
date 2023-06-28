@@ -233,7 +233,7 @@ class CustomStrings {
   static const String skips = 'Skip';
   static const String option = 'Option';
   static const String alltransaction = 'All Transaction';
-  static const String mastercard = 'mastercard';
+  static const String rupaycard = 'Rupaycard';
   static const String transfer = 'Transfer';
   static const String request = 'Request';
   static const String topup = 'Top Up';
@@ -241,7 +241,7 @@ class CustomStrings {
   static const String discoverservices = 'Discover Services';
   static const String slingsaverclub = 'Sling Saver Club💰';
   static const String giftcardsection = 'Gift Card Section';
-  static const String totalwalletbalance = 'Total Wallet Balance';
+  static const String totalcardbalance = 'Total Card Balance';
   static const String scanpay = 'Scan & Pay';
   static const String hello = 'Hello Johan shaikh';
   static const String goodmorning = 'Good Morning,';

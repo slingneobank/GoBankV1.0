@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gobank/pages/digitalcard.dart';
+import 'package:gobank/cardAPI/digitalcardissuance.dart';
+import 'package:gobank/pages/digitalcard_detail.dart';
 import 'package:gobank/pages/history.dart';
 import 'package:gobank/pages/physicalcard.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'MergeC.dart';
-
+import 'package:http/http.dart' as http;
 
 class CardDetails extends StatefulWidget {
   const CardDetails({Key? key}) : super(key: key);
@@ -20,25 +25,17 @@ class _CardDetailsState extends State<CardDetails> {
   var blockUnblockCardValue = false;
   var mergeChannelsValue = false;
   double _sliderValue = 500;
-
+  String referenceNumber = '9255511767';
+  
+  bool manageValue = true;
   @override
   void initState() {
     super.initState();
     notifire = ColorNotifire(); // Initialize the notifire variable
     getdarkmodepreviousstate();
+    getReferenceNumberFromSharedPreferences();
   }
-
-    getdarkmodepreviousstate() async {
-    final prefs = await SharedPreferences.getInstance();
-    bool? previusstate = prefs.getBool("setIsDark");
-    if (previusstate == null) {
-      notifire.setIsDark = false;
-    } else {
-      notifire.setIsDark = previusstate;
-    }
-  }
-  
-  void _setSliderValue(BuildContext context, double value) {
+   void _setSliderValue(BuildContext context, double value) {
     setState(() {
       _sliderValue = value;
     });
@@ -51,6 +48,120 @@ class _CardDetailsState extends State<CardDetails> {
   void _confirmSelection() {
     // Implement the confirm logic here
   }
+    getdarkmodepreviousstate() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool? previusstate = prefs.getBool("setIsDark");
+    if (previusstate == null) {
+      notifire.setIsDark = false;
+    } else {
+      notifire.setIsDark = previusstate;
+    }
+  }
+  void makeAPIRequest(String referenceNumber) async {
+    var apiUrl = 'https://issuanceapis-uat.pinelabs.com/v1/cards/attributes/states/update';
+    String? token = await _getAuthorizationToken();
+    if (token == null) {
+      setState(() {
+        responseMessage = 'Authorization token not found';
+      });
+      return;
+    }
+
+    var headers = {
+      'accept': 'application/json',
+      'authorization': 'Bearer $token',
+      'content-type': 'application/json',
+    };
+
+    var body = {
+      'referenceNumber': referenceNumber,
+      'cardState': manageValue ? 1 : 3,
+    };
+
+    var response = await http.post(Uri.parse(apiUrl), headers: headers, body: jsonEncode(body));
+
+    if (response.statusCode == 200) {
+      // API request successful
+      var responseBody = response.body;
+      // Process the response body as needed
+      print(responseBody);
+    } else {
+      // API request failed
+      print('API request failed with status code: ${response.statusCode}');
+    print('Response body: ${response.body}');
+    print('Response headers: ${response.headers}');
+
+    }
+  }
+
+ 
+  Future<void> getReferenceNumberFromSharedPreferences() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    referenceNumber = sharedPreferences.getString('referenceNumber') ?? '9255511767';
+   
+
+    if (referenceNumber.isNotEmpty) {
+       makeAPIRequest(referenceNumber);
+    } else {
+      setState(() {
+        setState(() {
+      print("Reference Number is not available");
+    });
+      });
+    }
+  }
+  Future<String?> _getAuthorizationToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    print(token);
+    return token;
+  }
+
+  Map<String, dynamic> cardSchemes = {};
+  String responseMessage = '';
+  int responseCode = 0;
+
+  Future<void> getCardSchemes() async {
+    final url = Uri.parse('https://issuanceapis-uat.pinelabs.com/v1/cards/schemes');
+    
+    String? token = await _getAuthorizationToken();
+    if (token == null) {
+      setState(() {
+        responseMessage = 'Authorization token not found';
+      });
+      return;
+    }
+
+    final headers = {
+      'accept': 'application/json',
+      'authorization': 'Bearer $token',
+    };
+
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+     setState(() {
+        responseMessage = jsonResponse.toString();
+        if (jsonResponse['cardSchemes'] != null && jsonResponse['cardSchemes'].isNotEmpty) {
+          cardSchemes = jsonResponse['cardSchemes'][0];
+          int cardSchemeId = cardSchemes['cardSchemeId'];
+          print(cardSchemeId);
+          saveCardSchemeId(cardSchemeId);
+        }
+      });
+      print(jsonResponse);
+      navigator!.push(MaterialPageRoute(builder: (context) => digitalcard(),));
+      return jsonResponse;
+    } else {
+      throw Exception('Failed to load card schemes');
+    }
+  }
+
+  Future<void> saveCardSchemeId(int cardSchemeId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('cardSchemeId', cardSchemeId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +170,7 @@ class _CardDetailsState extends State<CardDetails> {
         backgroundColor: Colors.black87,
         leading: IconButton(
           onPressed: () {
-            // Navigator.pop(context);
+          Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back_ios_new_sharp),
         ),
@@ -99,8 +210,10 @@ class _CardDetailsState extends State<CardDetails> {
                            fontSize: height / 45)),
                         Expanded(
                           child: TextButton(
-                            onPressed: () {},
-                            child:  Text("Check Now",style: TextStyle(fontFamily: "Gilroy Bold",
+                            onPressed: () {
+                              getCardSchemes();
+                            },
+                            child:  Text("Generate a Card",style: TextStyle(fontFamily: "Gilroy Bold",
                            color: notifire.gettabwhitecolor,
                            fontSize: height / 40)),
                           ),
@@ -163,7 +276,7 @@ class _CardDetailsState extends State<CardDetails> {
                                 trailing: IconButton(
                                   onPressed: () {
                                    // Navigator.pushNamed(context, '/history');
-                                    navigator!.push(MaterialPageRoute(builder: (context) => history(),));
+                                    navigator!.push(MaterialPageRoute(builder: (context) => TransactionHistoryPage(),));
                                   },
                                   icon:  Icon(Icons.arrow_forward_ios,color: notifire.gettabwhitecolor,),
                                 ),
@@ -249,7 +362,7 @@ class _CardDetailsState extends State<CardDetails> {
                                                       context: context,
                                                       builder:
                                                           (BuildContext context) {
-                                                        var Managevalue = true;
+                                                       
       
                                                         return Container(
                                                           color: Colors.black,
@@ -285,18 +398,15 @@ class _CardDetailsState extends State<CardDetails> {
                                                                   ),
                                                                   Switch(
                                                                     activeColor: Colors.amber,
-                                                                    value:
-                                                                        Managevalue,
-                                                                    onChanged:
-                                                                        (value) {
-                                                                      setState(
-                                                                        () {
-                                                                          Managevalue =
-                                                                              value;
-                                                                        },
-                                                                      );
+                                                                    value: manageValue,
+                                                                    onChanged: (value) {
+                                                                      setState(() {
+                                                                        manageValue = value;
+                                                                      });
+                                                                      getReferenceNumberFromSharedPreferences();
                                                                     },
                                                                   ),
+                        
                                                                 ],
                                                               ),
                                                               const SizedBox(

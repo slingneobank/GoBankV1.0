@@ -21,7 +21,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider(
           create: (_) => ColorNotifire(),
+          
         ),
+        
       ],
       child: const GetMaterialApp(
         

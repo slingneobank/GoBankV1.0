@@ -1,5 +1,6 @@
 
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:carousel_indicator/carousel_indicator.dart';
@@ -8,6 +9,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:gobank/bottombar/bottombar.dart';
 import 'package:gobank/card/mycard.dart';
@@ -23,6 +25,7 @@ import 'package:gobank/home/savings/savings_story_page.dart';
 import 'package:gobank/home/scanpay/scan.dart';
 import 'package:gobank/home/seealltransaction.dart';
 import 'package:gobank/home/sling_store/sling_storemain.dart';
+import 'package:gobank/login/auth_controller.dart';
 import 'package:gobank/pages/CardDetails.dart';
 import 'package:gobank/slingsaverclub/bottomsheetpage.dart';
 import 'package:gobank/slingsaverclub/offerdetailspage.dart';
@@ -190,11 +193,14 @@ class _HomeState extends State<Home> {
  
   final DatabaseHelper databaseHelper = DatabaseHelper();
   Directory? appDir;
+  var loadAmount = 0;
+  var referenceNumber = '9255511767';
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
      requestStoragePermission();
+    
    
    checkInternetConnectivity(); // Check the initial internet connectivity state
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
@@ -213,12 +219,55 @@ class _HomeState extends State<Home> {
    
       }
     });
+     getReferenceNumberFromSharedPreferences();
+    makeGetRequest(referenceNumber);
     fetchImageUrls();
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
   
     
   }
+  
+  
+  Future<void> getReferenceNumberFromSharedPreferences() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    referenceNumber = sharedPreferences.getString('referenceNumber')??'';
+
+    if (referenceNumber.isNotEmpty) {
+      makeGetRequest(referenceNumber);
+    } else {
+      setState(() {
+        loadAmount = 0;
+      });
+    }
+  }
+  Future<void> makeGetRequest(String referenceNumber) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    var token = sharedPreferences.getString('token');
+
+    var url = Uri.parse('https://issuanceapis-uat.pinelabs.com/v1/cards/balances/$referenceNumber');
+
+    var headers = {
+      'accept': 'application/json',
+      'authorization': 'Bearer $token',
+    };
+
+    var response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      setState(() {
+        loadAmount = data['loadAmount'];
+      });
+      print(response.body);
+    } else {
+      setState(() {
+        loadAmount = 0;
+      });
+    }
+  }
+
+
   void dispose() {
     _scrollController.dispose();
     super.dispose();
@@ -570,7 +619,7 @@ void _onImageTap(int index) {
                               child: Row(
                                 children: [
                                   Text(
-                                    CustomStrings.totalwalletbalance,
+                                    CustomStrings.totalcardbalance,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: height / 50,
@@ -580,11 +629,12 @@ void _onImageTap(int index) {
                                   Column(
                                     children: [
                                       Image.asset(
-                                        "images/mastercard.png",
-                                        height: height / 25,
+                                        "images/rupay.png",
+                                        height: height / 45,
+                                        fit: BoxFit.contain,
                                       ),
                                       Text(
-                                        CustomStrings.mastercard,
+                                        CustomStrings.rupaycard,
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: height / 70,
@@ -607,7 +657,7 @@ void _onImageTap(int index) {
                                         : Colors.transparent,
                                     child: selection
                                         ? Text(
-                                            "\$.12.000.000",
+                                            "$loadAmount",
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: height / 35,
@@ -687,13 +737,14 @@ void _onImageTap(int index) {
                                         children: [
                                           GestureDetector(
                                             onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const CardDetails(),
-                                                ),
-                                              );
+                                              generateToken('payvoy.uatuser', 'X4oVUECF9EWhX9');
+                                              // Navigator.push(
+                                              //   context,
+                                              //   MaterialPageRoute(
+                                              //     builder: (context) =>
+                                              //        const  CardDetails(),
+                                              //   ),
+                                              // );
                                             },
                                             child: Container(
                                               height: height / 15,
@@ -718,7 +769,7 @@ void _onImageTap(int index) {
                                             height: height / 60,
                                           ),
                                           Text(
-                                            "Order\nPhysical Card",
+                                            " Debit card",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 fontFamily: "Gilroy Bold",
@@ -728,8 +779,8 @@ void _onImageTap(int index) {
                                         ],
                                       ),
                                       Positioned(
-                                        top: 0,
-                                        right: 0,
+                                        top: -5,
+                                        right: 15,
                                         child: Container(
                                           padding: const EdgeInsets.all(4.0),
                                           decoration: BoxDecoration(
@@ -752,7 +803,7 @@ void _onImageTap(int index) {
                                           ),
                                           // A text widget with some style
                                           child: Text(
-                                            'Coming Soon',
+                                            'Sling',
                                             style: TextStyle(
                                               color: Colors.grey[800],
                                               fontWeight: FontWeight.bold,
@@ -797,7 +848,7 @@ void _onImageTap(int index) {
                                         height: height / 60,
                                       ),
                                       Text(
-                                        "Coins",
+                                        "Rewards",
                                         style: TextStyle(
                                             fontFamily: "Gilroy Bold",
                                             color: notifire.getdarkscolor,
@@ -839,7 +890,7 @@ void _onImageTap(int index) {
                                         height: height / 60,
                                       ),
                                       Text(
-                                        "Debit Card",
+                                        "Apply for a Loan",
                                         style: TextStyle(
                                             fontFamily: "Gilroy Bold",
                                             color: notifire.getdarkscolor,
@@ -881,7 +932,7 @@ void _onImageTap(int index) {
                                         height: height / 60,
                                       ),
                                       Text(
-                                        "Savings",
+                                        "Open a FD",
                                         style: TextStyle(
                                             fontFamily: "Gilroy Bold",
                                             color: notifire.getdarkscolor,
@@ -1645,6 +1696,58 @@ Widget buildImageWidget(String imageUrl) {
         fit: BoxFit.cover,
         width: height * 0.15,
         height: height * 0.15,
+      );
+    }
+  }
+  String responseMessage = '';
+
+   Future<void> generateToken(String username, String apiKey) async {
+    AuthController authController = AuthController();
+
+    try {
+      String? token = await authController.generateToken(username, apiKey);
+
+      setState(() {
+        responseMessage = 'Debit card for Token generated successfully. Refresh Token: $token';
+      });
+      print(token);
+      // Navigate to the next screen
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => CardDetails()),
+      );
+      print(responseMessage);
+    } catch (e) {
+      setState(() {
+        responseMessage = 'Error: $e';
+       
+      });
+       print(responseMessage);
+        showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(responseMessage),
+          content: Text('An error occurred. Please try again later.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Exit the app
+                //Navigator.of(context).pop();
+                SystemNavigator.pop(); 
+               // exit(0);//forcefully terminate app to background
+              },
+              child: Text('Exit'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Retry the token generation
+                generateToken(username, apiKey);
+                Navigator.of(context).pop();
+              },
+              child: Text('Retry'),
+            ),
+          ],
+        ),
       );
     }
   }

@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:gobank/cardAPI/cardschema.dart';
-import 'package:gobank/home/giftcard/buyvoucher.dart';
-import 'package:gobank/home/giftcard/giftofferform.dart';
 import 'package:gobank/home/home.dart';
-
 import 'package:gobank/login/minkycpage.dart';
-import 'package:gobank/slingsaverclub/bannerpage.dart';
+
+import 'package:gobank/onbonding.dart';
+import 'package:gobank/pages/CardDetails.dart';
+import 'package:gobank/pages/digitalcard_detail.dart';
+import 'package:gobank/pages/history.dart';
+
 
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
@@ -43,7 +44,7 @@ class _SplashscreenState extends State<Splashscreen> {
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  minkycpage(),//onbonding  
+          builder: (context) =>  Home(),//onbonding  
         ),
       ),
     );

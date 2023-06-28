@@ -4,7 +4,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gobank/login/auth_controller.dart';
-import 'package:gobank/login/minnativekycfirebase.dart';
 import 'package:gobank/login/minnativekyclogin.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -237,7 +236,7 @@ class _minkycpageState extends State<minkycpage> {
                           child: Image.asset('asset/images/adhar.png'),
                         ),
                       ),
-                      SizedBox(height: 80),
+                      SizedBox(height: 80),  
                       GestureDetector(
                         onTap: () {
                        generateToken('payvoy.uatuser', 'X4oVUECF9EWhX9');

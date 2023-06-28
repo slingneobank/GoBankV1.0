@@ -63,7 +63,7 @@ class _minnativekycloginState extends State<minnativekyclogin> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   String _response = '';
-
+  String _dialogMessage = '';
 
    @override
   void dispose() {
@@ -130,7 +130,30 @@ class _minnativekycloginState extends State<minnativekyclogin> {
                         await prefs.setString('storedminKycUniqueId', storedminKycUniqueId);
                         print("minkycid is $storedminKycUniqueId");
 
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => Home()));
+                         Navigator.push(context, MaterialPageRoute(builder: (_) => Home()));
+                        // Show dialog box with "KYC verified successfully" message
+                          setState(() {
+                            _dialogMessage = 'KYC verified successfully';
+                          });
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Success'),
+                                content: Text(_dialogMessage),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('OK'),
+                                    onPressed: () {
+                                     
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        
                         return; // Return after navigating to the home screen
                       } 
                       else {

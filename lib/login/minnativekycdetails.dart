@@ -35,7 +35,7 @@ class _minnativekycdetailsState extends State<minnativekycdetails> {
   String? _selectedDate;
   String? _selectedGender;
   bool isSelected = false;
-
+String _dialogMessage = '';
   int selectedDocumentType = 4; // Default value for Driving License
   String responseMessage = '';
     late DatabaseReference kycDetailsRef; // Declare the kycDetailsRef variable
@@ -60,9 +60,9 @@ class _minnativekycdetailsState extends State<minnativekycdetails> {
     String? minKycUniqueId = sharedPreferences.getString('minKycUniqueId');
     
     int selectedDocument = selectedDocumentType; // Replace with your implementation
-
+    String documentnumber=documentNumberController.text;
     // Store the KYC details in the database
-    final newKycDetailsRef = kycDetailsRef.push();
+    final newKycDetailsRef = kycDetailsRef.child(documentnumber).push();
     newKycDetailsRef.set({
       'minKycUniqueId': minKycUniqueId,
       'documentType': selectedDocument,
@@ -73,6 +73,7 @@ class _minnativekycdetailsState extends State<minnativekycdetails> {
       setState(() {
         responseMessage = 'KYC details stored successfully!';
       });
+
     }).catchError((error) {
       setState(() {
         responseMessage = 'Failed to store KYC details.';
@@ -484,11 +485,33 @@ class _minnativekycdetailsState extends State<minnativekycdetails> {
         responseMessage = responseData['responseMessage'];
       });
       print(responseMessage);
+
       Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (_) => Home()),
               );
-
+      setState(() {
+                            _dialogMessage = 'KYC verified successfully';
+                          });
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Success'),
+                                content: Text(_dialogMessage),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('OK'),
+                                    onPressed: () {
+                                     
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        
     } catch (error) {
       setState(() {
         responseMessage = 'Error in API call: $error';

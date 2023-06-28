@@ -87,7 +87,7 @@ Future<void> createDigitalCardOrder() async {
         responseMessage = jsonResponse['responseMessage'];
       });
 
-      // Store data in Realtime Database
+      //Store data in Realtime Database
       String phoneNumber = mobileNumberController.text;
       Map<String, dynamic> data = {
         'amount': int.parse(amountController.text),
@@ -106,7 +106,7 @@ Future<void> createDigitalCardOrder() async {
     } else {
       print('API Request Failed with Status Code: ${response.statusCode}');
       print('Response Body: ${response.body}');
-      throw Exception('Failed to create digital card issuance order');
+     
     }
   } catch (e) {
     setState(() {
