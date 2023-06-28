@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gobank/home/home.dart';
+import 'package:gobank/home/loan/personalloan_form.dart';
 import 'package:gobank/login/minkycpage.dart';
 
 import 'package:gobank/onbonding.dart';
@@ -44,7 +45,7 @@ class _SplashscreenState extends State<Splashscreen> {
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  minkycpage(),//onbonding  
+          builder: (context) =>  personalloan_form(),//onbonding  
         ),
       ),
     );

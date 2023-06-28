@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-
-
 import 'dart:convert';
-=======
->>>>>>> 67fcb96b1a1780c82e2ccbb3db61b7d61b2b1008
 import 'dart:io';
 import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:carousel_slider/carousel_options.dart';
@@ -49,6 +44,7 @@ import '../profile/helpsupport.dart';
 import '../profile/legalandpolicy.dart';
 import '../slingsaverclub/bannerpage.dart';
 import 'home_ctrl.dart';
+import 'loan/personalloan.dart';
 import 'seeallpayment.dart';
 import 'transfer/sendmoney.dart';
 import 'package:http/http.dart' as http;
@@ -204,16 +200,13 @@ class _HomeState extends State<Home> {
   void initState() {
     // TODO: implement initState
     super.initState();
-<<<<<<< HEAD
      requestStoragePermission();
     
    
    checkInternetConnectivity(); // Check the initial internet connectivity state
-=======
     requestStoragePermission();
 
     checkInternetConnectivity(); // Check the initial internet connectivity state
->>>>>>> 67fcb96b1a1780c82e2ccbb3db61b7d61b2b1008
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       print(result);
       if (result != ConnectivityResult.none) {
@@ -234,9 +227,7 @@ class _HomeState extends State<Home> {
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
   }
-<<<<<<< HEAD
-  
-  
+
   Future<void> getReferenceNumberFromSharedPreferences() async {
     var sharedPreferences = await SharedPreferences.getInstance();
     referenceNumber = sharedPreferences.getString('referenceNumber')??'';
@@ -275,8 +266,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-=======
->>>>>>> 67fcb96b1a1780c82e2ccbb3db61b7d61b2b1008
+
 
   void dispose() {
     _scrollController.dispose();
@@ -888,7 +878,7 @@ class _HomeState extends State<Home> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  const Request(),
+                                                   personalloan(),
                                             ),
                                           );
                                         },
