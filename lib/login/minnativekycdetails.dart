@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:gobank/home/home.dart';
 import 'package:gobank/login/auth_controller.dart';
+import 'package:gobank/verification/verificationdone.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -488,7 +489,7 @@ String _dialogMessage = '';
 
       Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (_) => Home()),
+                MaterialPageRoute(builder: (_) => VerificationDone()),
               );
       setState(() {
                             _dialogMessage = 'KYC verified successfully';

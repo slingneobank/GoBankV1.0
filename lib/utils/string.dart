@@ -190,6 +190,7 @@ class CustomStrings {
       'Please enter your PIN to confirm payment';
   static const String enteryourpin = 'Enter Your PIN';
   static const String confirmpayment = 'Confirm Payment';
+  static const String pendingapproval = 'Pending for approval';
   static const String top1 = 'Top Up your Credit Card or';
   static const String top2 = 'your phone anytime anywhere';
   static const String top3 = 'Top up your card or your phone anytime anywhere';

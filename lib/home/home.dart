@@ -1100,164 +1100,164 @@ class _HomeState extends State<Home> {
             SizedBox(
               height: height / 100,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: width / 18),
-              child: Row(
-                children: [
-                  Text(
-                    CustomStrings.giftcardsection,
-                    style: TextStyle(
-                        fontFamily: "Gilroy Bold",
-                        color: notifire.getdarkscolor,
-                        fontSize: height / 40),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: height / 60,
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.only(top: 10, left: width / 20, right: width / 20),
-              child: Container(
-                height: height / 2.5,
-                width: width,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 239, 251, 253),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  children: [
-                    Container(
-                      height: height / 30,
-                      width: width, // Adjust the width as needed
-                      // Add your content for the first child here
-                      child: SizedBox(),
-                    ),
-                    // SizedBox(
-                    //   height: height / 90,
-                    // ),
-                    Expanded(
-                      child: GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.only(bottom: height / 20),
-                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: height / 9,
-                          mainAxisExtent: height / 8,
-                          childAspectRatio: 3 / 2,
-                          crossAxisSpacing: height / 30,
-                          mainAxisSpacing: height / 30,
-                        ),
-                        itemCount: giftimg.length,
-                        itemBuilder: (BuildContext ctx, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              if (index == 7) {
-                                navigator!.push(MaterialPageRoute(
-                                    builder: (context) => buyvoucher()));
-                              } else {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => giftofferform(
-                                          icon: giftimg[index],
-                                          storename: giftname[index],
-                                          discount: giftdiscount[index]),
-                                    ));
-                              }
-                            },
-                            child: Column(
-                              children: [
-                                giftdiscount[index].isNotEmpty
-                                    ? Container(
-                                        height: 15,
-                                        width: 50,
-                                        decoration: BoxDecoration(
-                                          color: Colors.amber[300],
-                                          borderRadius:
-                                              BorderRadius.circular(2),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            "${giftdiscount[index]}% Off",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontFamily: "Gilroy Bold",
-                                              color: notifire.getdarkscolor,
-                                              fontSize: height / 55,
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    : SizedBox(),
-                                Container(
-                                  height: height / 15,
-                                  width: width / 7,
-                                  decoration: BoxDecoration(
-                                    color: notifire.gettabwhitecolor,
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Image.asset(
-                                      giftimg[index],
-                                      height: height / 20,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: height / 90,
-                                ),
-                                Center(
-                                  child: Text(
-                                    giftname[index],
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy Bold",
-                                      color: notifire.getdarkscolor,
-                                      fontSize: height / 55,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    Container(
-                      height: height / 25,
-                      width: width, // Adjust the width as needed
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(10),
-                          bottomRight: Radius.circular(10),
-                        ),
-                        child: Container(
-                          color: const Color.fromARGB(255, 142, 219, 145),
-                          child: Center(
-                            child: Text(
-                              'Instant Discount. No Limits. 100+ Brands!',
-                              style: TextStyle(
-                                color: notifire.getdarkscolor,
-                                fontSize: height / 55,
-                                fontFamily: 'Gilroy Bold',
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: width / 18),
+            //   child: Row(
+            //     children: [
+            //       Text(
+            //         CustomStrings.giftcardsection,
+            //         style: TextStyle(
+            //             fontFamily: "Gilroy Bold",
+            //             color: notifire.getdarkscolor,
+            //             fontSize: height / 40),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: height / 60,
+            // ),
+            // Padding(
+            //   padding:
+            //       EdgeInsets.only(top: 10, left: width / 20, right: width / 20),
+            //   child: Container(
+            //     height: height / 2.5,
+            //     width: width,
+            //     decoration: BoxDecoration(
+            //       color: Color.fromARGB(255, 239, 251, 253),
+            //       borderRadius: BorderRadius.circular(10),
+            //     ),
+            //     child: Column(
+            //       children: [
+            //         Container(
+            //           height: height / 30,
+            //           width: width, // Adjust the width as needed
+            //           // Add your content for the first child here
+            //           child: SizedBox(),
+            //         ),
+            //         // SizedBox(
+            //         //   height: height / 90,
+            //         // ),
+            //         Expanded(
+            //           child: GridView.builder(
+            //             physics: const NeverScrollableScrollPhysics(),
+            //             padding: EdgeInsets.only(bottom: height / 20),
+            //             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            //               maxCrossAxisExtent: height / 9,
+            //               mainAxisExtent: height / 8,
+            //               childAspectRatio: 3 / 2,
+            //               crossAxisSpacing: height / 30,
+            //               mainAxisSpacing: height / 30,
+            //             ),
+            //             itemCount: giftimg.length,
+            //             itemBuilder: (BuildContext ctx, index) {
+            //               return GestureDetector(
+            //                 onTap: () {
+            //                   if (index == 7) {
+            //                     navigator!.push(MaterialPageRoute(
+            //                         builder: (context) => buyvoucher()));
+            //                   } else {
+            //                     Navigator.push(
+            //                         context,
+            //                         MaterialPageRoute(
+            //                           builder: (context) => giftofferform(
+            //                               icon: giftimg[index],
+            //                               storename: giftname[index],
+            //                               discount: giftdiscount[index]),
+            //                         ));
+            //                   }
+            //                 },
+            //                 child: Column(
+            //                   children: [
+            //                     giftdiscount[index].isNotEmpty
+            //                         ? Container(
+            //                             height: 15,
+            //                             width: 50,
+            //                             decoration: BoxDecoration(
+            //                               color: Colors.amber[300],
+            //                               borderRadius:
+            //                                   BorderRadius.circular(2),
+            //                             ),
+            //                             child: Center(
+            //                               child: Text(
+            //                                 "${giftdiscount[index]}% Off",
+            //                                 textAlign: TextAlign.center,
+            //                                 style: TextStyle(
+            //                                   fontFamily: "Gilroy Bold",
+            //                                   color: notifire.getdarkscolor,
+            //                                   fontSize: height / 55,
+            //                                 ),
+            //                               ),
+            //                             ),
+            //                           )
+            //                         : SizedBox(),
+            //                     Container(
+            //                       height: height / 15,
+            //                       width: width / 7,
+            //                       decoration: BoxDecoration(
+            //                         color: notifire.gettabwhitecolor,
+            //                         borderRadius: const BorderRadius.all(
+            //                           Radius.circular(10),
+            //                         ),
+            //                       ),
+            //                       child: Center(
+            //                         child: Image.asset(
+            //                           giftimg[index],
+            //                           height: height / 20,
+            //                         ),
+            //                       ),
+            //                     ),
+            //                     SizedBox(
+            //                       height: height / 90,
+            //                     ),
+            //                     Center(
+            //                       child: Text(
+            //                         giftname[index],
+            //                         textAlign: TextAlign.center,
+            //                         style: TextStyle(
+            //                           fontFamily: "Gilroy Bold",
+            //                           color: notifire.getdarkscolor,
+            //                           fontSize: height / 55,
+            //                         ),
+            //                       ),
+            //                     ),
+            //                   ],
+            //                 ),
+            //               );
+            //             },
+            //           ),
+            //         ),
+            //         Container(
+            //           height: height / 25,
+            //           width: width, // Adjust the width as needed
+            //           child: ClipRRect(
+            //             borderRadius: BorderRadius.only(
+            //               bottomLeft: Radius.circular(10),
+            //               bottomRight: Radius.circular(10),
+            //             ),
+            //             child: Container(
+            //               color: const Color.fromARGB(255, 142, 219, 145),
+            //               child: Center(
+            //                 child: Text(
+            //                   'Instant Discount. No Limits. 100+ Brands!',
+            //                   style: TextStyle(
+            //                     color: notifire.getdarkscolor,
+            //                     fontSize: height / 55,
+            //                     fontFamily: 'Gilroy Bold',
+            //                   ),
+            //                 ),
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
 
-            SizedBox(
-              height: height / 40,
-            ),
+            // SizedBox(
+            //   height: height / 40,
+            // ),
 
             Padding(
               padding: EdgeInsets.symmetric(horizontal: width / 18),

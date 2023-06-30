@@ -1,8 +1,16 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:gobank/card/inouthistory.dart';
+import 'package:gobank/card/inoutpayment.dart';
+import 'package:gobank/card/inoutscheduled.dart';
+import 'package:gobank/card/mycard.dart';
 import 'package:gobank/home/home.dart';
+import 'package:gobank/home/loan/eligibility_loan.dart';
+import 'package:gobank/home/loan/pendingapproval.dart';
 import 'package:gobank/home/loan/personalloan_form.dart';
+import 'package:gobank/home/topup/topupcard/topup.dart';
 import 'package:gobank/login/minkycpage.dart';
+import 'package:gobank/login/verify.dart';
 
 import 'package:gobank/onbonding.dart';
 import 'package:gobank/pages/CardDetails.dart';
@@ -12,8 +20,11 @@ import 'package:gobank/pages/history.dart';
 
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
+import 'package:gobank/verification/verificationdone.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'card/createxcard.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({Key? key}) : super(key: key);
@@ -45,7 +56,7 @@ class _SplashscreenState extends State<Splashscreen> {
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  personalloan_form(),//onbonding  
+          builder: (context) =>  Onbonding(),//onbonding  
         ),
       ),
     );
