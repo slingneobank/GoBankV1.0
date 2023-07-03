@@ -6,13 +6,15 @@ import 'package:gobank/splashscreen.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:provider/provider.dart';
 
-
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message)async {
+  await Firebase.initializeApp();
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-     
-  );
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   Get.put(AuthCtrl());
   Get.lazyPut(()=>AuthCtrl());
   runApp(

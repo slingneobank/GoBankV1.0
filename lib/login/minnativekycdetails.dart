@@ -1,10 +1,22 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:gobank/home/NotificationServices.dart';
+import 'package:gobank/home/home.dart';
+
 import 'package:gobank/login/auth_controller.dart';
 import 'package:gobank/verification/verificationdone.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 
 
 
@@ -37,11 +49,24 @@ String _dialogMessage = '';
   int selectedDocumentType = 4; // Default value for Driving License
   String responseMessage = '';
     late DatabaseReference kycDetailsRef; // Declare the kycDetailsRef variable
+    NotificationServices notificationServices = NotificationServices();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     initializeFirebase();
+    // notificationServices.requestNotificationPermission();
+    // notificationServices.forgroundMessage();
+    // notificationServices.firebaseInit(context);
+    // notificationServices.setupInteractMessage(context);
+    // notificationServices.isTokenRefresh();
+
+    // notificationServices.getDeviceToken().then((value){
+    //   if (kDebugMode) {
+    //     print('device token');
+    //     print(value);
+    //   }
+    // });
    // print(widget.storekycid);
   }
    // Initialize Firebase
@@ -419,7 +444,7 @@ String _dialogMessage = '';
                   //Expanded(child: SizedBox()),
                   GestureDetector(
                     onTap: () {
-                      verifyDocument();
+                      
                       verifykycdocument();
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('next section')),
@@ -483,11 +508,49 @@ String _dialogMessage = '';
         responseMessage = responseData['responseMessage'];
       });
       print(responseMessage);
+      verifyDocument();
+       notificationServices.getDeviceToken().then((value)async{
 
+                              var data = {
+                                'to' : value.toString(),
+                                'priority' : 'high',
+                                'notification' : {
+                                  'title' : 'GoBank' ,
+                                  'body' : 'KYC Sucessfully completed' ,
+                                  "sound": "jetsons_doorbell.mp3"
+                              },
+                                // 'android': {
+                                //   'notification': {
+                                //     'notification_count': 23,
+                                //   },
+                                // },
+                                // 'data' : {
+                                //   'type' : 'msj' ,
+                                //   'id' : 'Asif Taj'
+                                // }
+                              };
+
+                              await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+                              body: jsonEncode(data) ,
+                                headers: {
+                                  'Content-Type': 'application/json; charset=UTF-8',
+                                  'Authorization' : 'key=AAAAd2FTt9k:APA91bHEX1w3KaiJCSVfo6yxtaA9qyfOh9AqodXOFtkmjIdc7J_tMzl760nLGgTkvaYAScMQVTcXcC-icHl0I3Z4p_fTRZUFXWgUwnVHYVRGB9b5LF4HVdyYa-dTX5ayzCNhiv6ZCLcb'
+                                }
+                              ).then((value){
+                                if (kDebugMode) {
+                                  print("sucess"+value.body.toString());
+                                }
+                              }).onError((error, stackTrace){
+                                if (kDebugMode) {
+                                  print("error$error");
+                                }
+                              }); 
+                            });
       Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (_) => const VerificationDone()),
               );
+
       setState(() {
                             _dialogMessage = 'KYC verified successfully';
                           });
@@ -509,7 +572,7 @@ String _dialogMessage = '';
                               );
                             },
                           );
-                        
+            
     } catch (error) {
       setState(() {
         responseMessage = 'Error in API call: $error';

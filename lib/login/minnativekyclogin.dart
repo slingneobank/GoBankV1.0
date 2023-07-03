@@ -1,13 +1,23 @@
+import 'dart:convert';
+
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:gobank/home/NotificationServices.dart';
+
 import 'package:gobank/home/home.dart';
 import 'package:gobank/login/auth_controller.dart';
 import 'package:gobank/login/minnativekycotp.dart';
-
+import 'package:gobank/verification/verificationdone.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 class FirebaseHelper {
   final databaseReference = FirebaseDatabase.instance.reference();
-
+ 
   void storeData(String firebaseToken, String minKycUniqueId, String phoneNumber, String username) {
     databaseReference.child('kyc_users').child(phoneNumber).set({
       'firebaseToken': firebaseToken,
@@ -62,15 +72,23 @@ class _minnativekycloginState extends State<minnativekyclogin> {
   final TextEditingController _emailController = TextEditingController();
   String _response = '';
   String _dialogMessage = '';
-
-   @override
-  void dispose() {
-    _usernameController.dispose();
-    _mobileController.dispose();
-    _emailController.dispose();
-    super.dispose();
+  bool isLoading = false;
+  //  @override
+  // void dispose() {
+  //   _usernameController.dispose();
+  //   _mobileController.dispose();
+  //   _emailController.dispose();
+  //   super.dispose();
+  // }
+  NotificationServices notificationServices = NotificationServices();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    
   }
-
+ 
+ 
     Future<String?> _getAuthorizationToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
@@ -88,7 +106,9 @@ class _minnativekycloginState extends State<minnativekyclogin> {
       });
       return;
     }
-
+    setState(() {
+      isLoading = true;
+    });
     Map<String, String> headers = {
       'accept': 'application/json',
       'authorization': 'Bearer $token',
@@ -102,6 +122,7 @@ class _minnativekycloginState extends State<minnativekyclogin> {
     };
 
     try {
+      
       Map<String, dynamic> responseData = await ApiService.makeApiCall(apiUrl, headers, requestBody);
       //FirestoreHelper firestoreHelper = FirestoreHelper();
 
@@ -127,6 +148,8 @@ class _minnativekycloginState extends State<minnativekyclogin> {
                         SharedPreferences prefs = await SharedPreferences.getInstance();
                         await prefs.setString('storedminKycUniqueId', storedminKycUniqueId);
                         print("minkycid is $storedminKycUniqueId");
+                        // send notification from one device to another
+                            // notificationServices.getDeviceToken().then((value)async{
 
                          Navigator.push(context, MaterialPageRoute(builder: (_) => const Home()));
                         // Show dialog box with "KYC verified successfully" message
@@ -151,6 +174,47 @@ class _minnativekycloginState extends State<minnativekyclogin> {
                               );
                             },
                           );
+
+                            //   var data = {
+                            //     'to' : value.toString(),
+                            //     'priority' : 'high',
+                            //     'notification' : {
+                            //       'title' : 'Slingone' ,
+                            //       'body' : 'KYC Sucessfully completed' ,
+                            //       "sound": "jetsons_doorbell.mp3"
+                            //   },
+                            //     // 'android': {
+                            //     //   'notification': {
+                            //     //     'notification_count': 23,
+                            //     //   },
+                            //     // },
+                            //     // 'data' : {
+                            //     //   'type' : 'msj' ,
+                            //     //   'id' : 'Asif Taj'
+                            //     // }
+                            //   };
+
+                            //   await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+                            //   body: jsonEncode(data) ,
+                            //     headers: {
+                            //       'Content-Type': 'application/json; charset=UTF-8',
+                            //       'Authorization' : 'key=AAAAd2FTt9k:APA91bHEX1w3KaiJCSVfo6yxtaA9qyfOh9AqodXOFtkmjIdc7J_tMzl760nLGgTkvaYAScMQVTcXcC-icHl0I3Z4p_fTRZUFXWgUwnVHYVRGB9b5LF4HVdyYa-dTX5ayzCNhiv6ZCLcb'
+                            //     }
+                            //   ).then((value){
+                            //     if (kDebugMode) {
+                            //       print("sucess"+value.body.toString());
+                            //     }
+                            //   }).onError((error, stackTrace){
+                            //     if (kDebugMode) {
+                            //       print("error$error");
+                            //     }
+                            //   }); 
+                            // });
+                         Navigator.push(context, MaterialPageRoute(builder: (_) => VerificationDone()));
+                        setState(() {
+                          isLoading = false; // Set isLoading to false after navigation
+                        });
+
                         
                         return; // Return after navigating to the home screen
                       } 
@@ -168,10 +232,12 @@ class _minnativekycloginState extends State<minnativekyclogin> {
     } catch (error) {
       setState(() {
         _response = 'Error: $error';
+        isLoading = false; // Set isLoading to false in case of error
       });
       print(_response);
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -335,8 +401,13 @@ class _minnativekycloginState extends State<minnativekyclogin> {
                         color: Colors.amber,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const Center(
-                        child: Text(
+
+                      child: Center(
+                        child: 
+                        isLoading
+                            ? CircularProgressIndicator()
+                              :Text(
+
                           'Continue',
                           style: TextStyle(
                             fontSize: 18,

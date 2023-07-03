@@ -55,7 +55,7 @@ android {
 
         applicationId "com.sling.slingone"
         multiDexEnabled true
-        minSdkVersion 20
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

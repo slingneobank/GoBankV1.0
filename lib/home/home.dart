@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -30,6 +31,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import '../slingsaverclub/bannerpage.dart';
+import 'NotificationServices.dart';
 import 'home_ctrl.dart';
 import 'loan/personalloan.dart';
 import 'seeallpayment.dart';
@@ -51,6 +53,7 @@ class _HomeState extends State<Home> {
   late ScrollController _scrollController;
   late ColorNotifire notifire;
   PersistentBottomSheetController? _bottomSheetController;
+  
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
     bool? previusstate = prefs.getBool("setIsDark");
@@ -60,7 +63,7 @@ class _HomeState extends State<Home> {
       notifire.setIsDark = previusstate;
     }
   }
-
+ 
   Widget currentScreen = const Home();
   int currentTab = 0;
   final List screens = [
@@ -183,6 +186,8 @@ class _HomeState extends State<Home> {
   Directory? appDir;
   var loadAmount = 0;
   var referenceNumber = '9255511767';
+  
+  NotificationServices notificationServices = NotificationServices();
   @override
   void initState() {
     // TODO: implement initState
@@ -194,6 +199,8 @@ class _HomeState extends State<Home> {
     requestStoragePermission();
 
     checkInternetConnectivity(); // Check the initial internet connectivity state
+    notification_loan();
+     notification_FD();
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       print(result);
       if (result != ConnectivityResult.none) {
@@ -209,12 +216,92 @@ class _HomeState extends State<Home> {
       }
     });
      getReferenceNumberFromSharedPreferences();
+    
     makeGetRequest(referenceNumber);
     fetchImageUrls();
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
   }
+  void notification_FD()
+  {
+     notificationServices.getDeviceToken().then((value)async{
 
+                              var data = {
+                                'to' : value.toString(),
+                                'priority' : 'high',
+                                'notification' : {
+                                  'title' : 'Slingone' ,
+                                  'body' : 'Open a FD' ,
+                                  "sound": "jetsons_doorbell.mp3"
+                              },
+                                // 'android': {
+                                //   'notification': {
+                                //     'notification_count': 23,
+                                //   },
+                                // },
+                                // 'data' : {
+                                //   'type' : 'msj' ,
+                                //   'id' : 'Asif Taj'
+                                // }
+                              };
+
+                              await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+                              body: jsonEncode(data) ,
+                                headers: {
+                                  'Content-Type': 'application/json; charset=UTF-8',
+                                  'Authorization' : 'key=AAAAd2FTt9k:APA91bHEX1w3KaiJCSVfo6yxtaA9qyfOh9AqodXOFtkmjIdc7J_tMzl760nLGgTkvaYAScMQVTcXcC-icHl0I3Z4p_fTRZUFXWgUwnVHYVRGB9b5LF4HVdyYa-dTX5ayzCNhiv6ZCLcb'
+                                }
+                              ).then((value){
+                                if (kDebugMode) {
+                                  print("sucess"+value.body.toString());
+                                }
+                              }).onError((error, stackTrace){
+                                if (kDebugMode) {
+                                  print("error$error");
+                                }
+                              }); 
+                            });
+  }
+ void notification_loan()
+{
+   notificationServices.getDeviceToken().then((value)async{
+
+                              var data = {
+                                'to' : value.toString(),
+                                'priority' : 'high',
+                                'notification' : {
+                                  'title' : 'Slingone' ,
+                                  'body' : 'Apply For a Loan' ,
+                                  "sound": "jetsons_doorbell.mp3"
+                              },
+                                // 'android': {
+                                //   'notification': {
+                                //     'notification_count': 23,
+                                //   },
+                                // },
+                                // 'data' : {
+                                //   'type' : 'msj' ,
+                                //   'id' : 'Asif Taj'
+                                // }
+                              };
+
+                              await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+                              body: jsonEncode(data) ,
+                                headers: {
+                                  'Content-Type': 'application/json; charset=UTF-8',
+                                  'Authorization' : 'key=AAAAd2FTt9k:APA91bHEX1w3KaiJCSVfo6yxtaA9qyfOh9AqodXOFtkmjIdc7J_tMzl760nLGgTkvaYAScMQVTcXcC-icHl0I3Z4p_fTRZUFXWgUwnVHYVRGB9b5LF4HVdyYa-dTX5ayzCNhiv6ZCLcb'
+                                }
+                              ).then((value){
+                                if (kDebugMode) {
+                                  print("sucess"+value.body.toString());
+                                }
+                              }).onError((error, stackTrace){
+                                if (kDebugMode) {
+                                  print("error$error");
+                                }
+                              }); 
+                            });
+}
   Future<void> getReferenceNumberFromSharedPreferences() async {
     var sharedPreferences = await SharedPreferences.getInstance();
     referenceNumber = sharedPreferences.getString('referenceNumber')??'';
@@ -333,11 +420,13 @@ class _HomeState extends State<Home> {
       localImageUrls = await getImageUrlsFromDatabase();
       print("Images are retrieved from the local database.");
     }
-
+  if(mounted)
+  {
     setState(() {
       flag = true;
       isLoading = false;
     });
+  }
   }
 
   Future<List<String>> getImageUrlsFromDatabase() async {
@@ -1816,6 +1905,11 @@ class _HomeState extends State<Home> {
                   MaterialButton(
                     minWidth: 40,
                     onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Home(),
+                          ));
                       setState(
                         () {
                           currentScreen = const Home();
@@ -1846,6 +1940,11 @@ class _HomeState extends State<Home> {
                   MaterialButton(
                     minWidth: 40,
                     onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Analytics(),
+                          ));
                       setState(
                         () {
                           currentScreen = const Analytics();
@@ -1876,6 +1975,11 @@ class _HomeState extends State<Home> {
                   MaterialButton(
                     minWidth: 40,
                     onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MyCard(),
+                          ));
                       setState(
                         () {
                           currentScreen = const MyCard();
@@ -1904,6 +2008,11 @@ class _HomeState extends State<Home> {
                   MaterialButton(
                     minWidth: 40,
                     onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Profile(),
+                          ));
                       setState(
                         () {
                           currentScreen = const Profile();

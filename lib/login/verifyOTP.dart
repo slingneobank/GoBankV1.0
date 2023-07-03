@@ -31,14 +31,14 @@ class _MyVerifyState extends State<MyVerify> {
       // check if user exists
       bool userExist = await searchForMobileNumber();
       if (userExist == true) {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  const Home(), //before routed to verifyOTP.dart
-            ),
-            (route) => false);
-      } else {
+      //   Navigator.pushAndRemoveUntil(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) =>
+      //             const Home(), //before routed to verifyOTP.dart
+      //       ),
+      //       (route) => false);
+      // } else {
         Navigator.push(
           context,
           MaterialPageRoute(

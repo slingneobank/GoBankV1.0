@@ -14,17 +14,25 @@ class minkycpage extends StatefulWidget {
 class _minkycpageState extends State<minkycpage> {
   bool isSelected = false;
   String responseMessage = '';
-
+  bool isLoading = false;
   Future<void> generateToken(String username, String apiKey) async {
     AuthController authController = AuthController();
-
+    setState(() {
+      isLoading = true;
+    });
     try {
+      Future.delayed(Duration(seconds: 2), () async{
       String? token = await authController.generateToken(username, apiKey);
-
+      
       setState(() {
         responseMessage = 'Token generated successfully. Refresh Token: $token';
       });
-      print(token);
+       setState(() {
+        isLoading = false;
+      });
+       print(token);
+    });
+     
       // Navigate to the next screen
       Navigator.push(
         context,
@@ -240,14 +248,19 @@ class _minkycpageState extends State<minkycpage> {
                             color: Colors.amber,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: const Center(
-                            child: Text(
-                              'Continue',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
+
+                          child: Center(
+                            child: isLoading
+                            ? CircularProgressIndicator()
+                              : Text(
+                                'Continue',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              
+
                             ),
                           ),
                         ),

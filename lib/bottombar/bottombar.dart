@@ -23,10 +23,10 @@ class _BottombarState extends State<Bottombar> {
   bool keyboardOpen = false;
 
   final List screens = [
-    const Home(),
-    const Analytics(),
-    const MyCard(),
-    const Profile(),
+   const  Home(),
+  const  Analytics(),
+   const   MyCard(),
+    const  Profile(),
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();

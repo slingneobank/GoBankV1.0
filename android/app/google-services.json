@@ -1,9 +1,7 @@
 {
   "project_info": {
     "project_number": "512733984729",
-
     "firebase_url": "https://slingcard-test-default-rtdb.firebaseio.com",
-
     "project_id": "slingcard-test",
     "storage_bucket": "slingcard-test.appspot.com"
   },
