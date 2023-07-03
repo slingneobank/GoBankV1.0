@@ -168,7 +168,7 @@ class _MyProfileState extends State<MyProfile> {
                 SizedBox(
                   height: height / 70,
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
@@ -212,7 +212,7 @@ class _MyProfileState extends State<MyProfile> {
                       color: Colors.grey[100],
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Center(
+                    child: const Center(
                         child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [

@@ -23,7 +23,7 @@ class _voucher_fingerState extends State<voucher_finger> {
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -48,7 +48,7 @@ class _voucher_fingerState extends State<voucher_finger> {
                   child: Container(
                     width: 150,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 195, 180, 212),
+                      color: const Color.fromARGB(255, 195, 180, 212),
                       borderRadius: BorderRadius.circular(15.0),
                     ),
                     child: ClipRRect(
@@ -61,7 +61,7 @@ class _voucher_fingerState extends State<voucher_finger> {
                             child: Container(
                               height: 80,
                               width: 80,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(15.0),
                                 ),
@@ -79,7 +79,7 @@ class _voucher_fingerState extends State<voucher_finger> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "$storename",
+                                  storename,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       
@@ -95,7 +95,7 @@ class _voucher_fingerState extends State<voucher_finger> {
                                       borderRadius: BorderRadius.circular(5)),
                                   child: Center(
                                     child: Text(
-                                      "${discount}%Off",
+                                      "$discount%Off",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: height / 50,
@@ -103,7 +103,7 @@ class _voucher_fingerState extends State<voucher_finger> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 15),
+                                const SizedBox(height: 15),
                                 Container(
                                   height: 40,
                                   width: 40,

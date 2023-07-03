@@ -10,8 +10,8 @@ class box extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: const Color.fromARGB(255, 0, 0, 0),
-          boxShadow: [
-            const BoxShadow(
+          boxShadow: const [
+            BoxShadow(
               color: Colors.white,
               blurRadius: 10,
               offset: Offset(0, 0),
@@ -30,7 +30,7 @@ class box extends StatelessWidget {
           children: [
             Expanded(
               flex: 1,
-              child: Container(
+              child: SizedBox(
                   height: 100,
                   width: 100,
                   // color: Colors.grey,
@@ -87,7 +87,7 @@ class box extends StatelessWidget {
                                       color: Colors.white,
                                       fontSize: height / 35)
                                     ),
-                                    SizedBox(height: 16),
+                                    const SizedBox(height: 16),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -122,7 +122,7 @@ class box extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    Divider(
+                                    const Divider(
                                       height: 1,
                                       thickness: 1,
                                       color: Colors.white,

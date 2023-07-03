@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:gobank/home/loan/personalloan_form.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
@@ -59,7 +58,7 @@ class _personalloanState extends State<personalloan> {
                           onTap: () {
                             Navigator.pop(context);
                           },
-                          child: Icon(Icons.arrow_back)),
+                          child: const Icon(Icons.arrow_back)),
                         SizedBox(
                         
                           child: Row(
@@ -73,7 +72,7 @@ class _personalloanState extends State<personalloan> {
                                   child: Icon(Icons.currency_rupee,color: Colors.white,size: 20,),
                                 ),
                               ),
-                              SizedBox(width: 5,),
+                              const SizedBox(width: 5,),
                               Text("Personal\nLoan",
                               overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
@@ -84,7 +83,7 @@ class _personalloanState extends State<personalloan> {
                             ],
                           ),
                         ),
-                        SizedBox()
+                        const SizedBox()
                       ],
                     ),
                   ),
@@ -119,7 +118,7 @@ class _personalloanState extends State<personalloan> {
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Color(0xff2C62DC),
+                  color: const Color(0xff2C62DC),
                   borderRadius: BorderRadius.circular(15)
                   ),
                   child:  Stack(
@@ -148,8 +147,8 @@ class _personalloanState extends State<personalloan> {
                                 decoration: BoxDecoration(
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Color.fromARGB(255, 26, 128, 171).withOpacity(0.2),
-                                      offset: Offset(0, 2),
+                                      color: const Color.fromARGB(255, 26, 128, 171).withOpacity(0.2),
+                                      offset: const Offset(0, 2),
                                       blurRadius: 4,
                                     ),
                                   ],
@@ -175,9 +174,9 @@ class _personalloanState extends State<personalloan> {
                                 child: Center(
                                   child: GridView.builder(
                                     shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
+                                    physics: const NeverScrollableScrollPhysics(),
                                     itemCount: loanicon.length,
-                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2,
                                       childAspectRatio: 4,
                                       mainAxisSpacing: 10,
@@ -204,20 +203,20 @@ class _personalloanState extends State<personalloan> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(),
+                const SizedBox(),
                   SizedBox(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 10,right: 10),
-                          child: Container(
+                          child: SizedBox(
                             height: 50,
                             width: width-20,
                             child: OutlinedButton(
                                 onPressed: () {
                                   // Add your onPressed logic here
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => personalloan_form(),));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const personalloan_form(),));
                                 },
                                 child: Text(
                                   'Get It Now',
@@ -238,7 +237,7 @@ class _personalloanState extends State<personalloan> {
                               ),
                           ),
                         ),
-                        SizedBox(height: 5,),
+                        const SizedBox(height: 5,),
                         SizedBox(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 20,right: 20),
@@ -276,7 +275,7 @@ class _personalloanState extends State<personalloan> {
                                         ),
                             ),
                           ),
-                        SizedBox(height: 20,),
+                        const SizedBox(height: 20,),
                       ],
                     ),
                   ),
@@ -297,14 +296,14 @@ class _personalloanState extends State<personalloan> {
                                           children: [
                                             CircleAvatar(
                                               radius: 25,
-                                              backgroundColor: Color.fromARGB(255, 195, 239, 237),
+                                              backgroundColor: const Color.fromARGB(255, 195, 239, 237),
                                               child: Image.asset(
                                                 loanicon,
                                                 height: 30,
                                                 fit: BoxFit.contain,
                                               ),
                                             ),
-                                            SizedBox(width: 10),
+                                            const SizedBox(width: 10),
                                             Text(
                                               loandetails,
                                               style: TextStyle(

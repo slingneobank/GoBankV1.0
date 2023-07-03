@@ -119,7 +119,7 @@ class _digitalcard_detailState extends State<digitalcard_detail> {
 
   Widget showLoadingScreen() {
     return Shimmer(
-      gradient: LinearGradient(
+      gradient: const LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
         colors: [
@@ -130,9 +130,9 @@ class _digitalcard_detailState extends State<digitalcard_detail> {
           Colors.grey,
         ],
       ),
-      period: Duration(seconds: 2),
+      period: const Duration(seconds: 2),
       child: ListTile(
-        leading: CircleAvatar(
+        leading: const CircleAvatar(
           radius: 25,
           backgroundColor: Colors.grey,
         ),
@@ -164,14 +164,14 @@ class _digitalcard_detailState extends State<digitalcard_detail> {
           children: [
             Text(
               'Card Number: ${cardData['maskedCardNumber']}',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
               ),
             ),
             Text(
               'Account Number: ${cardData['accountNumber']}',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
               ),
@@ -179,35 +179,35 @@ class _digitalcard_detailState extends State<digitalcard_detail> {
             // Display other card details as needed
             Text(
               'Card Scheme ID: ${cardData['cardSchemeId']}',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
               ),
             ),
             Text(
               'Card Variant: ${cardData['cardVariant']}',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
               ),
             ),
             Text(
               'Issued On: ${cardData['issuedOn']}',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
               ),
             ),
             Text(
               'Activated On: ${cardData['activatedOn']}',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
               ),
             ),
             Text(
               'Expiry Date: ${cardData['expiryDate']}',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
               ),

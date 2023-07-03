@@ -8,6 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class cardschema extends StatefulWidget {
+  const cardschema({Key? key}) : super(key: key);
+
   @override
   _cardschemaState createState() => _cardschemaState();
 }
@@ -66,7 +68,7 @@ class _cardschemaState extends State<cardschema> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Card Schemes'),
+        title: const Text('Card Schemes'),
       ),
       body: Center(
         child: Column(
@@ -74,15 +76,15 @@ class _cardschemaState extends State<cardschema> {
           children: [
             OutlinedButton(
               onPressed: getCardSchemes,
-              child: Text('Generate Card Schemes'),
+              child: const Text('Generate Card Schemes'),
             ),
             OutlinedButton(
               onPressed: () {
-                navigator!.push(MaterialPageRoute(builder: (context) => digitalcardissuance(),));
+                navigator!.push(MaterialPageRoute(builder: (context) => const digitalcardissuance(),));
               },
-              child: Text('Next to cardschemaid'),
+              child: const Text('Next to cardschemaid'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Expanded(child: Text('Response Message: $responseMessage')),
             
           ],

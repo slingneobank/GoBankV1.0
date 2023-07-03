@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:gobank/slingsaverclub/offerwidgets.dart';
 
 class OfferDetailsPage extends StatefulWidget {
@@ -41,55 +40,55 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
       // Customize UI for image1.jpg
       return Container(
         // Custom UI for image1.jpg
-        child: offer1widget(),
+        child: const offer1widget(),
       );
     } else if (widget.currentindex==1) {
       // Customize UI for image2.jpg
       return Container(
         // Custom UI for image2.jpg
-        child:offer2widget(),
+        child:const offer2widget(),
       );
     }
     else if (widget.currentindex==2) {
       // Customize UI for image2.jpg
       return Container(
         // Custom UI for image2.jpg
-        child: offer3widget(),
+        child: const offer3widget(),
       );
     }
     else if (widget.currentindex==3) {
       // Customize UI for image2.jpg
       return Container(
         // Custom UI for image2.jpg
-        child: offer4widget(),
+        child: const offer4widget(),
       );
     }
     else if (widget.currentindex==4) {
       // Customize UI for image2.jpg
       return Container(
         // Custom UI for image2.jpg
-        child: offer5widget(),
+        child: const offer5widget(),
       );
     }
     else if (widget.currentindex==5) {
       // Customize UI for image2.jpg
       return Container(
         // Custom UI for image2.jpg
-        child: offer6widget(),
+        child: const offer6widget(),
       );
     }
     else if (widget.currentindex==6) {
       // Customize UI for image2.jpg
       return Container(
         // Custom UI for image2.jpg
-        child: offer7widget(),
+        child: const offer7widget(),
       );
     }
      else {
       // Default UI for other images
       return Container(
         // Default UI
-        child: Center(child: Text('Image Details')),
+        child: const Center(child: Text('Image Details')),
       );
     }
   }

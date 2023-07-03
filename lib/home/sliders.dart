@@ -83,7 +83,7 @@ class _CouponSlidersState extends State<CouponSliders> {
     });
   }
 
-  List<String> _imageUrls = [];
+  final List<String> _imageUrls = [];
 
   final homeCtrl = Get.find<HomeCtrl>();
 

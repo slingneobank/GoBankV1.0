@@ -10,13 +10,13 @@ class Rating extends StatefulWidget {
 }
 
 class _RatingState extends State<Rating> {
-  var _ratingPageController = PageController();
+  final _ratingPageController = PageController();
   var _starPosition = 200.0;
   var _rating = 0;
   late String comment;
   var _selectedChipIndex = -1;
   var _isMoreDetailActive = false;
-  var _moreDetailFocusNode = FocusNode();
+  final _moreDetailFocusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +26,7 @@ class _RatingState extends State<Rating> {
       clipBehavior: Clip.antiAlias,
       child: Stack(
         children: [
-          Container(
+          SizedBox(
             height: max(300, MediaQuery.of(context).size.height * 0.3),
             child: PageView(
               controller: _ratingPageController,
@@ -97,7 +97,7 @@ class _RatingState extends State<Rating> {
                       _isMoreDetailActive = false;
                     });
                   },
-                  child: Icon(Icons.arrow_back_ios),
+                  child: const Icon(Icons.arrow_back_ios),
                 )),
         ],
       ),

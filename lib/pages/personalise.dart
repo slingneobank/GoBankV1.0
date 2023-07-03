@@ -4,10 +4,9 @@ import 'package:gobank/pages/checkout.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../utils/media.dart';
 
 class Personalise extends StatefulWidget {
-  Personalise({Key? key}) : super(key: key);
+  const Personalise({Key? key}) : super(key: key);
 
   @override
   State<Personalise> createState() => _PersonaliseState();
@@ -56,7 +55,7 @@ class _PersonaliseState extends State<Personalise> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
+              SizedBox(
                 height: h * 0.1,
                 width: double.infinity,
                 child: Center(
@@ -69,7 +68,7 @@ class _PersonaliseState extends State<Personalise> {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: h * .5,
                 child: Stack(
                   alignment: Alignment.center,
@@ -79,14 +78,14 @@ class _PersonaliseState extends State<Personalise> {
                     ),
                     Positioned(
                       child: Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.black.withOpacity(0.3),
                         ),
                         child: Text(
-                          '$enteredText',
-                          style: TextStyle(
+                          enteredText,
+                          style: const TextStyle(
                             fontSize: 25,
                             color: Colors.white,
                           ),
@@ -99,8 +98,8 @@ class _PersonaliseState extends State<Personalise> {
                 ),
               ),
 
-              SizedBox(height: 70,),
-              Container(
+              const SizedBox(height: 70,),
+              SizedBox(
                 //padding: EdgeInsets.only(top: 20),
                 height: h * 0.06,
                 width: 230,
@@ -118,24 +117,24 @@ class _PersonaliseState extends State<Personalise> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 15),
                           child: Icon(Icons.person, color: Colors.white),
                         ), // Icon widget
-                        SizedBox(width: 2), // Add some spacing between the icon and the TextField
-                        VerticalDivider(color: Colors.white60,indent: 10,endIndent: 10,thickness: 1), // Divider widget
-                        SizedBox(width: 2), // Add some spacing between the divider and the TextField
+                        const SizedBox(width: 2), // Add some spacing between the icon and the TextField
+                        const VerticalDivider(color: Colors.white60,indent: 10,endIndent: 10,thickness: 1), // Divider widget
+                        const SizedBox(width: 2), // Add some spacing between the divider and the TextField
                         Expanded(
                           child: TextField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: "Enter Name",
-                              hintStyle: const TextStyle(color: Colors.white),
+                              hintStyle: TextStyle(color: Colors.white),
                               filled: true,
                               fillColor: Colors.transparent, // Set the fill color of the TextField to transparent
                               border: InputBorder.none, // Remove the border of the TextField
                               contentPadding: EdgeInsets.symmetric(horizontal: 10), // Adjust the padding as per your requirement
                             ),
-                            style: TextStyle(color: Colors.white), // Adjust the text color as per your requirement
+                            style: const TextStyle(color: Colors.white), // Adjust the text color as per your requirement
                             onChanged: (value) {
                               setState(() {
                                 enteredText = value;
@@ -149,8 +148,8 @@ class _PersonaliseState extends State<Personalise> {
                 ),
               ),
 
-              SizedBox(height: 20,),
-              Container(
+              const SizedBox(height: 20,),
+              SizedBox(
                // margin: EdgeInsets.only(top: 20),
                 height: h * 0.06,
                 width: 230,

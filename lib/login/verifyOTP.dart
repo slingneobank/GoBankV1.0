@@ -42,7 +42,7 @@ class _MyVerifyState extends State<MyVerify> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>  minkycpage(), // Home
+            builder: (context) =>  const minkycpage(), // Home
           ),
         );
       }

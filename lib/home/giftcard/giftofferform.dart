@@ -100,7 +100,7 @@ class _giftofferformState extends State<giftofferform> {
               color: Colors.black,
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   Padding(
@@ -109,13 +109,13 @@ class _giftofferformState extends State<giftofferform> {
                       children: [
                         GestureDetector(
                           onTap: () => Navigator.pop(context),
-                          child: Icon(
+                          child: const Icon(
                             Icons.arrow_back_ios_new,
                             size: 20,
                             color: Colors.white,
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Text(
                           "TnC",
                           style: TextStyle(
@@ -140,7 +140,7 @@ class _giftofferformState extends State<giftofferform> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 10,),
+                            const SizedBox(height: 10,),
                             Row(
                               children: [
                                 Container(
@@ -166,7 +166,7 @@ class _giftofferformState extends State<giftofferform> {
                                           ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 20,
                                 ),
                                 SizedBox(
@@ -180,7 +180,7 @@ class _giftofferformState extends State<giftofferform> {
                                             fontSize: height / 45,
                                             fontFamily: 'Gilroy medium'),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 5,
                                       ),
                                       Text(
@@ -195,7 +195,7 @@ class _giftofferformState extends State<giftofferform> {
                                 )
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Text(
@@ -205,7 +205,7 @@ class _giftofferformState extends State<giftofferform> {
                                   fontSize: height / 50,
                                   fontFamily: 'Gilroy medium'),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Row(
@@ -220,8 +220,8 @@ class _giftofferformState extends State<giftofferform> {
                                   child: Center(
                                     child: Text(
                                       selectedPriceIndex != -1
-                                      ? "${pricelistindex[selectedPriceIndex]}"
-                                      : "${pricelistindex[0]}",
+                                      ? pricelistindex[selectedPriceIndex]
+                                      : pricelistindex[0],
                                     style: TextStyle(
                                               color: Colors.white,
                                               fontSize: height / 30,
@@ -229,7 +229,7 @@ class _giftofferformState extends State<giftofferform> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 40,
                                 ),
                                 SizedBox(
@@ -255,10 +255,10 @@ class _giftofferformState extends State<giftofferform> {
                                 )
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
-                            Container(
+                            SizedBox(
                               height: 35,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
@@ -297,8 +297,8 @@ class _giftofferformState extends State<giftofferform> {
                                 },
                               ),
                             ),
-                            SizedBox(height: 20,),
-                            Container(
+                            const SizedBox(height: 20,),
+                            SizedBox(
                                 height: 130,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
@@ -319,14 +319,14 @@ class _giftofferformState extends State<giftofferform> {
                                         children: List.generate(rowIcons.length, (index) {
                                           String icon = rowIcons[index];
                                           String desc = rowDescs[index];
-                                          return Container(
+                                          return SizedBox(
                                             width: MediaQuery.of(context).size.width / 3 - 20,
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 CircleAvatar(
                                                   radius: 30,
-                                                  backgroundColor: Color.fromARGB(255, 43, 42, 42),
+                                                  backgroundColor: const Color.fromARGB(255, 43, 42, 42),
                                                   child: SizedBox(
                                                     height: 30,
                                                     child: Image.asset(
@@ -335,7 +335,7 @@ class _giftofferformState extends State<giftofferform> {
                                                     ),
                                                   ),
                                                 ),
-                                                SizedBox(height: 10,),
+                                                const SizedBox(height: 10,),
                                                 SizedBox(
                                                   height: height / 30 * 2,
                                                   child: Align(
@@ -360,12 +360,12 @@ class _giftofferformState extends State<giftofferform> {
                                   },
                                 ),
                               ),
-                            SizedBox(height: 10,),
+                            const SizedBox(height: 10,),
                             Container(
                               height: 40,
                               width: MediaQuery.of(context).size.width - 40,
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 43, 42, 42),
+                                color: const Color.fromARGB(255, 43, 42, 42),
                                 borderRadius: BorderRadius.circular(25),
                               ),
                               child: Padding(
@@ -390,7 +390,7 @@ class _giftofferformState extends State<giftofferform> {
                                 ),
                               ),
                             ),
-                           SizedBox(height: 20,),
+                           const SizedBox(height: 20,),
                            Text(
                                 "How to save with Slingstore?",
                               style: TextStyle(
@@ -399,8 +399,8 @@ class _giftofferformState extends State<giftofferform> {
                                   fontFamily: 'Gilroy bold',
                                    ),
                                ),
-                              SizedBox(height: 20,),
-                               Container(
+                              const SizedBox(height: 20,),
+                               SizedBox(
                                 height: 130,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
@@ -421,14 +421,14 @@ class _giftofferformState extends State<giftofferform> {
                                         children: List.generate(rowIcons.length, (index) {
                                           String icon = rowIcons[index];
                                           String desc = rowDescs[index];
-                                          return Container(
+                                          return SizedBox(
                                             width: MediaQuery.of(context).size.width / 3 - 20,
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 CircleAvatar(
                                                   radius: 30,
-                                                  backgroundColor: Color.fromARGB(255, 43, 42, 42),
+                                                  backgroundColor: const Color.fromARGB(255, 43, 42, 42),
                                                   child: SizedBox(
                                                     height: 30,
                                                     child: Image.asset(
@@ -437,7 +437,7 @@ class _giftofferformState extends State<giftofferform> {
                                                     ),
                                                   ),
                                                 ),
-                                                SizedBox(height: 10,),
+                                                const SizedBox(height: 10,),
                                                 SizedBox(
                                                   height: height / 30 * 2,
                                                   child: Align(
@@ -464,13 +464,13 @@ class _giftofferformState extends State<giftofferform> {
                               ),
                             //SizedBox(height: 10,),
                           const Padding(
-                              padding: const EdgeInsets.only(left: 10,right: 10),
+                              padding: EdgeInsets.only(left: 10,right: 10),
                               child: Divider(
                                 color: Colors.white54,
                                 
                               ),
                             ),
-                            SizedBox(height: 20,),
+                            const SizedBox(height: 20,),
                        
                     
                                 Text(
@@ -481,7 +481,7 @@ class _giftofferformState extends State<giftofferform> {
                                     fontFamily: 'Gilroy bold',
                                   ),
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 Theme(
                                     data: Theme.of(context).copyWith(
                                       unselectedWidgetColor: Colors.white, // Border color for unselected radio button
@@ -515,7 +515,7 @@ class _giftofferformState extends State<giftofferform> {
                                             },
                                           ),
                                         ),
-                                        SizedBox(width: 20,),
+                                        const SizedBox(width: 20,),
                                         Text(
                                           'Myself',
                                           style: TextStyle(
@@ -524,7 +524,7 @@ class _giftofferformState extends State<giftofferform> {
                                             fontFamily: 'Gilroy medium',
                                           ),
                                         ),
-                                        SizedBox(width: 50,),
+                                        const SizedBox(width: 50,),
                                         Container(
                                           height: 20,
                                           width: 20,
@@ -542,7 +542,7 @@ class _giftofferformState extends State<giftofferform> {
                                             },
                                           ),
                                         ),
-                                        SizedBox(width: 20,),
+                                        const SizedBox(width: 20,),
                                         Text(
                                           'Someone',
                                           style: TextStyle(
@@ -558,10 +558,10 @@ class _giftofferformState extends State<giftofferform> {
                                 if (isSomeoneSelected)
                                   Column(
                                     children: [
-                                      SizedBox(height: 20),
+                                      const SizedBox(height: 20),
                                       Container(
-                                        padding: EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: const BoxDecoration(
                                           color: Colors.black,
                                          
                                         ),
@@ -576,7 +576,7 @@ class _giftofferformState extends State<giftofferform> {
                                                 fontFamily: 'Gilroy bold',
                                               ),
                                             ),
-                                            SizedBox(height: 10),
+                                            const SizedBox(height: 10),
                                             Row(
                                               children: [
                                                 Container(
@@ -597,11 +597,11 @@ class _giftofferformState extends State<giftofferform> {
                                                           fontSize: height / 45,
                                                         ),
                                                       ),
-                                                      style: TextStyle(color: Colors.black),
+                                                      style: const TextStyle(color: Colors.black),
                                                     ),
                                                   ),
                                                 ),
-                                                SizedBox(width: 10),
+                                                const SizedBox(width: 10),
                                                 Container(
                                                   width: 50,
                                                   height: 50,
@@ -630,7 +630,7 @@ class _giftofferformState extends State<giftofferform> {
                                             //   style: TextStyle(color: Colors.white),
                                               
                                             // ),
-                                            SizedBox(height: 10),
+                                            const SizedBox(height: 10),
                                             // TextField(
                                             //   decoration: InputDecoration(
                                             //     labelText: 'Email',
@@ -665,11 +665,11 @@ class _giftofferformState extends State<giftofferform> {
                                                           fontSize: height / 45,
                                                         ),
                                                       ),
-                                                      style: TextStyle(color: Colors.black),
+                                                      style: const TextStyle(color: Colors.black),
                                                     ),
                                                   ),
                                                 ),
-                                            SizedBox(height: 10),
+                                            const SizedBox(height: 10),
                                             // TextField(
                                             //   decoration: InputDecoration(
                                             //     labelText: 'Phone number',
@@ -704,7 +704,7 @@ class _giftofferformState extends State<giftofferform> {
                                                           fontSize: height / 45,
                                                         ),
                                                       ),
-                                                      style: TextStyle(color: Colors.black),
+                                                      style: const TextStyle(color: Colors.black),
                                                     ),
                                                   ),
                                                 ),
@@ -713,7 +713,7 @@ class _giftofferformState extends State<giftofferform> {
                                       ),
                                     ],
                                   ),
-                                SizedBox(height: 20,),
+                                const SizedBox(height: 20,),
                                Text(
                                   "Payment Details",
                                   style: TextStyle(
@@ -722,7 +722,7 @@ class _giftofferformState extends State<giftofferform> {
                                     fontFamily: 'Gilroy bold',
                                   ),
                                 ),
-                                SizedBox(height: 20,),
+                                const SizedBox(height: 20,),
                             SizedBox(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -747,7 +747,7 @@ class _giftofferformState extends State<giftofferform> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 10,),
+                            const SizedBox(height: 10,),
                             SizedBox(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -771,9 +771,9 @@ class _giftofferformState extends State<giftofferform> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 20,),
+                            const SizedBox(height: 20,),
                             const Padding(
-                              padding: const EdgeInsets.only(left: 10,right: 10),
+                              padding: EdgeInsets.only(left: 10,right: 10),
                               child: Divider(
                                 color: Colors.white54,
                                 
@@ -800,7 +800,7 @@ class _giftofferformState extends State<giftofferform> {
                   Container(
                     height: 30,
                     width: width,
-                    color: Color.fromARGB(255, 225, 205, 151),
+                    color: const Color.fromARGB(255, 225, 205, 151),
                     child: Center(
                       child: Text(
                             "🔥5000+ ${widget.storename} saving vouchers bought recently",
@@ -811,7 +811,7 @@ class _giftofferformState extends State<giftofferform> {
                                   ),
                     ),
                   ),
-                  SizedBox(height: 30,),
+                  const SizedBox(height: 30,),
                   Padding(
                     padding: const EdgeInsets.only(left: 20,right: 20),
                     child: Row(
@@ -821,7 +821,7 @@ class _giftofferformState extends State<giftofferform> {
                           height:  height * 0.06,
                           width: width*0.2,
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 127, 219, 152),
+                            color: const Color.fromARGB(255, 127, 219, 152),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(
@@ -837,7 +837,7 @@ class _giftofferformState extends State<giftofferform> {
                           ),
                         ),
                         //SizedBox(width: width*0.1),
-                        Container(
+                        SizedBox(
                           height: height * 0.06,
                           width: width*0.6,
                           child: OutlinedButton(onPressed: () {
@@ -868,7 +868,7 @@ class _giftofferformState extends State<giftofferform> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                 ],
               ),
             ),
@@ -889,7 +889,7 @@ class _giftofferformState extends State<giftofferform> {
       return Container(
         height: MediaQuery.of(context).size.height * 0.70, // Adjust the height as per your requirement
        
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
            color: Colors.white,
           borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20))
         ),
@@ -900,7 +900,7 @@ class _giftofferformState extends State<giftofferform> {
                 children: [
                   InkWell(
                     onTap: () => Navigator.pop(context),
-                    child: Icon(
+                    child: const Icon(
                       Icons.expand_more,
                       size: 25,
                     ),
@@ -908,7 +908,7 @@ class _giftofferformState extends State<giftofferform> {
                 ],
               ),
             ),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             Padding(
               padding: const EdgeInsets.only(left: 20,right: 10),
               child: Row(
@@ -918,7 +918,7 @@ class _giftofferformState extends State<giftofferform> {
                     width: 50,
                     child: Image.asset("images/wallet.png"),
                   ),
-                  SizedBox(width: 20,),
+                  const SizedBox(width: 20,),
                   Expanded(
                     child: Text(
                         "Your Wallet seems low on balance quick recharge now",
@@ -932,7 +932,7 @@ class _giftofferformState extends State<giftofferform> {
                 ],
               ),
             ),
-            SizedBox(height: 30,),
+            const SizedBox(height: 30,),
             Text(
               "Add money to your Account",
               style: TextStyle(
@@ -941,10 +941,10 @@ class _giftofferformState extends State<giftofferform> {
                 fontSize: height / 45,
               ),
             ),
-            SizedBox(height: 30,),
+            const SizedBox(height: 30,),
             Padding(
               padding: const EdgeInsets.only(left: 20),
-              child: Container(
+              child: SizedBox(
                 height: 35,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
@@ -985,7 +985,7 @@ class _giftofferformState extends State<giftofferform> {
                 ),
               ),
             ),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             Text(
               selectedwalletIndex != -1
                   ? "${walletlistindex[selectedwalletIndex]}"
@@ -1003,7 +1003,7 @@ class _giftofferformState extends State<giftofferform> {
               indent: 120,
               endIndent: 120,
             ),
-            SizedBox(height: 30,),
+            const SizedBox(height: 30,),
             Padding(
               padding: const EdgeInsets.only(left: 20,right: 20),
               child: Text(
@@ -1026,7 +1026,7 @@ class _giftofferformState extends State<giftofferform> {
                 ),
               ),
             ),
-            SizedBox(height: 50,),
+            const SizedBox(height: 50,),
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Column(
@@ -1035,7 +1035,7 @@ class _giftofferformState extends State<giftofferform> {
                     onPressed: () {},
                     style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.black,
-                      padding: EdgeInsets.symmetric(vertical: 13, horizontal: 25),
+                      padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 25),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -1049,7 +1049,7 @@ class _giftofferformState extends State<giftofferform> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   const Divider(

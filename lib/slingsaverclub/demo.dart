@@ -2,6 +2,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class ListViewWithSideIndicator1 extends StatefulWidget {
+  const ListViewWithSideIndicator1({Key? key}) : super(key: key);
+
   @override
   _ListViewWithSideIndicator1State createState() =>
       _ListViewWithSideIndicator1State();
@@ -69,8 +71,8 @@ class _ListViewWithSideIndicator1State extends State<ListViewWithSideIndicator1>
 
   void _scrollListener() {
     final screenWidth = MediaQuery.of(context).size.width;
-    final containerWidth = 150.0; // Updated container width
-    final itemWidth = containerWidth + 8; // Adjusted item width including margin
+    const containerWidth = 150.0; // Updated container width
+    const itemWidth = containerWidth + 8; // Adjusted item width including margin
     final index = (_scrollController.offset / itemWidth).round();
     if (_currentIndex != index) {
       setState(() {
@@ -84,7 +86,7 @@ class _ListViewWithSideIndicator1State extends State<ListViewWithSideIndicator1>
       _currentIndex = index;
       _scrollController.animateTo(
         index * 158.0, // Updated container width
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
     });
@@ -95,7 +97,7 @@ class _ListViewWithSideIndicator1State extends State<ListViewWithSideIndicator1>
     return Scaffold(
       body: Column(
         children: [
-         Container(
+         SizedBox(
                 height: 200,
                 child: flag
                     ? 
@@ -110,7 +112,7 @@ class _ListViewWithSideIndicator1State extends State<ListViewWithSideIndicator1>
                   
                   onTap: () => _changeIndex(index),
                   child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                               child: Row(
                                 children: [
                                   Container(
@@ -127,16 +129,16 @@ class _ListViewWithSideIndicator1State extends State<ListViewWithSideIndicator1>
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 10),
+                                  const SizedBox(width: 10),
                                 ],
                               ),
                             ),
                 );
               },
             )
-            : Center(child: CircularProgressIndicator()),
+            : const Center(child: CircularProgressIndicator()),
           ),
-          Container(
+          SizedBox(
                 height: 5,
                 child: Center(
                   child: Row(

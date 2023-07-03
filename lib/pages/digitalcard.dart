@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gobank/pages/digitalcard_detail.dart';
-import 'package:gobank/pages/history.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -12,6 +11,8 @@ import 'package:uuid/uuid.dart';
 import '../utils/media.dart';
  late ColorNotifire notifire;
 class digitalcard extends StatefulWidget {
+  const digitalcard({Key? key}) : super(key: key);
+
   @override
   _digitalcardState createState() => _digitalcardState();
 }
@@ -36,7 +37,7 @@ class _digitalcardState extends State<digitalcard> {
     getCardSchemeId();
      notifire = ColorNotifire(); // Initialize the notifire variable
     getdarkmodepreviousstate();
-   String uniqueNumber = Uuid().v4();
+   String uniqueNumber = const Uuid().v4();
    externalCardIdentifierController.text = uniqueNumber;
     externalRequestIdController.text = uniqueNumber;
   }
@@ -130,7 +131,7 @@ Future<void> createDigitalCardOrder() async {
       });
 
       navigator!.push(
-        MaterialPageRoute(builder: (context) => digitalcard_detail()),
+        MaterialPageRoute(builder: (context) => const digitalcard_detail()),
       );
     } else {
       print('API Request Failed with Status Code: ${response.statusCode}');
@@ -176,7 +177,7 @@ Future<void> createDigitalCardOrder() async {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                   Form(
                   key: _formKey,
                   child: Padding(
@@ -195,14 +196,14 @@ Future<void> createDigitalCardOrder() async {
                             hintStyle: TextStyle(fontFamily: "Gilroy medium",
                             color: Colors.white60,
                             fontSize: height / 45),
-                            enabledBorder: UnderlineInputBorder(
+                            enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white60),
                           ),
-                          focusedBorder: UnderlineInputBorder(
+                          focusedBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white60),
                           ),
                         ),
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Please enter a cardSchemeID';
@@ -222,14 +223,14 @@ Future<void> createDigitalCardOrder() async {
                           hintStyle: TextStyle(fontFamily: "Gilroy medium",
                             color: Colors.white60,
                             fontSize: height / 45),
-                            enabledBorder: UnderlineInputBorder(
+                            enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white60),
                           ),
-                          focusedBorder: UnderlineInputBorder(
+                          focusedBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white60),
                           ),
                         ),
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Please enter a extrenalRequestID';
@@ -250,14 +251,14 @@ Future<void> createDigitalCardOrder() async {
                           hintStyle: TextStyle(fontFamily: "Gilroy medium",
                             color: Colors.white60,
                             fontSize: height / 45),
-                            enabledBorder: UnderlineInputBorder(
+                            enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white60),
                           ),
-                          focusedBorder: UnderlineInputBorder(
+                          focusedBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white60),
                           ),
                         ),
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Please enter a ExternalCardIdentifier';
@@ -276,14 +277,14 @@ Future<void> createDigitalCardOrder() async {
                             hintStyle: TextStyle(fontFamily: "Gilroy medium",
                             color: Colors.white60,
                             fontSize: height / 45),
-                          enabledBorder: UnderlineInputBorder(
+                          enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white60),
                           ),
-                          focusedBorder: UnderlineInputBorder(
+                          focusedBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white60),
                           ),
                         ),
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Please enter a Amount';
@@ -302,14 +303,14 @@ Future<void> createDigitalCardOrder() async {
                             hintStyle: TextStyle(fontFamily: "Gilroy medium",
                             color: Colors.white60,
                             fontSize: height / 45),
-                            enabledBorder: UnderlineInputBorder(
+                            enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white60),
                           ),
-                          focusedBorder: UnderlineInputBorder(
+                          focusedBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white60),
                           ),
                         ),
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                           
                           validator: (value) {
                             if (value!.isEmpty) {
@@ -329,14 +330,14 @@ Future<void> createDigitalCardOrder() async {
                             hintStyle: TextStyle(fontFamily: "Gilroy medium",
                             color: Colors.white60,
                             fontSize: height / 45),
-                            enabledBorder: UnderlineInputBorder(
+                            enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white60),
                           ),
-                          focusedBorder: UnderlineInputBorder(
+                          focusedBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white60),
                           ),
                         ),
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                           
                           validator: (value) {
                             if (value!.isEmpty) {
@@ -357,14 +358,14 @@ Future<void> createDigitalCardOrder() async {
                             hintStyle: TextStyle(fontFamily: "Gilroy medium",
                             color: Colors.white60,
                             fontSize: height / 45),
-                            enabledBorder: UnderlineInputBorder(
+                            enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white60),
                           ),
-                          focusedBorder: UnderlineInputBorder(
+                          focusedBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white60),
                           ),
                         ),
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Please enter a Your name';
@@ -385,14 +386,14 @@ Future<void> createDigitalCardOrder() async {
                             hintStyle: TextStyle(fontFamily: "Gilroy medium",
                             color: Colors.white60,
                             fontSize: height / 45),
-                            enabledBorder: UnderlineInputBorder(
+                            enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white60),
                           ),
-                          focusedBorder: UnderlineInputBorder(
+                          focusedBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white60),
                           ),
                         ),
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Please enter a Email';
@@ -400,10 +401,10 @@ Future<void> createDigitalCardOrder() async {
                             return null;
                           },
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Padding(
                           padding: const EdgeInsets.only(left: 20,right: 20),
-                          child: Container(
+                          child: SizedBox(
                             height: 40,
                             width: width,
                             child: OutlinedButton(
@@ -426,7 +427,7 @@ Future<void> createDigitalCardOrder() async {
                             ),
                           ),
                         ),
-                      SizedBox(height: 20,),
+                      const SizedBox(height: 20,),
                       ],
                     ),
                   ),

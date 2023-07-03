@@ -5,10 +5,12 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:gobank/home/NotificationServices.dart';
 import 'package:gobank/home/home.dart';
+
 import 'package:gobank/login/auth_controller.dart';
 import 'package:gobank/verification/verificationdone.dart';
 import 'package:intl/intl.dart';
@@ -20,7 +22,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class minnativekycdetails extends StatefulWidget {
   //String storekycid;
-   minnativekycdetails({Key? key,
+   const minnativekycdetails({Key? key,
    // required this.storekycid
     }) : super(key: key);
 
@@ -112,17 +114,17 @@ String _dialogMessage = '';
         //     color: Colors.black,
         //   ),
         // ),
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(
+        title: const Text(
           'KYC details',
           style: TextStyle(color: Colors.black),
         ),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.card_giftcard,
               color: Colors.black,
             ),
@@ -135,22 +137,22 @@ String _dialogMessage = '';
               constraints.maxHeight < MediaQuery.of(context).size.height;
           return SingleChildScrollView(
             physics: _hasContentOverflow
-                ? AlwaysScrollableScrollPhysics()
-                : NeverScrollableScrollPhysics(),
+                ? const AlwaysScrollableScrollPhysics()
+                : const NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(20, 10, 10, 30),
-            child: Container(
+            child: SizedBox(
               height: MediaQuery.of(context).size.height, // Set a finite height
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'Enter details carefully',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     textAlign: TextAlign.center,
                   ),
                   SingleChildScrollView(
                       child: Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: LayoutBuilder(
                           builder: (context, constraints) {
                             return Column(
@@ -185,7 +187,7 @@ String _dialogMessage = '';
                                 //   ),
                                 // ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 4.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 4.0),
                                   child: Container(
                                     height: 50.0,
                                     decoration: BoxDecoration(
@@ -193,10 +195,10 @@ String _dialogMessage = '';
                                       borderRadius: BorderRadius.circular(8.0),
                                     ),
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
                                       child: TextFormField(
                                         controller: _fullNameController,
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                           hintText: 'Full Name',
                                           contentPadding:
                                               EdgeInsets.only(top: 12.0, bottom: 8.0),
@@ -210,9 +212,9 @@ String _dialogMessage = '';
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 8.0),
+                                const SizedBox(height: 8.0),
                                  Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 4.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 4.0),
                                   child: Row(
                                     children: [
                                       Expanded(
@@ -223,7 +225,7 @@ String _dialogMessage = '';
                                             borderRadius: BorderRadius.circular(8.0),
                                           ),
                                           child: Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
                                             child: DropdownButton<int>(
                                               value: selectedDocumentType,
                                               onChanged: (value) {
@@ -231,7 +233,7 @@ String _dialogMessage = '';
                                                   selectedDocumentType = value!;
                                                 });
                                               },
-                                              items: [
+                                              items: const [
                                                 DropdownMenuItem<int>(
                                                   value: 2,
                                                   child: Text('Pan Card'),
@@ -253,7 +255,7 @@ String _dialogMessage = '';
                                           ),
                                         ),
                                       ),
-                                      SizedBox(width: 8.0),
+                                      const SizedBox(width: 8.0),
                                       Expanded(
                                         child: Container(
                                           height: 50.0,
@@ -263,10 +265,10 @@ String _dialogMessage = '';
                                             
                                           ),
                                           child: Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
                                             child: TextFormField(
                                             controller: documentNumberController,
-                                            decoration: InputDecoration(
+                                            decoration: const InputDecoration(
                                             hintText: 'Document number',
                                             contentPadding:
                                                 EdgeInsets.only(top: 12.0, bottom: 8.0),
@@ -279,9 +281,9 @@ String _dialogMessage = '';
                                     ],
                                   ),
                                 ),
-                                SizedBox(height: 8.0),
+                                const SizedBox(height: 8.0),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 4.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 4.0),
                                   child: Row(
                                     children: [
                                       Expanded(
@@ -292,7 +294,7 @@ String _dialogMessage = '';
                                             borderRadius: BorderRadius.circular(8.0),
                                           ),
                                           child: Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
                                             child: GestureDetector(
                                               onTap: () {
                                                 showDatePicker(
@@ -309,8 +311,8 @@ String _dialogMessage = '';
                                               },
                                               child: Row(
                                                 children: [
-                                                  Icon(Icons.calendar_today),
-                                                  SizedBox(width: 8.0),
+                                                  const Icon(Icons.calendar_today),
+                                                  const SizedBox(width: 8.0),
                                                   Text(
                                                     _selectedDate != null
                                                         ? _selectedDate.toString()
@@ -323,7 +325,7 @@ String _dialogMessage = '';
                                           ),
                                         ),
                                       ),
-                                      SizedBox(width: 8.0),
+                                      const SizedBox(width: 8.0),
                                       Expanded(
                                         child: Container(
                                           height: 50.0,
@@ -332,14 +334,14 @@ String _dialogMessage = '';
                                             borderRadius: BorderRadius.circular(8.0),
                                           ),
                                           child: Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
                                             child: DropdownButtonFormField<String>(
-                                              decoration: InputDecoration(
+                                              decoration: const InputDecoration(
                                                 hintText: 'Select Gender',
                                                 border: InputBorder.none,
                                               ),
                                               value: _selectedGender,
-                                              items: [
+                                              items: const [
                                                 DropdownMenuItem(
                                                   value: 'Male',
                                                   child: Text('Male'),
@@ -359,9 +361,9 @@ String _dialogMessage = '';
                                     ],
                                   ),
                                 ),
-                                SizedBox(height: 16.0),
+                                const SizedBox(height: 16.0),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 4.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 4.0),
                                   child: Container(
                                     height: 50.0,
                                     decoration: BoxDecoration(
@@ -369,10 +371,10 @@ String _dialogMessage = '';
                                       borderRadius: BorderRadius.circular(8.0),
                                     ),
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
                                       child: TextFormField(
                                         controller: _addLine1Controller,
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                           hintText: 'Address Line 1',
                                           border: InputBorder.none,
                                         ),
@@ -384,7 +386,7 @@ String _dialogMessage = '';
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 4.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 4.0),
                                   child: Container(
                                     height: 50.0,
                                     decoration: BoxDecoration(
@@ -392,10 +394,10 @@ String _dialogMessage = '';
                                       borderRadius: BorderRadius.circular(8.0),
                                     ),
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
                                       child: TextFormField(
                                         controller: _addLine2Controller,
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                           hintText: 'Address Line 2',
                                           border: InputBorder.none,
                                         ),
@@ -407,7 +409,7 @@ String _dialogMessage = '';
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 4.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 4.0),
                                   child: Container(
                                     height: 50.0,
                                     decoration: BoxDecoration(
@@ -415,10 +417,10 @@ String _dialogMessage = '';
                                       borderRadius: BorderRadius.circular(8.0),
                                     ),
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
                                       child: TextFormField(
                                         controller: _pincodeController,
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                           hintText: 'Pin Code',
                                           border: InputBorder.none,
                                           contentPadding:
@@ -445,7 +447,7 @@ String _dialogMessage = '';
                       
                       verifykycdocument();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('next section')),
+                        const SnackBar(content: Text('next section')),
                       );
                     },
                     child: Container(
@@ -454,7 +456,7 @@ String _dialogMessage = '';
                         color: Colors.amber,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           'Continue',
                           style: TextStyle(
@@ -546,9 +548,31 @@ String _dialogMessage = '';
                             });
       Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (_) => VerificationDone()),
+                MaterialPageRoute(builder: (_) => const VerificationDone()),
               );
-                      
+
+      setState(() {
+                            _dialogMessage = 'KYC verified successfully';
+                          });
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Success'),
+                                content: Text(_dialogMessage),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('OK'),
+                                    onPressed: () {
+                                     
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+            
     } catch (error) {
       setState(() {
         responseMessage = 'Error in API call: $error';
@@ -558,7 +582,7 @@ String _dialogMessage = '';
         context: context,
         builder: (context) => AlertDialog(
           title: Text(responseMessage),
-          content: Text('An error occurred. Please try again later.'),
+          content: const Text('An error occurred. Please try again later.'),
           actions: [
             TextButton(
               onPressed: () {
@@ -567,7 +591,7 @@ String _dialogMessage = '';
                 //SystemNavigator.pop(); 
                // exit(0);//forcefully terminate app to background
               },
-              child: Text('Exit'),
+              child: const Text('Exit'),
             ),
             TextButton(
               onPressed: () {
@@ -575,7 +599,7 @@ String _dialogMessage = '';
                 verifykycdocument();
                 Navigator.of(context).pop();
               },
-              child: Text('Retry'),
+              child: const Text('Retry'),
             ),
           ],
         ),
