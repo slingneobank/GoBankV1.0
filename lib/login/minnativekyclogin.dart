@@ -1,9 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gobank/home/home.dart';
 import 'package:gobank/login/auth_controller.dart';
-import 'package:gobank/login/minnativekycdetails.dart';
 import 'package:gobank/login/minnativekycotp.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -130,7 +128,7 @@ class _minnativekycloginState extends State<minnativekyclogin> {
                         await prefs.setString('storedminKycUniqueId', storedminKycUniqueId);
                         print("minkycid is $storedminKycUniqueId");
 
-                         Navigator.push(context, MaterialPageRoute(builder: (_) => Home()));
+                         Navigator.push(context, MaterialPageRoute(builder: (_) => const Home()));
                         // Show dialog box with "KYC verified successfully" message
                           setState(() {
                             _dialogMessage = 'KYC verified successfully';
@@ -139,11 +137,11 @@ class _minnativekycloginState extends State<minnativekyclogin> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: Text('Success'),
+                                title: const Text('Success'),
                                 content: Text(_dialogMessage),
                                 actions: <Widget>[
                                   TextButton(
-                                    child: Text('OK'),
+                                    child: const Text('OK'),
                                     onPressed: () {
                                      
                                       Navigator.of(context).pop();
@@ -166,7 +164,7 @@ class _minnativekycloginState extends State<minnativekyclogin> {
                   }
               }
       FirebaseHelper().storeData(token, minKycUniqueId, _mobileController.text, _usernameController.text);
-      Navigator.push(context, MaterialPageRoute(builder: (_) => minnativekycotp()));
+      Navigator.push(context, MaterialPageRoute(builder: (_) => const minnativekycotp()));
     } catch (error) {
       setState(() {
         _response = 'Error: $error';
@@ -187,17 +185,17 @@ class _minnativekycloginState extends State<minnativekyclogin> {
         //     color: Colors.black,
         //   ),
         // ),
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(
+        title: const Text(
           'Profile Section',
           style: TextStyle(color: Colors.black),
         ),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.card_giftcard,
               color: Colors.black,
             ),
@@ -210,32 +208,32 @@ class _minnativekycloginState extends State<minnativekyclogin> {
               constraints.maxHeight < MediaQuery.of(context).size.height;
           return SingleChildScrollView(
             physics: _hasContentOverflow
-                ? AlwaysScrollableScrollPhysics()
-                : NeverScrollableScrollPhysics(),
+                ? const AlwaysScrollableScrollPhysics()
+                : const NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(20, 10, 10, 30),
             child: ConstrainedBox(
               constraints: BoxConstraints(minHeight: constraints.maxHeight),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'Enter details carefully',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   SingleChildScrollView(
                     child: Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: LayoutBuilder(
                         builder: (context, constraints) {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Padding(
-                                padding: EdgeInsets.symmetric(vertical: 4.0),
+                                padding: const EdgeInsets.symmetric(vertical: 4.0),
                                 child: Container(
                                   height: 50.0,
                                   decoration: BoxDecoration(
@@ -243,10 +241,10 @@ class _minnativekycloginState extends State<minnativekyclogin> {
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
                                     child: TextFormField(
                                       controller: _usernameController,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         hintText: 'Username(can be different than FullName)',
                                         contentPadding:
                                             EdgeInsets.only(top: 12.0, bottom: 8.0),
@@ -260,9 +258,9 @@ class _minnativekycloginState extends State<minnativekyclogin> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 8.0),
+                              const SizedBox(height: 8.0),
                               Padding(
-                                padding: EdgeInsets.symmetric(vertical: 4.0),
+                                padding: const EdgeInsets.symmetric(vertical: 4.0),
                                 child: Container(
                                   height: 50.0,
                                   decoration: BoxDecoration(
@@ -270,10 +268,10 @@ class _minnativekycloginState extends State<minnativekyclogin> {
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
                                     child: TextFormField(
                                       controller: _mobileController,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         contentPadding:
                                             EdgeInsets.only(top: 12.0, bottom: 8.0),
                                         hintText: 'Mobile No.',
@@ -288,9 +286,9 @@ class _minnativekycloginState extends State<minnativekyclogin> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 8.0),
+                              const SizedBox(height: 8.0),
                               Padding(
-                                padding: EdgeInsets.symmetric(vertical: 4.0),
+                                padding: const EdgeInsets.symmetric(vertical: 4.0),
                                 child: Container(
                                   height: 50.0,
                                   decoration: BoxDecoration(
@@ -298,10 +296,10 @@ class _minnativekycloginState extends State<minnativekyclogin> {
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
                                     child: TextFormField(
                                       controller: _emailController,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         hintText: 'Email',
                                         contentPadding:
                                             EdgeInsets.only(top: 12.0, bottom: 8.0),
@@ -337,7 +335,7 @@ class _minnativekycloginState extends State<minnativekyclogin> {
                         color: Colors.amber,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           'Continue',
                           style: TextStyle(

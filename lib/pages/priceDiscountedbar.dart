@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gobank/utils/media.dart';
 
 class DiscountedBar extends StatelessWidget {
-  const DiscountedBar({Key? key});
+  const DiscountedBar({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class DiscountedBar extends StatelessWidget {
             margin: const EdgeInsets.all(10),
             child: Container(
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 62, 64, 64),
+                color: const Color.fromARGB(255, 62, 64, 64),
                 borderRadius: BorderRadius.circular(9),
               ),
               height: screenWidth * 0.22,
@@ -32,7 +34,7 @@ class DiscountedBar extends StatelessWidget {
                     ),
                     child: Container(
                       width: screenWidth * 0.14,
-                      color: Color.fromARGB(255, 106, 113, 119),
+                      color: const Color.fromARGB(255, 106, 113, 119),
                       child: Center(
                         child: Image.asset(
                           'card.png',
@@ -48,7 +50,6 @@ class DiscountedBar extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.end,
-                        
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -56,17 +57,16 @@ class DiscountedBar extends StatelessWidget {
                               Text(
                                 "SlingCard for just",
                                 style: TextStyle(
-                                  fontFamily: "Gilroy medium",
+                                    fontFamily: "Gilroy medium",
                                     color: Colors.white,
                                     fontSize: height / 45),
                               ),
                               Text(
                                 "\u{20B9}199",
                                 style: TextStyle(
-                                  fontFamily: "Gilroy medium",
+                                    fontFamily: "Gilroy medium",
                                     color: Colors.amber,
                                     fontSize: height / 40),
-                                
                               ),
                             ],
                           ),
@@ -75,9 +75,9 @@ class DiscountedBar extends StatelessWidget {
                             child: Text(
                               "\u{20B9}399",
                               style: TextStyle(
-                                  fontFamily: "Gilroy medium",
-                                    color: Colors.white,
-                                    fontSize: height / 40,
+                                fontFamily: "Gilroy medium",
+                                color: Colors.white,
+                                fontSize: height / 40,
                                 decoration: TextDecoration.lineThrough,
                               ),
                             ),
@@ -100,12 +100,15 @@ class DiscountedBar extends StatelessWidget {
               ),
               width: screenWidth * 0.25,
               height: screenWidth * 0.05,
-              child:  Center(
-                child: Text("Limited Period",style: TextStyle(
-                                  fontFamily: "Gilroy medium",
-                                    color: Colors.black,
-                                    fontSize: height / 50,),
-                        ),
+              child: Center(
+                child: Text(
+                  "Limited Period",
+                  style: TextStyle(
+                    fontFamily: "Gilroy medium",
+                    color: Colors.black,
+                    fontSize: height / 50,
+                  ),
+                ),
               ),
             ),
           ),

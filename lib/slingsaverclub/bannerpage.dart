@@ -10,8 +10,6 @@ import 'package:gobank/utils/media.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 import 'package:http/http.dart' as httpPackage;
 import 'package:path/path.dart' as path;
 import 'package:shimmer/shimmer.dart';
@@ -24,7 +22,7 @@ class BannerPage extends StatefulWidget {
 }
 
 class _BannerPageState extends State<BannerPage> {
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
   late ColorNotifire notifire;
   final FirebaseStorage storage = FirebaseStorage.instance;
   final String folderPath = 'Banner_images'; // Path to your Firebase Storage folder
@@ -65,8 +63,8 @@ class _BannerPageState extends State<BannerPage> {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('NO Internet Connection'),
-        content: Text('Try Turning on your WIFI or MOBILEDATA for using the App'),
+        title: const Text('NO Internet Connection'),
+        content: const Text('Try Turning on your WIFI or MOBILEDATA for using the App'),
         actions: [
           Column(
             //mainAxisAlignment: MainAxisAlignment.center,
@@ -75,15 +73,15 @@ class _BannerPageState extends State<BannerPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   OutlinedButton(
-                    child: Text('Retry'),
+                    child: const Text('Retry'),
                     onPressed: () {
                       Navigator.of(context).pop();
                       fetchImageUrls();
                     },
                   ),
-                  SizedBox(width: 20,),
+                  const SizedBox(width: 20,),
                 OutlinedButton(
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -272,7 +270,7 @@ Future<void> saveImageUrlsToDatabase(List<String> urls) async {
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
-    return Container(
+    return SizedBox(
       height: 160,
       child: isLoading
               ?
@@ -284,7 +282,7 @@ Future<void> saveImageUrlsToDatabase(List<String> urls) async {
               scrollDirection: Axis.horizontal,
               itemCount: imageUrls.length, // Specify the number of shimmer placeholders you want
               itemBuilder: (context, index) => Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Container(
                   width: 350,
                   height: 200,
@@ -304,7 +302,7 @@ Future<void> saveImageUrlsToDatabase(List<String> urls) async {
               itemBuilder: (BuildContext context, int index) {
                 print("banner img length :${imageUrls.length}");
                 return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Stack(
                     children: [
                       Container(
@@ -332,7 +330,7 @@ Future<void> saveImageUrlsToDatabase(List<String> urls) async {
                           decorator: DotsDecorator(
                             color: Colors.grey, // Inactive dot color
                             activeColor: Colors.blue, // Active dot color
-                            spacing: EdgeInsets.all(3.0),
+                            spacing: const EdgeInsets.all(3.0),
                             size: const Size.square(7.0),
                             activeSize: const Size(10.0, 8.0),
                             activeShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
@@ -355,7 +353,7 @@ Future<void> saveImageUrlsToDatabase(List<String> urls) async {
               itemCount: localImageUrls.length,
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Stack(
                     children: [
                       Container(
@@ -383,7 +381,7 @@ Future<void> saveImageUrlsToDatabase(List<String> urls) async {
                           decorator: DotsDecorator(
                             color: Colors.grey, // Inactive dot color
                             activeColor: Colors.blue, // Active dot color
-                            spacing: EdgeInsets.all(3.0),
+                            spacing: const EdgeInsets.all(3.0),
                             size: const Size.square(7.0),
                             activeSize: const Size(10.0, 8.0),
                             activeShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
@@ -400,7 +398,7 @@ Future<void> saveImageUrlsToDatabase(List<String> urls) async {
                 });
               },
             )
-          : Center(child: CircularProgressIndicator()),
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 }

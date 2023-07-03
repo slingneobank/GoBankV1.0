@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:gobank/pages/personalise.dart';
 import 'package:gobank/pages/priceDiscountedbar.dart';
@@ -9,7 +8,7 @@ import 'package:gobank/utils/media.dart';
 // ignore: must_be_immutable
 class benefit extends StatelessWidget {
  // benefit(this.myColorScheme);
- benefit({Key? key}) : super(key: key);
+ const benefit({Key? key}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -52,7 +51,7 @@ class benefit extends StatelessWidget {
                color: Colors.white70,
                fontSize: height / 30),
           ),
-          Container(
+          SizedBox(
             height: h * 0.5,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -195,8 +194,8 @@ class benefit extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 20,),
-          Container(
+          const SizedBox(height: 20,),
+          SizedBox(
             height: 40,
             width: 320,
             child: OutlinedButton(
@@ -208,7 +207,7 @@ class benefit extends StatelessWidget {
               ),
               onPressed: () {
                // Navigator.pushNamed(context, '/per');
-               navigator!.push(MaterialPageRoute(builder: (context) => Personalise(),));
+               navigator!.push(MaterialPageRoute(builder: (context) => const Personalise(),));
               },
               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all<Color>(Colors.amber),

@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:firebase_database/firebase_database.dart';
 
 class digitalcardissuance extends StatefulWidget {
+  const digitalcardissuance({Key? key}) : super(key: key);
+
   @override
   _digitalcardissuanceState createState() => _digitalcardissuanceState();
 }
@@ -125,65 +127,65 @@ Future<void> createDigitalCardOrder() async {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Digital Card Issuance'),
+        title: const Text('Digital Card Issuance'),
       ),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 'Card Scheme ID:',
                 style: TextStyle(fontSize: 24),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 cardSchemeId != null ? cardSchemeId.toString() : 'N/A',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text('Response Message: $responseMessage'),
-              SizedBox(height: 20),
-              Text('Create Digital Card Order'),
+              const SizedBox(height: 20),
+              const Text('Create Digital Card Order'),
               Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
                     TextField(
                       controller: amountController,
-                      decoration: InputDecoration(labelText: 'Amount'),
+                      decoration: const InputDecoration(labelText: 'Amount'),
                     ),
                     TextField(
                       controller: mobileNumberController,
-                      decoration: InputDecoration(labelText: 'Mobile Number'),
+                      decoration: const InputDecoration(labelText: 'Mobile Number'),
                     ),
                     TextField(
                       controller: orderDescriptionController,
                       decoration:
-                          InputDecoration(labelText: 'Order Description'),
+                          const InputDecoration(labelText: 'Order Description'),
                     ),
                     TextField(
                       controller: externalRequestIdController,
                       decoration:
-                          InputDecoration(labelText: 'External Request ID'),
+                          const InputDecoration(labelText: 'External Request ID'),
                     ),
                     TextField(
                       controller: customerNameController,
-                      decoration: InputDecoration(labelText: 'Customer Name'),
+                      decoration: const InputDecoration(labelText: 'Customer Name'),
                     ),
                     TextField(
                       controller: emailController,
-                      decoration: InputDecoration(labelText: 'Email'),
+                      decoration: const InputDecoration(labelText: 'Email'),
                     ),
                     TextField(
                       controller: externalCardIdentifierController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           labelText: 'External Card Identifier'),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: createDigitalCardOrder,
-                      child: Text('Create Digital Card Order'),
+                      child: const Text('Create Digital Card Order'),
                     ),
                   ],
                 ),

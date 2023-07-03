@@ -3,14 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gobank/pages/digitalcard.dart';
-import 'package:gobank/cardAPI/digitalcardissuance.dart';
-import 'package:gobank/pages/digitalcard_detail.dart';
 import 'package:gobank/pages/history.dart';
 import 'package:gobank/pages/physicalcard.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'MergeC.dart';
 import 'package:http/http.dart' as http;
 
 class CardDetails extends StatefulWidget {
@@ -151,7 +148,7 @@ class _CardDetailsState extends State<CardDetails> {
         }
       });
       print(jsonResponse);
-      navigator!.push(MaterialPageRoute(builder: (context) => digitalcard(),));
+      navigator!.push(MaterialPageRoute(builder: (context) => const digitalcard(),));
       return jsonResponse;
     } else {
       throw Exception('Failed to load card schemes');
@@ -192,12 +189,12 @@ class _CardDetailsState extends State<CardDetails> {
             
             return Column(
               children: [
-                SizedBox(height: 10,),
-                Container(
+                const SizedBox(height: 10,),
+                SizedBox(
                   height: h * 0.5,
                   child: Image.asset("card2.jpg"),
                 ),
-                Container(
+                SizedBox(
                   height: h * 0.1,
                   width: w * 0.9,
                   child: Card(
@@ -248,7 +245,7 @@ class _CardDetailsState extends State<CardDetails> {
                                 trailing: IconButton(
                                   onPressed: () {
                                    // Navigator.pushNamed(context, '/physicalcard');
-                                   navigator!.push(MaterialPageRoute(builder: (context) => physicalcard(),));
+                                   navigator!.push(MaterialPageRoute(builder: (context) => const physicalcard(),));
                                   },
                                   icon:  Icon(Icons.arrow_forward_ios,color: notifire.gettabwhitecolor,),
                                 ),
@@ -276,7 +273,7 @@ class _CardDetailsState extends State<CardDetails> {
                                 trailing: IconButton(
                                   onPressed: () {
                                    // Navigator.pushNamed(context, '/history');
-                                    navigator!.push(MaterialPageRoute(builder: (context) => TransactionHistoryPage(),));
+                                    navigator!.push(MaterialPageRoute(builder: (context) => const TransactionHistoryPage(),));
                                   },
                                   icon:  Icon(Icons.arrow_forward_ios,color: notifire.gettabwhitecolor,),
                                 ),
@@ -466,7 +463,7 @@ class _CardDetailsState extends State<CardDetails> {
                                                         return Container(
                                                           color: Colors.black87,
                                                           padding:
-                                                              EdgeInsets.all(16),
+                                                              const EdgeInsets.all(16),
                                                           child: Column(
                                                             mainAxisSize:
                                                                 MainAxisSize.min,

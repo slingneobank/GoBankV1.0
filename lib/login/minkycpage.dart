@@ -1,13 +1,8 @@
-import 'dart:io';
 
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gobank/login/auth_controller.dart';
 import 'package:gobank/login/minnativekyclogin.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
 class minkycpage extends StatefulWidget {
   const minkycpage({Key? key}) : super(key: key);
@@ -33,7 +28,7 @@ class _minkycpageState extends State<minkycpage> {
       // Navigate to the next screen
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => minnativekyclogin()),
+        MaterialPageRoute(builder: (context) => const minnativekyclogin()),
       );
       print(responseMessage);
     } catch (e) {
@@ -45,7 +40,7 @@ class _minkycpageState extends State<minkycpage> {
         context: context,
         builder: (context) => AlertDialog(
           title: Text(responseMessage),
-          content: Text('An error occurred. Please try again later.'),
+          content: const Text('An error occurred. Please try again later.'),
           actions: [
             TextButton(
               onPressed: () {
@@ -54,7 +49,7 @@ class _minkycpageState extends State<minkycpage> {
                 SystemNavigator.pop();
                 // exit(0);//forcefully terminate app to background
               },
-              child: Text('Exit'),
+              child: const Text('Exit'),
             ),
             TextButton(
               onPressed: () {
@@ -62,7 +57,7 @@ class _minkycpageState extends State<minkycpage> {
                 generateToken(username, apiKey);
                 Navigator.of(context).pop();
               },
-              child: Text('Retry'),
+              child: const Text('Retry'),
             ),
           ],
         ),
@@ -76,18 +71,18 @@ class _minkycpageState extends State<minkycpage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {},
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_outlined,
             color: Colors.black,
           ),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(''),
+        title: const Text(''),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.card_giftcard,
               color: Colors.black,
             ),
@@ -100,8 +95,8 @@ class _minkycpageState extends State<minkycpage> {
               constraints.maxHeight < MediaQuery.of(context).size.height;
           return SingleChildScrollView(
               physics: _hasContentOverflow
-                  ? AlwaysScrollableScrollPhysics()
-                  : NeverScrollableScrollPhysics(),
+                  ? const AlwaysScrollableScrollPhysics()
+                  : const NeverScrollableScrollPhysics(),
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -110,20 +105,20 @@ class _minkycpageState extends State<minkycpage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      SizedBox(height: 30),
-                      Text(
+                      const SizedBox(height: 30),
+                      const Text(
                         'Complete Account Setup',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 22),
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 20),
-                      Text(
+                      const SizedBox(height: 20),
+                      const Text(
                         'As per RBI Guidelines, you have to verify your identity to open your account',
                         style: TextStyle(fontSize: 15, color: Colors.grey),
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Container(
                         height: 80,
                         decoration: BoxDecoration(
@@ -132,11 +127,11 @@ class _minkycpageState extends State<minkycpage> {
                         ),
                         child: ListTile(
                           contentPadding:
-                              EdgeInsets.symmetric(horizontal: 20.0),
+                              const EdgeInsets.symmetric(horizontal: 20.0),
                           leading: Container(
                             width: 50.0,
                             height: 50.0,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                 image: AssetImage('asset/images/adhar.png'),
@@ -144,7 +139,7 @@ class _minkycpageState extends State<minkycpage> {
                               ),
                             ),
                           ),
-                          title: Text(
+                          title: const Text(
                             'Aadhar Card',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -164,7 +159,7 @@ class _minkycpageState extends State<minkycpage> {
                                 shape: BoxShape.circle,
                                 color: isSelected ? Colors.green : Colors.grey,
                               ),
-                              child: Icon(
+                              child: const Icon(
                                 Icons.check,
                                 color: Colors.white,
                                 size: 16.0,
@@ -173,17 +168,17 @@ class _minkycpageState extends State<minkycpage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       GestureDetector(
                         onTap: () {},
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             "Don't have an Aadhar card?",
                             style: TextStyle(color: Colors.amber),
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -192,8 +187,8 @@ class _minkycpageState extends State<minkycpage> {
                             width: 25,
                             height: 25,
                           ),
-                          SizedBox(width: 10),
-                          Text(
+                          const SizedBox(width: 10),
+                          const Text(
                             'Trusted by 15 lakh families',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -202,7 +197,7 @@ class _minkycpageState extends State<minkycpage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -211,8 +206,8 @@ class _minkycpageState extends State<minkycpage> {
                             width: 25,
                             height: 25,
                           ),
-                          SizedBox(width: 10),
-                          Text(
+                          const SizedBox(width: 10),
+                          const Text(
                             'Takes one minute to complete',
                             style: TextStyle(
                               fontWeight: FontWeight.w100,
@@ -221,19 +216,19 @@ class _minkycpageState extends State<minkycpage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 25),
-                      Center(
+                      const SizedBox(height: 25),
+                      const Center(
                         child: Text("Powered by"),
                       ),
-                      SizedBox(height: 10),
-                      Container(
+                      const SizedBox(height: 10),
+                      SizedBox(
                         height: 25,
                         child: FittedBox(
                           fit: BoxFit.contain,
                           child: Image.asset('asset/images/adhar.png'),
                         ),
                       ),
-                      SizedBox(height: 80),  
+                      const SizedBox(height: 80),  
                       GestureDetector(
                         onTap: () {
                           generateToken('payvoy.uatuser', 'X4oVUECF9EWhX9');
@@ -245,7 +240,7 @@ class _minkycpageState extends State<minkycpage> {
                             color: Colors.amber,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               'Continue',
                               style: TextStyle(

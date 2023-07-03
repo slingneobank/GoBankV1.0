@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class sling_storebannerpage extends StatefulWidget {
@@ -26,7 +25,7 @@ class _sling_storebannerpageState extends State<sling_storebannerpage> {
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -45,7 +44,7 @@ class _sling_storebannerpageState extends State<sling_storebannerpage> {
                       String imageUrl = document['imageUrl'];
                       print(imageUrl);
                       return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Container(
                           //width: 350,
                          // height: 180,
@@ -95,18 +94,18 @@ class _sling_storebannerpageState extends State<sling_storebannerpage> {
                     },
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 DotsIndicator(
                   dotsCount: documents.length,
                   position: _currentPage.toInt(),
-                  decorator:  DotsDecorator(
+                  decorator:  const DotsDecorator(
                     color: Colors.grey,
                     activeColor: Colors.white ,
                     spacing: EdgeInsets.all(3.0),
                      size:  Size.square(5.0),
-                    activeSize: const Size(8.0, 7.0),
+                    activeSize: Size(8.0, 7.0),
                   ),
                 ),
               ],

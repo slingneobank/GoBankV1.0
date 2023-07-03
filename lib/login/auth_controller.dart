@@ -24,7 +24,7 @@ class ApiService {
 
 class AuthController {
   Future<String?> generateToken(String username, String apiKey) async {
-    final String apiUrl = 'https://issuanceapis-uat.pinelabs.com/v1/auths/tokens/signin';
+    const String apiUrl = 'https://issuanceapis-uat.pinelabs.com/v1/auths/tokens/signin';
 
     Map<String, String> headers = {
       'accept': 'application/json',

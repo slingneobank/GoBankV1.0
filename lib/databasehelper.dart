@@ -1,24 +1,20 @@
 import 'dart:async';
 
-import 'package:path_provider/path_provider.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class DatabaseHelper {
-  static final _databaseName = 'image_urls.db';
-  static final _databaseVersion = 1;
+  static const _databaseName = 'image_urls.db';
+  static const _databaseVersion = 1;
 
-  static final table = 'image_urls';
-  static final banner= 'banner_urls';
+  static const table = 'image_urls';
+  static const banner= 'banner_urls';
 
-  static final BannerLiveurl='bannerliveurl';
-  static final BannerLocalurl='bannerlocalurl';
+  static const BannerLiveurl='bannerliveurl';
+  static const BannerLocalurl='bannerlocalurl';
 
-  static final columnLiveUrl = 'liveUrl';
-  static final columnLocalUrl = 'localUrl';
+  static const columnLiveUrl = 'liveUrl';
+  static const columnLocalUrl = 'localUrl';
 
   static Database? _database;
 

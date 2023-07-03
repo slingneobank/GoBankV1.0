@@ -41,7 +41,7 @@ class _sling_store_musthaveState extends State<sling_store_musthave> {
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -61,7 +61,7 @@ class _sling_store_musthaveState extends State<sling_store_musthave> {
                         String imageUrl = document['imageurl'];
                         print(imageUrl);
                         return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
                           child: Container(
                             width: 150, // Set the desired width here //170
                             margin: EdgeInsets.only(left: index != 0 ? 10.0 : 0.0),
@@ -81,7 +81,7 @@ class _sling_store_musthaveState extends State<sling_store_musthave> {
                       },
                     )
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 
@@ -89,8 +89,8 @@ class _sling_store_musthaveState extends State<sling_store_musthave> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List<Widget>.generate(documents.length, (int index) {
                   return AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    margin: EdgeInsets.symmetric(horizontal: 3.0),
+                    duration: const Duration(milliseconds: 300),
+                    margin: const EdgeInsets.symmetric(horizontal: 3.0),
                     height: 7.0,
                     width: _currentPage == index ? 7.0 : 7.0,
                     decoration: BoxDecoration(

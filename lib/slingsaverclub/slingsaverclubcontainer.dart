@@ -24,7 +24,7 @@ class _slingsaverclubcontainerState extends State<slingsaverclubcontainer> {
 
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
              // print(snapshot.data!.docs.length);
-              return Text('No data available');
+              return const Text('No data available');
                // Show a message when there is no data
             }
 
@@ -47,7 +47,7 @@ class _slingsaverclubcontainerState extends State<slingsaverclubcontainer> {
                   activecontainerindex=index;
                   if (slide == null) {
                     
-                    return SizedBox.shrink(
+                    return const SizedBox.shrink(
                       child: Text("data null"),
                     );
                   }
@@ -56,19 +56,19 @@ class _slingsaverclubcontainerState extends State<slingsaverclubcontainer> {
                   final description = slide['description'] as String?;
             
                   if (title == null || description == null ) {
-                    return SizedBox.shrink(
+                    return const SizedBox.shrink(
                       child: Text("null"),
                     );
                   }
             
                   return Row(
                     children: [
-                      Container(
+                      SizedBox(
                       
                       width: 180,
                       
                       child: Card(
-                          color: Color.fromARGB(255, 51, 51, 50),
+                          color: const Color.fromARGB(255, 51, 51, 50),
                          shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                           ),
@@ -98,7 +98,7 @@ class _slingsaverclubcontainerState extends State<slingsaverclubcontainer> {
                         ),
                       ),
                 ),
-                SizedBox(width: 20,)
+                const SizedBox(width: 20,)
                     ],
                   );
                 },
