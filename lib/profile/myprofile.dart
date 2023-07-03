@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gobank/profile/editprofile.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../utils/colornotifire.dart';
 import '../utils/string.dart';
@@ -16,6 +19,8 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
+
+
   late ColorNotifire notifire;
   List cashbankimg = [
     "images/merchant1.png",
@@ -32,7 +37,7 @@ class _MyProfileState extends State<MyProfile> {
     "Refer a Friend",
     CustomStrings.helpandsuppors,
     "About Us",
-    "Refund Policy",
+    "Privacy Policy",
     "Terms and Conditions"
   ];
   List cashbankdiscription = [
@@ -41,7 +46,7 @@ class _MyProfileState extends State<MyProfile> {
     CustomStrings.startsccepting,
     CustomStrings.relatedpaytm,
     "About Us",
-    "Refund Policy",
+    "Privacy Policy",
     "Terms and Conditions"
   ];
   List cashbankdiscription2 = [
@@ -342,7 +347,21 @@ class _MyProfileState extends State<MyProfile> {
                       padding: EdgeInsets.symmetric(
                           horizontal: width / 20, vertical: height / 70),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                         setState(() {
+                          if(index==4 )
+                          {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => Webviewaboutus(),));
+                              print("hi${cashbankdiscription[index]}");
+                          }
+                          else if(index==5)
+                          {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => webViewprivacypolicy(),));
+                              print("hi${cashbankdiscription[index]}");
+                          }
+                            
+                         });
+                        },
                         child: Container(
                           height: height / 9,
                           width: width,
@@ -675,6 +694,57 @@ class _MyProfileState extends State<MyProfile> {
           ],
         ),
       ),
+    );
+  }
+  
+
+}
+class Webviewaboutus extends StatelessWidget {
+  
+
+  const Webviewaboutus({Key? key});
+
+  @override
+  Widget build(BuildContext context) {
+    final webviewkey = UniqueKey();
+  final Completer<WebViewController>_controller1=Completer<WebViewController>();
+  
+  String url="https://www.google.com/";
+    return Scaffold(
+      body: WebView(
+                        key: webviewkey,
+                        initialUrl: url,
+                        javascriptMode: JavascriptMode.unrestricted,
+                        onWebViewCreated:  (WebViewController webViewController)
+                            {
+                             _controller1.complete(webViewController);
+                            },
+                        gestureNavigationEnabled: true,
+                      ),
+    );
+  }
+}
+
+class webViewprivacypolicy extends StatelessWidget {
+  const webViewprivacypolicy({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final webviewkey = UniqueKey();
+  final Completer<WebViewController>_controller1=Completer<WebViewController>();
+  
+  String url="https://www.google.com/";
+    return Scaffold(
+      body: WebView(
+                        key: webviewkey,
+                        initialUrl: url,
+                        javascriptMode: JavascriptMode.unrestricted,
+                        onWebViewCreated:  (WebViewController webViewController)
+                            {
+                             _controller1.complete(webViewController);
+                            },
+                        gestureNavigationEnabled: true,
+                      ),
     );
   }
 }

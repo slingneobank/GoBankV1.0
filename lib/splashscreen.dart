@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gobank/card/inouthistory.dart';
 import 'package:gobank/card/inoutpayment.dart';
@@ -10,12 +11,14 @@ import 'package:gobank/home/loan/pendingapproval.dart';
 import 'package:gobank/home/loan/personalloan_form.dart';
 import 'package:gobank/home/topup/topupcard/topup.dart';
 import 'package:gobank/login/minkycpage.dart';
+import 'package:gobank/login/minnativekyclogin.dart';
 import 'package:gobank/login/verify.dart';
 
 import 'package:gobank/onbonding.dart';
 import 'package:gobank/pages/CardDetails.dart';
 import 'package:gobank/pages/digitalcard_detail.dart';
 import 'package:gobank/pages/history.dart';
+import 'package:gobank/profile/myprofile.dart';
 
 
 import 'package:gobank/utils/colornotifire.dart';
@@ -25,6 +28,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'card/createxcard.dart';
+import 'home/NotificationServices.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({Key? key}) : super(key: key);
@@ -46,17 +50,29 @@ class _SplashscreenState extends State<Splashscreen> {
       notifire.setIsDark = previusstate;
     }
   }
-
+NotificationServices notificationServices = NotificationServices();
   @override
   void initState() {
     super.initState();
+    notificationServices.requestNotificationPermission();
+    notificationServices.forgroundMessage();
+    notificationServices.firebaseInit(context);
+    notificationServices.setupInteractMessage(context);
+    notificationServices.isTokenRefresh();
+
+    notificationServices.getDeviceToken().then((value){
+      if (kDebugMode) {
+        print('device token');
+        print(value);
+      }
+    });
     getdarkmodepreviousstate();
     Timer(
       const Duration(seconds: 3),
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  Onbonding(),//onbonding  
+          builder: (context) =>  minkycpage(),//onbonding  
         ),
       ),
     );
