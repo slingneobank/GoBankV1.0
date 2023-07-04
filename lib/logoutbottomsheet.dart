@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gobank/login/phone.dart';
 import 'package:gobank/utils/colornotifire.dart';
@@ -100,11 +101,14 @@ class _CustomButtonState extends State<CustomButton> {
             height: height / 12,
             width: width / 3,
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async{
                 setState(() {
                   _selectedButton = 'Logout';
                 });
-                removePhoneNumber();
+                //removePhoneNumber();
+                FirebaseAuth auth=FirebaseAuth.instance;
+                await auth.signOut();
+                
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => MyPhone(),));
               },
