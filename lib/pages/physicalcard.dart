@@ -14,7 +14,7 @@ class physicalcard extends StatelessWidget {
   Widget build(BuildContext context) {
      final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
-    final appBarHeight = kToolbarHeight;
+    const appBarHeight = kToolbarHeight;
 
     return Scaffold(
       appBar: AppBar(
@@ -32,34 +32,34 @@ class physicalcard extends StatelessWidget {
         color: Colors.black,
         child: Column(
           children: [
-            Container(
+            SizedBox(
               height: h * 0.55 - appBarHeight,
               //color: Colors.red, // Replace with your desired color
               
               child: Image.asset("asset/images/card.png",fit: BoxFit.fill,),
             ),
-            Container(
+            SizedBox(
               height: h * 0.34,
               child: Column(
                 children: [
-                  Container(
+                  SizedBox(
                     height: (h * 0.34) * 0.5,
                     width: double.infinity,
                     child: const DiscountedBar(),
                   ),
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     height: (h * 0.34) * 0.5,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
+                        SizedBox(
                           height: h * 0.06,
                           width: 250,
                           child: OutlinedButton(
                             onPressed: () {
                               //Navigator.pushNamed(context, '/benefit');
-                              navigator!.push(MaterialPageRoute(builder: (context) => benefit(),));
+                              navigator!.push(MaterialPageRoute(builder: (context) => const benefit(),));
                             },
                              style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(Colors.amber),
@@ -77,13 +77,13 @@ class physicalcard extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(height: 10,),
+                        const SizedBox(height: 10,),
                         TextButton(
                           onPressed: () {},
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.label_off,color: Colors.amber),
+                              const Icon(Icons.label_off,color: Colors.amber),
                               Text(
                                 "Have a promo code? Click here",
                                 style: TextStyle(fontFamily: "Gilroy Bold",

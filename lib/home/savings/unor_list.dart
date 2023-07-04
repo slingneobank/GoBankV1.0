@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class UnorderedList extends StatelessWidget {
-  UnorderedList(this.texts);
+  const UnorderedList(this.texts, {Key? key}) : super(key: key);
   final List<String> texts;
 
   @override
@@ -20,7 +20,7 @@ class UnorderedList extends StatelessWidget {
 }
 
 class UnorderedListItem extends StatelessWidget {
-  UnorderedListItem(this.text);
+  const UnorderedListItem(this.text, {Key? key}) : super(key: key);
   final String text;
 
   @override

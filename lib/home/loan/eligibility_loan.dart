@@ -1,12 +1,9 @@
 
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gobank/utils/colornotifire.dart';
-import 'package:gobank/utils/media.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:timelines/timelines.dart';
 class eligibility_loan extends StatefulWidget {
   const eligibility_loan({Key? key}) : super(key: key);
 
@@ -36,7 +33,7 @@ class _eligibility_loanState extends State<eligibility_loan> {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(color: Color.fromARGB(255, 238, 233, 233)),
+        decoration: const BoxDecoration(color: Color.fromARGB(255, 238, 233, 233)),
         child: Column(
           children: [
             Expanded(
@@ -56,7 +53,7 @@ class _eligibility_loanState extends State<eligibility_loan> {
                               onTap: () {
                                 Navigator.pop(context);
                               },
-                              child: Icon(Icons.arrow_back),
+                              child: const Icon(Icons.arrow_back),
                             ),
                             SizedBox(
                               child: Row(
@@ -74,7 +71,7 @@ class _eligibility_loanState extends State<eligibility_loan> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 5,),
+                                  const SizedBox(width: 5,),
                                   Text(
                                     "Personal\nLoan",
                                     overflow: TextOverflow.ellipsis,
@@ -90,7 +87,7 @@ class _eligibility_loanState extends State<eligibility_loan> {
                               "Help",
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                  color: Color(0xff4287E3),
+                                  color: const Color(0xff4287E3),
                                   fontSize: height / 40,
                                   fontFamily: 'Gilroy bold'),
                             ),
@@ -109,7 +106,7 @@ class _eligibility_loanState extends State<eligibility_loan> {
               flex: 3,
               child: SingleChildScrollView(
                 child: Container(
-                  decoration: BoxDecoration(color: Colors.white),
+                  decoration: const BoxDecoration(color: Colors.white),
                   child: Padding(
                     padding: EdgeInsets.only(top: height * 0.01, left: width * 0.05, right: width * 0.05),
                     child: Column(
@@ -130,7 +127,7 @@ class _eligibility_loanState extends State<eligibility_loan> {
                               SizedBox(
                                 child: CircleAvatar(
                                   radius: 35,
-                                  backgroundColor: Color.fromARGB(255, 238, 233, 233),
+                                  backgroundColor: const Color.fromARGB(255, 238, 233, 233),
                                   child: Image.asset("images/eligible.png"),
                                 ),
                               )
@@ -174,14 +171,14 @@ class _eligibility_loanState extends State<eligibility_loan> {
                           "Why was my application not approved?",
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                              color: Color(0xff4287E3),
+                              color: const Color(0xff4287E3),
                               fontSize: height / 52,
                               fontFamily: 'Gilroy bold'),
                         ),
                         SizedBox(height: height * 0.02),
                         Container(
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                               colors: [
                                 Color(0xff3A9EEA),
                                 Color(0xff2359D7),
@@ -207,7 +204,7 @@ class _eligibility_loanState extends State<eligibility_loan> {
                                   children: [
                                     Padding(
                                       padding: EdgeInsets.only(left: width * 0.04),
-                                      child: CircleAvatar(
+                                      child: const CircleAvatar(
                                         backgroundColor: Color(0xff4CA2EB),
                                         radius: 60,
                                       ),
@@ -240,7 +237,7 @@ class _eligibility_loanState extends State<eligibility_loan> {
                                                       fontFamily: 'Gilroy bold'),
                                                 ),
                                                 style: ButtonStyle(
-                                                  backgroundColor: MaterialStateProperty.all<Color>(Color(0xff2BEEDC)),
+                                                  backgroundColor: MaterialStateProperty.all<Color>(const Color(0xff2BEEDC)),
                                                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                                     RoundedRectangleBorder(
                                                       borderRadius: BorderRadius.circular(20),
@@ -249,7 +246,7 @@ class _eligibility_loanState extends State<eligibility_loan> {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(height: 15),
+                                            const SizedBox(height: 15),
                                             Text(
                                               "*Credit card facility is provided in partnership with our banking partners",
                                               overflow: TextOverflow.clip,
@@ -258,7 +255,7 @@ class _eligibility_loanState extends State<eligibility_loan> {
                                                   fontSize: height / 130,
                                                   fontFamily: 'Gilroy medium'),
                                             ),
-                                            SizedBox(height: 10),
+                                            const SizedBox(height: 10),
                                           ],
                                         ),
                                       ),
@@ -280,21 +277,21 @@ class _eligibility_loanState extends State<eligibility_loan> {
                         ),
                         SizedBox(height: height * 0.02),
                         listtype(
-                          Color(0xffF1F0F8),
+                          const Color(0xffF1F0F8),
                           "images/money-bag.png",
                           "Repay your current dues",
                           "Timely repayment of loans and dues helps build your credit profile",
                         ),
                         SizedBox(height: height * 0.02),
                         listtype(
-                          Color(0xffE9F9F9),
+                          const Color(0xffE9F9F9),
                           "images/payment.png",
                           "Increase your activity on Paytm",
                           "This will help increase your chances to get a Personal Loan from Paytm",
                         ),
                         SizedBox(height: height * 0.02),
                         listtype(
-                          Color(0xffFBF0F6),
+                          const Color(0xffFBF0F6),
                           "images/speedometer.png",
                           "Maintain a good credit score",
                           "Higher the credit score, higher the chances of getting credit",
@@ -306,8 +303,8 @@ class _eligibility_loanState extends State<eligibility_loan> {
                             SizedBox(
                               child: Row(
                                 children: [
-                                  Icon(Icons.messenger_outline),
-                                  SizedBox(width: 10),
+                                  const Icon(Icons.messenger_outline),
+                                  const SizedBox(width: 10),
                                   SizedBox(
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -336,7 +333,7 @@ class _eligibility_loanState extends State<eligibility_loan> {
                             ),
                             GestureDetector(
                               onTap: () {},
-                              child: Icon(
+                              child: const Icon(
                                 Icons.arrow_forward_ios,
                                 size: 20,
                               ),
@@ -371,7 +368,7 @@ class _eligibility_loanState extends State<eligibility_loan> {
             ),
           ),
         ),
-        SizedBox(width: 10),
+        const SizedBox(width: 10),
         Expanded(
           child: SizedBox(
             child: Column(

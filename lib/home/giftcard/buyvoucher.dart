@@ -1,7 +1,5 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:gobank/home/giftcard/voucher_finger.dart';
 import 'package:gobank/home/giftcard/voucher_grocery.dart';
 import 'package:gobank/home/giftcard/voucher_mall.dart';
@@ -30,7 +28,7 @@ class _buyvoucherState extends State<buyvoucher> {
               color: Colors.black,
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Padding(
@@ -48,14 +46,14 @@ class _buyvoucherState extends State<buyvoucher> {
                               ),
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            child: Icon(
+                            child: const Icon(
                               Icons.arrow_back_ios_new,
                               size: 12,
                               color: Colors.white,
                             ),
                           ),
                         ),
-                        SizedBox(width: 20),
+                        const SizedBox(width: 20),
                         Text(
                           "Buy Saving Vouchers!",
                           style: TextStyle(
@@ -67,7 +65,7 @@ class _buyvoucherState extends State<buyvoucher> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.only(left: 15, right: 10),
                     child: Row(
@@ -80,7 +78,7 @@ class _buyvoucherState extends State<buyvoucher> {
                             fontSize: height / 40,
                           ),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         Text(
                           "Saved till now",
                           style: TextStyle(
@@ -89,7 +87,7 @@ class _buyvoucherState extends State<buyvoucher> {
                             fontSize: height / 45,
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Text(
                           "My Vouchers",
                           style: TextStyle(
@@ -120,7 +118,7 @@ class _buyvoucherState extends State<buyvoucher> {
                             child: voucherbanner(),
                             ),
                         ),
-                        SizedBox(height: 20,),
+                        const SizedBox(height: 20,),
                         Container(
                             decoration:const BoxDecoration(
                               gradient: LinearGradient(
@@ -161,8 +159,8 @@ class _buyvoucherState extends State<buyvoucher> {
                                                     fontSize: height / 45,
                                                     fontFamily: 'Gilroy bold'),
                                         ),
-                                        SizedBox(height: 10,),
-                                        voucher_shopdrop()
+                                        const SizedBox(height: 10,),
+                                        const voucher_shopdrop()
                                       ],
                                     ),
                                   ),
@@ -211,8 +209,8 @@ class _buyvoucherState extends State<buyvoucher> {
                                                     fontSize: height / 45,
                                                     fontFamily: 'Gilroy bold'),
                                         ),
-                                        SizedBox(height: 10,),
-                                        voucher_finger()
+                                        const SizedBox(height: 10,),
+                                        const voucher_finger()
                                       ],
                                     ),
                                   ),
@@ -260,8 +258,8 @@ class _buyvoucherState extends State<buyvoucher> {
                                                     fontSize: height / 45,
                                                     fontFamily: 'Gilroy bold'),
                                         ),
-                                        SizedBox(height: 10,),
-                                        voucher_grocery()
+                                        const SizedBox(height: 10,),
+                                        const voucher_grocery()
                                       ],
                                     ),
                                   ),
@@ -309,8 +307,8 @@ class _buyvoucherState extends State<buyvoucher> {
                                                     fontSize: height / 45,
                                                     fontFamily: 'Gilroy bold'),
                                         ),
-                                        SizedBox(height: 10,),
-                                        voucher_movie()
+                                        const SizedBox(height: 10,),
+                                        const voucher_movie()
                                       ],
                                     ),
                                   ),
@@ -358,8 +356,8 @@ class _buyvoucherState extends State<buyvoucher> {
                                                     fontSize: height / 45,
                                                     fontFamily: 'Gilroy bold'),
                                         ),
-                                        SizedBox(height: 10,),
-                                        voucher_mall()
+                                        const SizedBox(height: 10,),
+                                        const voucher_mall()
                                       ],
                                     ),
                                   ),
@@ -407,8 +405,8 @@ class _buyvoucherState extends State<buyvoucher> {
                                                     fontSize: height / 45,
                                                     fontFamily: 'Gilroy bold'),
                                         ),
-                                        SizedBox(height: 10,),
-                                        voucher_offfers()
+                                        const SizedBox(height: 10,),
+                                        const voucher_offfers()
                                       ],
                                     ),
                                   ),

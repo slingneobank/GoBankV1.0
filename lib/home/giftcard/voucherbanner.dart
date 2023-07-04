@@ -49,7 +49,7 @@ class _voucherbannerState extends State<voucherbanner> {
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -73,7 +73,7 @@ class _voucherbannerState extends State<voucherbanner> {
                         String imgurl=document['imgurl'];
                         String storename=document['storename'];
                         return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
                           child:  GestureDetector(
                             onTap: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context) => giftofferform(
@@ -120,7 +120,7 @@ class _voucherbannerState extends State<voucherbanner> {
                                               ),
                                             ),
                                             Text(
-                                              '$storename',
+                                              storename,
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: height / 40,
@@ -130,7 +130,7 @@ class _voucherbannerState extends State<voucherbanner> {
                                         ),
                                        // SizedBox(height: 3,),
                                          Text(
-                                              '${discountpercent}%',
+                                              '$discountpercent%',
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: height / 25,
@@ -138,14 +138,14 @@ class _voucherbannerState extends State<voucherbanner> {
                                             ),
                                            // SizedBox(height: 2,),
                                          Text(
-                                              '$discountdescription',
+                                              discountdescription,
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: height / 25,
                                                 fontFamily: 'Gilroy bold'),
                                             ),
                                             Text(
-                                              '$description',
+                                              description,
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: height / 45,
@@ -163,7 +163,7 @@ class _voucherbannerState extends State<voucherbanner> {
                       },
                     )
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 
@@ -171,8 +171,8 @@ class _voucherbannerState extends State<voucherbanner> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List<Widget>.generate(documents.length, (int index) {
                   return AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    margin: EdgeInsets.symmetric(horizontal: 3.0),
+                    duration: const Duration(milliseconds: 300),
+                    margin: const EdgeInsets.symmetric(horizontal: 3.0),
                     height: 7.0,
                     width: _currentPage == index ? 7.0 : 7.0,
                     decoration: BoxDecoration(

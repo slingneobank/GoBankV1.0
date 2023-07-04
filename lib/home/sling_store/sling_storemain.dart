@@ -6,7 +6,6 @@ import 'package:gobank/home/sling_store/sling_storepacking.dart';
 import 'package:gobank/home/sling_store/sling_storeshopessential.dart';
 import 'package:gobank/home/sling_store/sling_storestyle.dart';
 import 'package:gobank/home/sling_store/sling_storesuggestimg.dart';
-import 'package:gobank/slingsaverclub/bannerpage.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +38,7 @@ class _sling_storemainState extends State<sling_storemain> {
         Expanded(
               flex: 1,
               child: Container(
-                 decoration: BoxDecoration(color: Colors.black87),
+                 decoration: const BoxDecoration(color: Colors.black87),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10,right: 10),
                   child: Row(
@@ -89,7 +88,7 @@ class _sling_storemainState extends State<sling_storemain> {
                 child: Container(
                   //height: MediaQuery.sizeOf(context).height,
                   //width: MediaQuery.sizeOf(context).width,
-                  decoration: BoxDecoration(color: Colors.black87),
+                  decoration: const BoxDecoration(color: Colors.black87),
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: Column(
@@ -107,7 +106,7 @@ class _sling_storemainState extends State<sling_storemain> {
                           SizedBox(
                           height: height / 30,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 220,
                           child: sling_storebannerpage(),),
                         
@@ -123,8 +122,8 @@ class _sling_storemainState extends State<sling_storemain> {
                           SizedBox(
                           height: height / 30,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15,right: 15),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 15,right: 15),
                           child: SizedBox(
                            // height: 200,
                             child: sling_storesuggestimg(),),
@@ -144,8 +143,8 @@ class _sling_storemainState extends State<sling_storemain> {
                           SizedBox(
                           height: height / 30,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15,right: 15),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 15,right: 15),
                           child: SizedBox(
                             height: 200,
                             child: sling_storeshopessential(),),
@@ -165,8 +164,8 @@ class _sling_storemainState extends State<sling_storemain> {
                           SizedBox(
                           height: height / 30,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15,right: 15),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 15,right: 15),
                           child: SizedBox(
                             height: 200,
                             child: sling_storestyle(),),
@@ -186,8 +185,8 @@ class _sling_storemainState extends State<sling_storemain> {
                           SizedBox(
                           height: height / 30,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15,right: 15),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 15,right: 15),
                           child: SizedBox(
                             height: 200,
                             child: sling_storegeeks_games(),),
@@ -207,8 +206,8 @@ class _sling_storemainState extends State<sling_storemain> {
                           SizedBox(
                           height: height / 30,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15,right: 15),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 15,right: 15),
                           child: SizedBox(
                             height: 160,
                             child: sling_storepacking(),),
@@ -228,8 +227,8 @@ class _sling_storemainState extends State<sling_storemain> {
                           SizedBox(
                           height: height / 30,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15,right: 15),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 15,right: 15),
                           child: SizedBox(
                             height: 200,
                             child: sling_store_musthave(),),

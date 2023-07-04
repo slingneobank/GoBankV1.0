@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:gobank/utils/media.dart';
 
 import 'box.dart';
@@ -39,14 +38,14 @@ class checkOut extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: TextButton(
                   onPressed: () {},
-                  child: Text(
+                  child: const Text(
                     "help?",
                     style: TextStyle(color: Colors.red, fontSize: 20),
                   )),
             )
           ]),
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           // height: h,
           width: w,
           child: Column(
@@ -55,9 +54,9 @@ class checkOut extends StatelessWidget {
                  style: TextStyle(fontFamily: "Gilroy Bold",
                            color: Colors.white,
                            fontSize: height / 35)),
-              SizedBox(height: 30,),
-              box(),
-              SizedBox(height: 30,),
+              const SizedBox(height: 30,),
+              const box(),
+              const SizedBox(height: 30,),
               Form(
                 key: _formKey,
                 child: Padding(
@@ -75,14 +74,14 @@ class checkOut extends StatelessWidget {
                           hintStyle: TextStyle(fontFamily: "Gilroy medium",
                            color: Colors.white60,
                            fontSize: height / 45),
-                        enabledBorder: UnderlineInputBorder(
+                        enabledBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white60),
                         ),
-                        focusedBorder: UnderlineInputBorder(
+                        focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white60),
                         ),
                       ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Please enter a pin code';
@@ -101,14 +100,14 @@ class checkOut extends StatelessWidget {
                           hintStyle: TextStyle(fontFamily: "Gilroy medium",
                            color: Colors.white60,
                            fontSize: height / 45),
-                           enabledBorder: UnderlineInputBorder(
+                           enabledBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white60),
                         ),
-                        focusedBorder: UnderlineInputBorder(
+                        focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white60),
                         ),
                       ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                         
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -128,14 +127,14 @@ class checkOut extends StatelessWidget {
                           hintStyle: TextStyle(fontFamily: "Gilroy medium",
                            color: Colors.white60,
                            fontSize: height / 45),
-                           enabledBorder: UnderlineInputBorder(
+                           enabledBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white60),
                         ),
-                        focusedBorder: UnderlineInputBorder(
+                        focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white60),
                         ),
                       ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                         
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -155,14 +154,14 @@ class checkOut extends StatelessWidget {
                         hintStyle: TextStyle(fontFamily: "Gilroy medium",
                            color: Colors.white60,
                            fontSize: height / 45),
-                           enabledBorder: UnderlineInputBorder(
+                           enabledBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white60),
                         ),
-                        focusedBorder: UnderlineInputBorder(
+                        focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white60),
                         ),
                       ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Please enter a house number';
@@ -182,14 +181,14 @@ class checkOut extends StatelessWidget {
                         hintStyle: TextStyle(fontFamily: "Gilroy medium",
                            color: Colors.white60,
                            fontSize: height / 45),
-                           enabledBorder: UnderlineInputBorder(
+                           enabledBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white60),
                         ),
-                        focusedBorder: UnderlineInputBorder(
+                        focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white60),
                         ),
                       ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Please enter a road name, area, colony';
@@ -208,20 +207,20 @@ class checkOut extends StatelessWidget {
                           hintStyle: TextStyle(fontFamily: "Gilroy medium",
                            color: Colors.white60,
                            fontSize: height / 45),
-                           enabledBorder: UnderlineInputBorder(
+                           enabledBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white60),
                         ),
-                        focusedBorder: UnderlineInputBorder(
+                        focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white60),
                         ),
                       ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                         
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       Padding(
                         padding: const EdgeInsets.only(left: 20,right: 20),
-                        child: Container(
+                        child: SizedBox(
                           height: 40,
                           width: width,
                           child: OutlinedButton(
@@ -243,7 +242,7 @@ class checkOut extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(height: 50,),
+                      const SizedBox(height: 50,),
                     ],
                   ),
                 ),

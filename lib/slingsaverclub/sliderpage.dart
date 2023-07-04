@@ -1,13 +1,12 @@
-import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gobank/slingsaverclub/offerwidgets.dart';
 import 'package:gobank/utils/media.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 
 class SliderPage extends StatefulWidget {
+  const SliderPage({Key? key}) : super(key: key);
+
   @override
   _SliderPageState createState() => _SliderPageState();
 }
@@ -40,7 +39,7 @@ class _SliderPageState extends State<SliderPage> {
         stream: FirebaseFirestore.instance.collection('slider').snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('No data available'));
+            return const Center(child: Text('No data available'));
           }
 
           final slides = snapshot.data!.docs;
@@ -58,7 +57,7 @@ class _SliderPageState extends State<SliderPage> {
                     activeindexslideroffers = index;
 
                     if (slide == null) {
-                      return SizedBox.shrink();
+                      return const SizedBox.shrink();
                     }
 
                     final title = slide['title'] as String?;
@@ -71,17 +70,17 @@ class _SliderPageState extends State<SliderPage> {
                         description == null ||
                         description2 == null ||
                         imageURL == null) {
-                      return SizedBox.shrink();
+                      return const SizedBox.shrink();
                     }
 
                     return Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: 3.0),
+                      padding:  const EdgeInsets.symmetric(horizontal: 3.0),
                       child: Container(
                        // height: 170,
                         width: 320,
                         margin: EdgeInsets.only(left: index != 0 ? 10.0 : 0.0),
                         child: Card(
-                          color: Color.fromARGB(255, 59, 8, 68),
+                          color: const Color.fromARGB(255, 59, 8, 68),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
@@ -170,13 +169,13 @@ class _SliderPageState extends State<SliderPage> {
                   },
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List<Widget>.generate(slides.length, (int index) {
                   return AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    margin: EdgeInsets.symmetric(horizontal: 3.0),
+                    duration: const Duration(milliseconds: 300),
+                    margin: const EdgeInsets.symmetric(horizontal: 3.0),
                     height: 7.0,
                     width: _currentPage == index ? 7.0 : 7.0,
                     decoration: BoxDecoration(

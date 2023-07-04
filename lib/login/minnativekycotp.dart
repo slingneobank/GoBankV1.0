@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:gobank/login/minnativekycdetails.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,17 +33,17 @@ class _minnativekycotpState extends State<minnativekycotp> {
         //     color: Colors.black,
         //   ),
         // ),
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(
+        title: const Text(
           'Enter OTP here',
           style: TextStyle(color: Colors.black),
         ),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.card_giftcard,
               color: Colors.black,
             ),
@@ -65,7 +64,7 @@ class _minnativekycotpState extends State<minnativekycotp> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     OtpTextField(
@@ -77,7 +76,7 @@ class _minnativekycotpState extends State<minnativekycotp> {
                       fillColor: Colors.black.withOpacity(0.2),
                       filled: true,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                   ],
@@ -94,7 +93,7 @@ class _minnativekycotpState extends State<minnativekycotp> {
               // );
 
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('next section')),
+                const SnackBar(content: Text('next section')),
               );
             },
             child: Container(
@@ -103,7 +102,7 @@ class _minnativekycotpState extends State<minnativekycotp> {
                 color: Colors.amber,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Center(
+              child: const Center(
                 child: Text(
                   'Continue',
                   style: TextStyle(
@@ -157,7 +156,7 @@ class _minnativekycotpState extends State<minnativekycotp> {
       print(responseMessage);
       Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (_) => minnativekycdetails()),
+                MaterialPageRoute(builder: (_) => const minnativekycdetails()),
               );
 
     } catch (error) {
@@ -169,7 +168,7 @@ class _minnativekycotpState extends State<minnativekycotp> {
         context: context,
         builder: (context) => AlertDialog(
           title: Text(responseMessage),
-          content: Text('An error occurred. Please try again later.'),
+          content: const Text('An error occurred. Please try again later.'),
           actions: [
             TextButton(
               onPressed: () {
@@ -178,7 +177,7 @@ class _minnativekycotpState extends State<minnativekycotp> {
                // SystemNavigator.pop(); 
                // exit(0);//forcefully terminate app to background
               },
-              child: Text('Exit'),
+              child: const Text('Exit'),
             ),
             TextButton(
               onPressed: () {
@@ -186,7 +185,7 @@ class _minnativekycotpState extends State<minnativekycotp> {
                 kycotpverification();
                 Navigator.of(context).pop();
               },
-              child: Text('Retry'),
+              child: const Text('Retry'),
             ),
           ],
         ),

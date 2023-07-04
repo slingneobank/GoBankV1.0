@@ -39,11 +39,11 @@ class bottomsheetpage extends StatelessWidget {
                                                     children: [ 
                                                       InkWell(
                                                         onTap: () => Navigator.pop(context),
-                                                        child: Icon(
+                                                        child: const Icon(
                                                           Icons.expand_more,size: 25,),
                                                           ),
                                                       ListTile(
-                                                        leading: Icon(Icons.brightness_medium,size: 40),
+                                                        leading: const Icon(Icons.brightness_medium,size: 40),
                                                         title: Text(
                                                           'Rebook',
                                                           style: TextStyle(
@@ -67,12 +67,12 @@ class bottomsheetpage extends StatelessWidget {
                                                 child: Padding(
                                                   padding: const EdgeInsets.only(right: 10),
                                                   child: Scrollbar(
-                                                    isAlwaysShown: true,
+                                                    thumbVisibility: true,
                                                     controller: _scrollController,
                                                     thickness: 3,
                                                     child: SingleChildScrollView(
                                                       controller: _scrollController,
-                                                      physics: ClampingScrollPhysics(),
+                                                      physics: const ClampingScrollPhysics(),
                                                       child: Padding(
                                                         padding: const EdgeInsets.only(top: 20),
                                                         child: Column(
@@ -94,8 +94,8 @@ class bottomsheetpage extends StatelessWidget {
                                                                 padding: const EdgeInsets.only(left: 20),
                                                                 child: Row(
                                                                   children: [
-                                                                    Icon(Icons.circle,size: 10,),
-                                                                    SizedBox(width: 5,),
+                                                                    const Icon(Icons.circle,size: 10,),
+                                                                    const SizedBox(width: 5,),
                                                                     Text("Get 10% instant cashbackon your purchase",style: TextStyle(
                                                                     fontFamily: "Gilroy Medium",
                                                                     color: notifire.getdarkgreycolor,
@@ -104,13 +104,13 @@ class bottomsheetpage extends StatelessWidget {
                                                                   ],
                                                                 ),
                                                               ),
-                                                              SizedBox(height: 10,),
+                                                              const SizedBox(height: 10,),
                                                             Padding(
                                                                 padding: const EdgeInsets.only(left: 20),
                                                                 child: Row(
                                                                   children: [
-                                                                    Icon(Icons.circle,size: 10,),
-                                                                    SizedBox(width: 5,),
+                                                                    const Icon(Icons.circle,size: 10,),
+                                                                    const SizedBox(width: 5,),
                                                                     Text("Get 10% instant cashbackon your purchase",style: TextStyle(
                                                                     fontFamily: "Gilroy Medium",
                                                                     color: notifire.getdarkgreycolor,
@@ -120,7 +120,7 @@ class bottomsheetpage extends StatelessWidget {
                                                                 ),
                                                               ),
                                                               
-                                                         SizedBox(height: 20,),
+                                                         const SizedBox(height: 20,),
                                                          Padding(
                                                                 padding: const EdgeInsets.only(left: 20),
                                                                 child: Text("TERMS & CONDITION",style: TextStyle(
@@ -137,8 +137,8 @@ class bottomsheetpage extends StatelessWidget {
                                                                 padding: const EdgeInsets.only(left: 20),
                                                                 child: Row(
                                                                   children: [
-                                                                    Icon(Icons.circle,size: 10,),
-                                                                    SizedBox(width: 5,),
+                                                                    const Icon(Icons.circle,size: 10,),
+                                                                    const SizedBox(width: 5,),
                                                                     Text("Get 10% instant cashbackon your purchase",style: TextStyle(
                                                                     fontFamily: "Gilroy Medium",
                                                                     color: notifire.getdarkgreycolor,
@@ -147,13 +147,13 @@ class bottomsheetpage extends StatelessWidget {
                                                                   ],
                                                                 ),
                                                               ),
-                                                              SizedBox(height: 10,),
+                                                              const SizedBox(height: 10,),
                                                             Padding(
                                                                 padding: const EdgeInsets.only(left: 20),
                                                                 child: Row(
                                                                   children: [
-                                                                    Icon(Icons.circle,size: 10,),
-                                                                    SizedBox(width: 5,),
+                                                                    const Icon(Icons.circle,size: 10,),
+                                                                    const SizedBox(width: 5,),
                                                                     Text("Get 10% instant cashbackon your purchase",style: TextStyle(
                                                                     fontFamily: "Gilroy Medium",
                                                                     color: notifire.getdarkgreycolor,
@@ -162,13 +162,13 @@ class bottomsheetpage extends StatelessWidget {
                                                                   ],
                                                                 ),
                                                               ),
-                                                               SizedBox(height: 10,),
+                                                               const SizedBox(height: 10,),
                                                             Padding(
                                                                 padding: const EdgeInsets.only(left: 20),
                                                                 child: Row(
                                                                   children: [
-                                                                    Icon(Icons.circle,size: 10,),
-                                                                    SizedBox(width: 5,),
+                                                                    const Icon(Icons.circle,size: 10,),
+                                                                    const SizedBox(width: 5,),
                                                                     Text("Get 10% instant cashbackon your purchase",style: TextStyle(
                                                                     fontFamily: "Gilroy Medium",
                                                                     color: notifire.getdarkgreycolor,
@@ -177,13 +177,13 @@ class bottomsheetpage extends StatelessWidget {
                                                                   ],
                                                                 ),
                                                               ),
-                                                          SizedBox(height: 10,),
+                                                          const SizedBox(height: 10,),
                                                               Padding(
                                                                 padding: const EdgeInsets.only(left: 20),
                                                                 child: Row(
                                                                   children: [
-                                                                    Icon(Icons.circle,size: 10,),
-                                                                    SizedBox(width: 5,),
+                                                                    const Icon(Icons.circle,size: 10,),
+                                                                    const SizedBox(width: 5,),
                                                                     Text("Get 10% instant cashbackon your purchase",style: TextStyle(
                                                                     fontFamily: "Gilroy Medium",
                                                                     color: notifire.getdarkgreycolor,
@@ -192,13 +192,13 @@ class bottomsheetpage extends StatelessWidget {
                                                                   ],
                                                                 ),
                                                               ),
-                                                              SizedBox(height: 10,),
+                                                              const SizedBox(height: 10,),
                                                             Padding(
                                                                 padding: const EdgeInsets.only(left: 20),
                                                                 child: Row(
                                                                   children: [
-                                                                    Icon(Icons.circle,size: 10,),
-                                                                    SizedBox(width: 5,),
+                                                                    const Icon(Icons.circle,size: 10,),
+                                                                    const SizedBox(width: 5,),
                                                                     Text("Get 10% instant cashbackon your purchase",style: TextStyle(
                                                                     fontFamily: "Gilroy Medium",
                                                                     color: notifire.getdarkgreycolor,
@@ -225,7 +225,7 @@ class bottomsheetpage extends StatelessWidget {
                                                       },
                                                       style: OutlinedButton.styleFrom(
                                                         backgroundColor: Colors.black,
-                                                        padding: EdgeInsets.symmetric(vertical: 13,horizontal: 25),
+                                                        padding: const EdgeInsets.symmetric(vertical: 13,horizontal: 25),
                                                         shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(20),)
                                                       ),
                                                 
@@ -236,7 +236,7 @@ class bottomsheetpage extends StatelessWidget {
                                                           color: notifire.getdarkwhitecolor,
                                                           fontSize: height / 50),),
                                                           ),
-                                                          SizedBox(height: 30,),
+                                                          const SizedBox(height: 30,),
                                                       const Divider(
                                                         height: 5,
                                                         color: Colors.black,

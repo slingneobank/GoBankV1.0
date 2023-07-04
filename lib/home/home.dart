@@ -1,8 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:carousel_indicator/carousel_indicator.dart';
-import 'package:carousel_slider/carousel_options.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
@@ -10,18 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:gobank/analytics/analytics.dart';
-import 'package:gobank/bottombar/bottombar.dart';
 import 'package:gobank/card/mycard.dart';
 import 'package:gobank/databasehelper.dart';
-import 'package:gobank/home/giftcard/buyvoucher.dart';
-import 'package:gobank/home/giftcard/giftofferform.dart';
 import 'package:gobank/home/helpandsupport.dart';
 import 'package:gobank/home/rating.dart';
-import 'package:gobank/home/sliders.dart';
-import 'package:gobank/home/sling_store/sling_store.dart';
 import 'package:gobank/home/notifications.dart';
-import 'package:gobank/home/request/request.dart';
-import 'package:gobank/home/savers_club_sliders.dart';
 import 'package:gobank/home/savings/savings_story_page.dart';
 import 'package:gobank/home/scanpay/scan.dart';
 import 'package:gobank/home/seealltransaction.dart';
@@ -39,10 +29,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:gobank/login/auth_ctrl.dart';
 import 'package:shimmer/shimmer.dart';
-import '../profile/helpsupport.dart';
-import '../profile/legalandpolicy.dart';
 import '../slingsaverclub/bannerpage.dart';
 import 'NotificationServices.dart';
 import 'home_ctrl.dart';
@@ -356,6 +343,7 @@ class _HomeState extends State<Home> {
 
 
 
+  @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
@@ -372,9 +360,9 @@ class _HomeState extends State<Home> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('NO Internet Connection'),
+          title: const Text('NO Internet Connection'),
           content:
-              Text('Try Turning on your WIFI or MOBILEDATA for using the App'),
+              const Text('Try Turning on your WIFI or MOBILEDATA for using the App'),
           actions: [
             Column(
               //mainAxisAlignment: MainAxisAlignment.center,
@@ -383,17 +371,17 @@ class _HomeState extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     OutlinedButton(
-                      child: Text('Retry'),
+                      child: const Text('Retry'),
                       onPressed: () {
                         Navigator.of(context).pop();
                         fetchImageUrls();
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                     OutlinedButton(
-                      child: Text('Cancel'),
+                      child: const Text('Cancel'),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -968,7 +956,7 @@ class _HomeState extends State<Home> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                   personalloan(),
+                                                   const personalloan(),
                                             ),
                                           );
                                         },
@@ -1139,7 +1127,7 @@ class _HomeState extends State<Home> {
                           if (index == 0) {
                             // Get.to(() => const SlingStore());
                             navigator!.push(MaterialPageRoute(
-                              builder: (context) => sling_storemain(),
+                              builder: (context) => const sling_storemain(),
                             ));
                           } else {
                             Navigator.push(
@@ -1366,7 +1354,7 @@ class _HomeState extends State<Home> {
             SizedBox(
               height: height / 80,
             ),
-            Container(
+            SizedBox(
               height: 230,
               child: Column(
                 children: [
@@ -1381,7 +1369,7 @@ class _HomeState extends State<Home> {
                               itemCount: imageUrls
                                   .length, // Specify the number of shimmer placeholders you want
                               itemBuilder: (context, index) => Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                                 child: Container(
                                   width: 150,
                                   //height: 200,
@@ -1446,7 +1434,7 @@ class _HomeState extends State<Home> {
                                       );
                                     },
                                   )
-                                : Center(child: CircularProgressIndicator()),
+                                : const Center(child: CircularProgressIndicator()),
                   ),
                   SizedBox(height: height / 40),
                   Row(
@@ -1459,8 +1447,8 @@ class _HomeState extends State<Home> {
                             (isConnected && index < imageUrls.length);
 
                         return AnimatedContainer(
-                          duration: Duration(milliseconds: 300),
-                          margin: EdgeInsets.symmetric(horizontal: 3.0),
+                          duration: const Duration(milliseconds: 300),
+                          margin: const EdgeInsets.symmetric(horizontal: 3.0),
                           height: 7.0,
                           width: isActive ? 7.0 : 7.0,
                           decoration: BoxDecoration(
@@ -1480,7 +1468,7 @@ class _HomeState extends State<Home> {
             SizedBox(
               height: height / 80,
             ),
-            SizedBox(
+            const SizedBox(
               height: 200,
               //width: width-30,
               child: SliderPage(),
@@ -2108,7 +2096,7 @@ class _HomeState extends State<Home> {
       // Navigate to the next screen
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => CardDetails()),
+        MaterialPageRoute(builder: (context) => const CardDetails()),
       );
       print(responseMessage);
     } catch (e) {
@@ -2121,7 +2109,7 @@ class _HomeState extends State<Home> {
         context: context,
         builder: (context) => AlertDialog(
           title: Text(responseMessage),
-          content: Text('An error occurred. Please try again later.'),
+          content: const Text('An error occurred. Please try again later.'),
           actions: [
             TextButton(
               onPressed: () {
@@ -2130,7 +2118,7 @@ class _HomeState extends State<Home> {
                 SystemNavigator.pop(); 
                // exit(0);//forcefully terminate app to background
               },
-              child: Text('Exit'),
+              child: const Text('Exit'),
             ),
             TextButton(
               onPressed: () {
@@ -2138,7 +2126,7 @@ class _HomeState extends State<Home> {
                 generateToken(username, apiKey);
                 Navigator.of(context).pop();
               },
-              child: Text('Retry'),
+              child: const Text('Retry'),
             ),
           ],
         ),

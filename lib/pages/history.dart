@@ -124,7 +124,7 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
 
     Widget showLoadingScreen() {
     return Shimmer(
-      gradient: LinearGradient(
+      gradient: const LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
         colors: [
@@ -135,9 +135,9 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
           Colors.grey,
         ],
       ),
-      period: Duration(seconds: 2),
+      period: const Duration(seconds: 2),
       child: ListTile(
-        leading: CircleAvatar(
+        leading: const CircleAvatar(
           radius: 25,
           backgroundColor: Colors.grey,
         ),

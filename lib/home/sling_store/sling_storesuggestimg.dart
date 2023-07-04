@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:gobank/home/sling_store/sling_storewebview.dart';
 import 'package:gobank/utils/colornotifire.dart';
@@ -62,7 +61,7 @@ class _sling_storesuggestimgState extends State<sling_storesuggestimg> {
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -86,6 +85,7 @@ class _sling_storesuggestimgState extends State<sling_storesuggestimg> {
                         String webview=document['webview'];
                         print(imageUrl);
                         return Padding(
+<<<<<<< HEAD
                           padding: EdgeInsets.symmetric(horizontal: 5.0),
                           child: InkWell(
                             onTap: () {
@@ -181,6 +181,15 @@ class _sling_storesuggestimgState extends State<sling_storesuggestimg> {
                                   ),
                                 ],
                               ),
+=======
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                          child: Container(
+                            width: 150, // Set the desired width here //170
+                            margin: EdgeInsets.only(left: index != 0 ? 10.0 : 0.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              
+>>>>>>> 045def2605cda7e9ca3f948953d640e5af69200e
                             ),
                                     
                                   ],
@@ -192,7 +201,7 @@ class _sling_storesuggestimgState extends State<sling_storesuggestimg> {
                       },
                     )
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 
@@ -200,8 +209,8 @@ class _sling_storesuggestimgState extends State<sling_storesuggestimg> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List<Widget>.generate(documents.length, (int index) {
                   return AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    margin: EdgeInsets.symmetric(horizontal: 3.0),
+                    duration: const Duration(milliseconds: 300),
+                    margin: const EdgeInsets.symmetric(horizontal: 3.0),
                     height: 7.0,
                     width: _currentPage == index ? 7.0 : 7.0,
                     decoration: BoxDecoration(

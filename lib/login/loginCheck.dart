@@ -18,6 +18,8 @@ class LoginCheck extends StatelessWidget {
   // ignore: use_key_in_widget_constructors
 
   final authCtrl = Get.find<AuthCtrl>();
+
+  LoginCheck({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,13 +27,12 @@ class LoginCheck extends StatelessWidget {
         stream: authCtrl.auth.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Home();
+            return const Home();
           } else {
-            return Onbonding();
+            return const Onbonding();
           }
         },
       ),
     );
   }
 }
- 
