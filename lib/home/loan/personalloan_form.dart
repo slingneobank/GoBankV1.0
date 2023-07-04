@@ -421,8 +421,7 @@ class _personalloan_formState extends State<personalloan_form> {
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
                                   saveFormData();
-                                  // Here you can navigate to another page or perform any action after saving the form data
-                                }
+                                   }
                               },
                               child: Text(
                                 'Proceed for Offer Confirmation',
@@ -476,18 +475,7 @@ class _personalloan_formState extends State<personalloan_form> {
     try {
       DataSnapshot snapshot =
           await query.once().then((snapshot) => snapshot.snapshot);
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(
-      //     content: Text('1working to save form data.'),
-      //   ),
-      // );
-
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(
-      //     content: Text('working to save form data.'),
-      //   ),
-      // );
-
+    
       if (snapshot.value != null) {
         Map<dynamic, dynamic> loanData =
             (snapshot.value as Map<dynamic, dynamic>).values.first;

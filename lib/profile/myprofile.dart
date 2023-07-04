@@ -76,6 +76,13 @@ class _MyProfileState extends State<MyProfile> {
   void initState() {
     super.initState();
     getdarkmodepreviousstate();
+    getPhoneNumber();
+  }
+   Future<void> getPhoneNumber() async {
+    String? number;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    number=await prefs.getString('phone_number');
+    print(number);
   }
 
   @override
@@ -746,6 +753,5 @@ class _MyProfileState extends State<MyProfile> {
       ),
     );
   }
-  
 
 }

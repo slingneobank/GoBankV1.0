@@ -85,7 +85,6 @@ class _sling_storesuggestimgState extends State<sling_storesuggestimg> {
                         String webview=document['webview'];
                         print(imageUrl);
                         return Padding(
-<<<<<<< HEAD
                           padding: EdgeInsets.symmetric(horizontal: 5.0),
                           child: InkWell(
                             onTap: () {
@@ -181,15 +180,6 @@ class _sling_storesuggestimgState extends State<sling_storesuggestimg> {
                                   ),
                                 ],
                               ),
-=======
-                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                          child: Container(
-                            width: 150, // Set the desired width here //170
-                            margin: EdgeInsets.only(left: index != 0 ? 10.0 : 0.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              
->>>>>>> 045def2605cda7e9ca3f948953d640e5af69200e
                             ),
                                     
                                   ],

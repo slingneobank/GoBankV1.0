@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gobank/home/home.dart';
 import 'package:gobank/home/loan/personalloan_form.dart';
 
 import 'package:gobank/home/topup/topupcard/topup.dart';
@@ -64,16 +65,11 @@ NotificationServices notificationServices = NotificationServices();
     getdarkmodepreviousstate();
     Timer(
       const Duration(seconds: 3),
-      () => Navigator.pushReplacement(
+      () => Navigator.push( 
         context,
         MaterialPageRoute(
-<<<<<<< HEAD
-          builder: (context) =>  Home(),//onbonding  
-=======
+          builder: (context) =>  Onbonding(),//onbonding  
 
-          builder: (context) => const Onbonding(), //onbonding
-
->>>>>>> 045def2605cda7e9ca3f948953d640e5af69200e
         ),
       ),
     );

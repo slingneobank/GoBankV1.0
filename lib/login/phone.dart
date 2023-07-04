@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:gobank/login/verifyOTP.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyPhone extends StatefulWidget {
   const MyPhone({Key? key}) : super(key: key);
@@ -20,7 +21,10 @@ class _MyPhoneState extends State<MyPhone> {
     countryController.text = "+91";
     super.initState();
   }
-
+Future<void> savePhoneNumber(String phoneNumber) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('phone_number', phoneNumber);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,8 +118,10 @@ class _MyPhoneState extends State<MyPhone> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
                     onPressed: () async {
+                      await savePhoneNumber(countryController.text + phone);
                       await FirebaseAuth.instance.verifyPhoneNumber(
                         phoneNumber: countryController.text + phone,
+                        
                         verificationCompleted:
                             (PhoneAuthCredential credential) {},
                         verificationFailed: (FirebaseAuthException e) {},

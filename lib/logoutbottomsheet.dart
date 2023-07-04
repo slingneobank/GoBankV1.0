@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gobank/login/phone.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class logoutbottomsheet extends StatelessWidget {
   const logoutbottomsheet({Key? key}) : super(key: key);
 
@@ -57,6 +59,10 @@ class CustomButton extends StatefulWidget {
 class _CustomButtonState extends State<CustomButton> {
   String _selectedButton = '';
 
+   Future<void> removePhoneNumber() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('phone_number');
+  }
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -98,7 +104,9 @@ class _CustomButtonState extends State<CustomButton> {
                 setState(() {
                   _selectedButton = 'Logout';
                 });
-                // Perform logout action
+                removePhoneNumber();
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MyPhone(),));
               },
               style: ElevatedButton.styleFrom(
                 primary: _selectedButton == 'Logout' ? Colors.black : Colors.white,
