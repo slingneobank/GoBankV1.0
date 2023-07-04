@@ -126,7 +126,7 @@ class _sling_storemainState extends State<sling_storemain> {
                         Padding(
                           padding: const EdgeInsets.only(left: 15,right: 15),
                           child: SizedBox(
-                            height: 200,
+                           // height: 200,
                             child: sling_storesuggestimg(),),
                         ),
                         SizedBox(

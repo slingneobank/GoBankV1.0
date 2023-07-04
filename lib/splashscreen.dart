@@ -72,7 +72,7 @@ NotificationServices notificationServices = NotificationServices();
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  minkycpage(),//onbonding  
+          builder: (context) =>  Home(),//onbonding  
         ),
       ),
     );

@@ -87,7 +87,7 @@ class _HomeState extends State<Home> {
   ];
 
   List img = [
-    // "images/mobile.png",
+    "images/mobile.png",
     "images/shopping.png",
     "images/ticket.png",
     "images/wifi1.png",
@@ -118,6 +118,7 @@ class _HomeState extends State<Home> {
   ];
   List giftdiscount = ["5", "5", "5", "5", "2", "5", "3", ""];
   List paymentname = [
+    "Sling_store",
     //CustomStrings.nearbystores,
     "Fees pay",
     // CustomStrings.travelflight,
@@ -1127,7 +1128,7 @@ class _HomeState extends State<Home> {
                     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: height / 9,
                       mainAxisExtent: height / 8,
-                      childAspectRatio: 3 / 2,
+                      childAspectRatio: 4 / 2,
                       crossAxisSpacing: height / 30,
                       mainAxisSpacing: height / 50,
                     ),
@@ -1135,7 +1136,7 @@ class _HomeState extends State<Home> {
                     itemBuilder: (BuildContext ctx, index) {
                       return GestureDetector(
                         onTap: () {
-                          if (index == 1) {
+                          if (index == 0) {
                             // Get.to(() => const SlingStore());
                             navigator!.push(MaterialPageRoute(
                               builder: (context) => sling_storemain(),

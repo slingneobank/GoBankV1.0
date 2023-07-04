@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:gobank/logoutbottomsheet.dart';
 import 'package:gobank/profile/editprofile.dart';
+import 'package:gobank/profile/weviewshow.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +22,8 @@ class MyProfile extends StatefulWidget {
 
 class _MyProfileState extends State<MyProfile> {
 
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  PersistentBottomSheetController? _bottomSheetController;
   late ColorNotifire notifire;
   List cashbankimg = [
     "images/merchant1.png",
@@ -79,6 +82,7 @@ class _MyProfileState extends State<MyProfile> {
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: notifire.getprimerycolor,
       body: SingleChildScrollView(
         child: Stack(
@@ -351,13 +355,15 @@ class _MyProfileState extends State<MyProfile> {
                          setState(() {
                           if(index==4 )
                           {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => Webviewaboutus(),));
-                              print("hi${cashbankdiscription[index]}");
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => webViewshow(urllink:"https://www.google.com/" ),));
+                              //print("hi${cashbankdiscription[index]}");
                           }
                           else if(index==5)
                           {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => webViewprivacypolicy(),));
-                              print("hi${cashbankdiscription[index]}");
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => webViewshow(urllink: "https://www.google.com/"),));
+                              //print("hi${cashbankdiscription[index]}");
                           }
                             
                          });
@@ -463,7 +469,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: width / 20, vertical: height / 150),
+                      horizontal: width / 20, vertical: height / 250),
                   child: InkWell(
                     onTap: () {},
                     child: Container(
@@ -553,7 +559,7 @@ class _MyProfileState extends State<MyProfile> {
                       ),
                     ),
                   ),
-                )
+                ),
 
                 // Row(
                 //   children: [
@@ -689,6 +695,50 @@ class _MyProfileState extends State<MyProfile> {
                 //     ),
                 //   ),
                 // ),
+                 Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: width / 20, vertical: height / 100),
+                  child: InkWell(
+                    onTap: () {},
+                    child: Container(
+                      height: height / 15,
+                      width: width,
+                      decoration: BoxDecoration(
+                        color: notifire.getdarkwhitecolor,
+                        border: Border.all(
+                          color: Colors.amber,
+                        ),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: OutlinedButton(
+                          onPressed: () {
+                             if (_scaffoldKey.currentState != null) {
+                                  _bottomSheetController = _scaffoldKey.currentState!.showBottomSheet(
+                                    (context) => const logoutbottomsheet(),
+                                    elevation: 10,
+                                    backgroundColor: Colors.transparent,
+                                  );
+                                }
+                          },
+                          style: OutlinedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(color: Colors.amber, width: 2),
+                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 20), // Set left and right padding to 20
+                            minimumSize: Size(width-40,50 ), // Set button size to 50x50
+                          ),
+                          child: Text("Logout",style: TextStyle(
+                                          fontFamily: "Gilroy Bold",
+                                          color: Colors.amber,
+                                          fontSize: height / 35),),
+                        )
+                    ),
+                  ),
+                ),
+                
               ],
             ),
           ],
@@ -698,53 +748,4 @@ class _MyProfileState extends State<MyProfile> {
   }
   
 
-}
-class Webviewaboutus extends StatelessWidget {
-  
-
-  const Webviewaboutus({Key? key});
-
-  @override
-  Widget build(BuildContext context) {
-    final webviewkey = UniqueKey();
-  final Completer<WebViewController>_controller1=Completer<WebViewController>();
-  
-  String url="https://www.google.com/";
-    return Scaffold(
-      body: WebView(
-                        key: webviewkey,
-                        initialUrl: url,
-                        javascriptMode: JavascriptMode.unrestricted,
-                        onWebViewCreated:  (WebViewController webViewController)
-                            {
-                             _controller1.complete(webViewController);
-                            },
-                        gestureNavigationEnabled: true,
-                      ),
-    );
-  }
-}
-
-class webViewprivacypolicy extends StatelessWidget {
-  const webViewprivacypolicy({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final webviewkey = UniqueKey();
-  final Completer<WebViewController>_controller1=Completer<WebViewController>();
-  
-  String url="https://www.google.com/";
-    return Scaffold(
-      body: WebView(
-                        key: webviewkey,
-                        initialUrl: url,
-                        javascriptMode: JavascriptMode.unrestricted,
-                        onWebViewCreated:  (WebViewController webViewController)
-                            {
-                             _controller1.complete(webViewController);
-                            },
-                        gestureNavigationEnabled: true,
-                      ),
-    );
-  }
 }
