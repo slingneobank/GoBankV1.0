@@ -646,6 +646,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  flutter_pinelabs:
+    dependency: "direct main"
+    description:
+      name: flutter_pinelabs
+      sha256: e60bc19c700825c9b81c76ca7382228792ead38c360c61ae6d4b3d1d84be5bec
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0+3"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:

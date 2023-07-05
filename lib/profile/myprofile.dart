@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gobank/logoutbottomsheet.dart';
 import 'package:gobank/profile/editprofile.dart';
@@ -71,18 +72,22 @@ class _MyProfileState extends State<MyProfile> {
       notifire.setIsDark = previusstate;
     }
   }
-
+  FirebaseAuth auth=FirebaseAuth.instance;
   @override
   void initState() {
     super.initState();
     getdarkmodepreviousstate();
     getPhoneNumber();
+    
   }
    Future<void> getPhoneNumber() async {
-    String? number;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    number=await prefs.getString('phone_number');
-    print(number);
+    // String? number;
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // number=await prefs.getString('phone_number');
+    //print(number);
+    
+    String phone=auth.currentUser!.phoneNumber ?? 'number';
+    print("current number:$phone");
   }
 
   @override

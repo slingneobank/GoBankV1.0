@@ -87,6 +87,7 @@ dependencies:
   flutter_local_notifications: ^14.1.1
   awesome_notifications: ^0.7.4+1
   webview_flutter: ^3.0.4
+  flutter_pinelabs: ^1.1.0+3
 
   
 

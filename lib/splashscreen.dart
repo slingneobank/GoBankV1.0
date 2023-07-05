@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gobank/home/CustomCardView.dart';
 import 'package:gobank/home/home.dart';
 import 'package:gobank/home/loan/personalloan_form.dart';
 
@@ -68,7 +69,7 @@ NotificationServices notificationServices = NotificationServices();
       () => Navigator.push( 
         context,
         MaterialPageRoute(
-          builder: (context) =>  Onbonding(),//onbonding  
+          builder: (context) =>  showcard(),//onbonding  
 
         ),
       ),
