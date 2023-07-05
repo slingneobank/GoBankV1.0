@@ -69,8 +69,8 @@ NotificationServices notificationServices = NotificationServices();
       () => Navigator.push( 
         context,
         MaterialPageRoute(
-          builder: (context) =>  showcard(),//onbonding  
-
+          builder: (context) =>  CustomCardView(),//onbonding  
+          
         ),
       ),
     );
