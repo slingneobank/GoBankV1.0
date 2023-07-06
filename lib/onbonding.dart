@@ -275,35 +275,35 @@ class _OnbondingState extends State<Onbonding> {
                   SizedBox(
                     height: height / 20,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: width / 20),
-                    child: Row(
-                      children: [
-                        const Spacer(),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const Bottombar(), //Login() for real
-                              ),
-                            );
-                          },
-                          child: Container(
-                            color: Colors.transparent,
-                            child: Text(
-                              CustomStrings.skip,
-                              style: TextStyle(
-                                  fontFamily: 'Gilroy Bold',
-                                  color: notifire.getdarkscolor,
-                                  fontSize: height / 50),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: EdgeInsets.symmetric(horizontal: width / 20),
+                  //   child: Row(
+                  //     children: [
+                  //       const Spacer(),
+                  //       GestureDetector(
+                  //         onTap: () {
+                  //           Navigator.push(
+                  //             context,
+                  //             MaterialPageRoute(
+                  //               builder: (context) =>
+                  //                   const Bottombar(), //Login() for real
+                  //             ),
+                  //           );
+                  //         },
+                  //         child: Container(
+                  //           color: Colors.transparent,
+                  //           child: Text(
+                  //             CustomStrings.skip,
+                  //             style: TextStyle(
+                  //                 fontFamily: 'Gilroy Bold',
+                  //                 color: notifire.getdarkscolor,
+                  //                 fontSize: height / 50),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   SizedBox(height: height / 1.45),
                   Container(
                     color: Colors.transparent,
@@ -336,34 +336,34 @@ class _OnbondingState extends State<Onbonding> {
                   SizedBox(
                     height: height / 20,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: width / 20),
-                    child: Row(
-                      children: [
-                        const Spacer(),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const Login(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            color: Colors.transparent,
-                            child: Text(
-                              CustomStrings.skip,
-                              style: TextStyle(
-                                  fontFamily: 'Gilroy Bold',
-                                  color: notifire.getdarkscolor,
-                                  fontSize: height / 50),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: EdgeInsets.symmetric(horizontal: width / 20),
+                  //   child: Row(
+                  //     children: [
+                  //       const Spacer(),
+                  //       GestureDetector(
+                  //         onTap: () {
+                  //           Navigator.push(
+                  //             context,
+                  //             MaterialPageRoute(
+                  //               builder: (context) => const Login(),
+                  //             ),
+                  //           );
+                  //         },
+                  //         child: Container(
+                  //           color: Colors.transparent,
+                  //           child: Text(
+                  //             CustomStrings.skip,
+                  //             style: TextStyle(
+                  //                 fontFamily: 'Gilroy Bold',
+                  //                 color: notifire.getdarkscolor,
+                  //                 fontSize: height / 50),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   SizedBox(height: height / 1.45),
                   Container(
                     color: Colors.transparent,
@@ -396,34 +396,34 @@ class _OnbondingState extends State<Onbonding> {
                   SizedBox(
                     height: height / 20,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: width / 20),
-                    child: Row(
-                      children: [
-                        const Spacer(),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const Login(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            color: Colors.transparent,
-                            child: Text(
-                              CustomStrings.skip,
-                              style: TextStyle(
-                                  fontFamily: 'Gilroy Bold',
-                                  color: notifire.getdarkscolor,
-                                  fontSize: height / 50),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: EdgeInsets.symmetric(horizontal: width / 20),
+                  //   child: Row(
+                  //     children: [
+                  //       const Spacer(),
+                  //       GestureDetector(
+                  //         onTap: () {
+                  //           Navigator.push(
+                  //             context,
+                  //             MaterialPageRoute(
+                  //               builder: (context) => const Login(),
+                  //             ),
+                  //           );
+                  //         },
+                  //         child: Container(
+                  //           color: Colors.transparent,
+                  //           child: Text(
+                  //             CustomStrings.skip,
+                  //             style: TextStyle(
+                  //                 fontFamily: 'Gilroy Bold',
+                  //                 color: notifire.getdarkscolor,
+                  //                 fontSize: height / 50),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   SizedBox(height: height / 1.45),
                   Container(
                     color: Colors.transparent,
