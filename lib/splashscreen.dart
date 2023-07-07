@@ -71,7 +71,8 @@ NotificationServices notificationServices = NotificationServices();
       () => Navigator.push( 
         context,
         MaterialPageRoute(
-          builder: (context) =>  onboard!.get("onboard")==true? MyPhone  ():Onbonding(),//onbonding  
+          builder: (context) => 
+           onboard!.get("onboard")==true? MyPhone  ():Onbonding(),//onbonding  
           
         ),
       ),
@@ -109,7 +110,7 @@ NotificationServices notificationServices = NotificationServices();
                   ),
                   Center(
                     child: Image.asset(
-                      "asset/images/logo.gif",
+                      "asset/images/logodark.gif",
                      height: height / 2,
                     ),
                   ),
