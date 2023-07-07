@@ -9,6 +9,7 @@ import 'package:gobank/home/loan/personalloan_form.dart';
 import 'package:gobank/home/topup/topupcard/topup.dart';
 import 'package:gobank/login/minkycpage.dart';
 import 'package:gobank/login/minnativekyclogin.dart';
+import 'package:gobank/login/phone.dart';
 import 'package:gobank/login/verify.dart';
 
 import 'package:gobank/onbonding.dart';
@@ -38,7 +39,7 @@ class Splashscreen extends StatefulWidget {
 class _SplashscreenState extends State<Splashscreen> {
   late ColorNotifire notifire;
   //final authCtrl = Get.put<AuthCtrl>(AuthCtrl());
-
+SharedPreferences? sp;
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
     bool? previusstate = prefs.getBool("setIsDark");
@@ -66,11 +67,11 @@ NotificationServices notificationServices = NotificationServices();
     });
     getdarkmodepreviousstate();
     Timer(
-      const Duration(seconds: 3),
+      const Duration(seconds: 7),
       () => Navigator.push( 
         context,
         MaterialPageRoute(
-          builder: (context) =>  Onbonding(),//onbonding  
+          builder: (context) =>  onboard!.get("onboard")==true? MyPhone  ():Onbonding(),//onbonding  
           
         ),
       ),
@@ -101,14 +102,15 @@ NotificationServices notificationServices = NotificationServices();
                 // ),
               ),
               Column(
+                
                 children: [
                   SizedBox(
-                    height: height / 2.4,
+                    height: height / 3,
                   ),
                   Center(
                     child: Image.asset(
-                      "images/logo1.png",
-                      height: height / 7,
+                      "asset/images/logo.gif",
+                     height: height / 2,
                     ),
                   ),
                 ],

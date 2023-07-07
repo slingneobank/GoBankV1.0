@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:gobank/home/home.dart';
 import 'package:gobank/login/auth_ctrl.dart';
+import 'package:gobank/login/phone.dart';
 import 'package:gobank/onbonding.dart';
 // import 'package:gobank/login/register.dart';
 // import 'package:gobank/login/verify_pin.dart';
@@ -29,7 +30,7 @@ class LoginCheck extends StatelessWidget {
           if (snapshot.hasData) {
             return const Home();
           } else {
-            return const Onbonding();
+            return const MyPhone();
           }
         },
       ),

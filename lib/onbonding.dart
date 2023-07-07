@@ -437,6 +437,7 @@ class _OnbondingState extends State<Onbonding> {
                   ),
                   GestureDetector(
                     onTap: () {
+                        onboard!.setBool('onboard', true);
                       Navigator.push(
                         context,
                         MaterialPageRoute(

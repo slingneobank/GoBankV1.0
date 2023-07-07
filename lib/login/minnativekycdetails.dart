@@ -517,7 +517,7 @@ String _dialogMessage = '';
                                 'notification' : {
                                   'title' : 'GoBank' ,
                                   'body' : 'KYC Sucessfully completed' ,
-                                  "sound": "jetsons_doorbell.mp3"
+                                  "sound": "windchime.mp3"
                               },
                                 // 'android': {
                                 //   'notification': {

@@ -25,25 +25,25 @@ class _SendMoneyState extends State<SendMoney> with SingleTickerProviderStateMix
       notifire.setIsDark = previusstate;
     }
   }
-  TabController? controller;
-  List<Widget> tabs = [
-    const SendAll(),
-    const SendAll(),
-    const SendAll(),
-    const SendAll(),
-  ];
+ // TabController? controller;
+  // List<Widget> tabs = [
+  //   const SendAll(),
+  //   const SendAll(),
+  //   const SendAll(),
+  //   const SendAll(),
+  // ];
 
   @override
   void initState() {
     super.initState();
-    controller = TabController(length: 4, vsync: this);
+    //controller = TabController(length: 4, vsync: this);
   }
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return Scaffold(
       backgroundColor: notifire.getprimerycolor,
-
+      
     );
   }
 }

@@ -177,12 +177,19 @@ Directory? appDir;
       // Firebase Storage URL
       
       print('banner Images are shown from Firebase Storage.');
-      return Image.network(
-        imageUrl,
-        fit: BoxFit.cover,
-        width: height * 0.15,
-        height: height * 0.15,
-      );
+      return FadeInImage.assetNetwork(
+        placeholder:  'asset/images/loading.gif',
+         image: imageUrl,
+         fit: BoxFit.cover,
+         width: height*0.15,
+         height: height*0.15,
+         );
+      // return Image.network(
+      //   imageUrl,
+      //   fit: BoxFit.cover,
+      //   width: height * 0.15,
+      //   height: height * 0.15,
+      // );
     } else {
       // Local file path
       print('banner Images are shown from local storage.');
@@ -272,29 +279,9 @@ Future<void> saveImageUrlsToDatabase(List<String> urls) async {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return SizedBox(
       height: 160,
-      child: isLoading
+      child: imageUrls.length==0
               ?
-              Shimmer.fromColors(
-            baseColor: Colors.grey.shade300,
-            highlightColor: Colors.grey.shade100,
-            enabled: true,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: imageUrls.length, // Specify the number of shimmer placeholders you want
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Container(
-                  width: 350,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-              ),
-            ),
-          )
-            // ? Center(child: CircularProgressIndicator())
+              Center(child: CircularProgressIndicator())
             : (isConnected && imageUrls.isNotEmpty)
                 ?PageView.builder(
               controller: _pageController,

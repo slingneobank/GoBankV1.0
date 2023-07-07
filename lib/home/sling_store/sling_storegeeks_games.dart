@@ -76,10 +76,15 @@ class _sling_storegeeks_gamesState extends State<sling_storegeeks_games> {
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
-                              child: Image.network(
-                                imageUrl,
-                                fit: BoxFit.cover,
-                              ),
+                              child: FadeInImage.assetNetwork(
+                              placeholder: 'asset/images/loading.gif',
+                               image: imageUrl,
+                               fit: BoxFit.cover,
+                               ),
+                              // child: Image.network(
+                              //   imageUrl,
+                              //   fit: BoxFit.cover,
+                              // ),
                             ),
                           ),
                         );

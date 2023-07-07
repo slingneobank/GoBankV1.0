@@ -71,10 +71,15 @@ class _sling_store_musthaveState extends State<sling_store_musthave> {
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
-                              child: Image.network(
-                                imageUrl,
-                                fit: BoxFit.cover,
-                              ),
+                              child: FadeInImage.assetNetwork(
+                              placeholder: 'asset/images/loading.gif',
+                               image: imageUrl,
+                               fit: BoxFit.cover,
+                               ),
+                              // child: Image.network(
+                              //   imageUrl,
+                              //   fit: BoxFit.cover,
+                              // ),
                             ),
                           ),
                         );

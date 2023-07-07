@@ -233,7 +233,7 @@ class _HomeState extends State<Home> {
                                 'notification' : {
                                   'title' : 'Slingone' ,
                                   'body' : 'Open a FD' ,
-                                  "sound": "jetsons_doorbell.mp3"
+                                  "sound": "windchime.mp3"
                               },
                                 // 'android': {
                                 //   'notification': {
@@ -273,7 +273,7 @@ class _HomeState extends State<Home> {
                                 'notification' : {
                                   'title' : 'Slingone' ,
                                   'body' : 'Apply For a Loan' ,
-                                  "sound": "jetsons_doorbell.mp3"
+                                  "sound": "windchime.mp3"
                               },
                                 // 'android': {
                                 //   'notification': {
@@ -940,7 +940,7 @@ class _HomeState extends State<Home> {
                                         height: height / 60,
                                       ),
                                       Text(
-                                        "Rewards",
+                                        "Add Money",
                                         style: TextStyle(
                                             fontFamily: "Gilroy Bold",
                                             color: notifire.getdarkscolor,
@@ -1360,27 +1360,8 @@ class _HomeState extends State<Home> {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: isLoading
-                        ? Shimmer.fromColors(
-                            baseColor: Colors.grey,
-                            highlightColor: Colors.grey,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: imageUrls
-                                  .length, // Specify the number of shimmer placeholders you want
-                              itemBuilder: (context, index) => Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                                child: Container(
-                                  width: 150,
-                                  //height: 200,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
+                    child: imageUrls.length==0
+                        ? Center(child: CircularProgressIndicator())
                         : (isConnected && imageUrls.isNotEmpty)
                             ? ListView.builder(
                                 controller: _scrollController,
@@ -2059,12 +2040,19 @@ class _HomeState extends State<Home> {
       // Firebase Storage URL
 
       print('Images are shown from Firebase Storage.');
-      return Image.network(
-        imageUrl,
-        fit: BoxFit.cover,
-        width: height * 0.15,
-        height: height * 0.15,
-      );
+      return FadeInImage.assetNetwork(
+        placeholder:  'asset/images/loading.gif',
+         image: imageUrl,
+         fit: BoxFit.cover,
+         width: height*0.15,
+         height: height*0.15,
+         );
+      // return Image.network(
+      //   imageUrl,
+      //   fit: BoxFit.cover,
+      //   width: height * 0.15,
+      //   height: height * 0.15,
+      // );
     } else {
       // Local file path
       print('Images are shown from local storage.');
