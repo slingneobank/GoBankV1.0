@@ -15,6 +15,7 @@ class MyPhone extends StatefulWidget {
 class _MyPhoneState extends State<MyPhone> {
   TextEditingController countryController = TextEditingController();
   SharedPreferences? sp;
+  FirebaseAuth auth=FirebaseAuth.instance;
   var phone = "";
   @override
   void initState() {
@@ -119,14 +120,23 @@ Future<void> savePhoneNumber(String phoneNumber) async {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
                     onPressed: () async {
+                      try{
                       await savePhoneNumber(countryController.text + phone);
                       
-                      await FirebaseAuth.instance.verifyPhoneNumber(
+                      await auth.verifyPhoneNumber(
                         phoneNumber: countryController.text + phone,
                         
                         verificationCompleted:
-                            (PhoneAuthCredential credential) {},
-                        verificationFailed: (FirebaseAuthException e) {},
+                            (PhoneAuthCredential credential) async{
+                              await auth.signInWithCredential(credential);
+                            },
+                        verificationFailed: (FirebaseAuthException e) {
+                           ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Verification failed. Please try again later."),
+                            ),
+                          );
+                        },
                         codeSent: (String verificationId, int? resendToken) {
                           MyPhone.verify = verificationId;
                           // FirebaseAuth auth=FirebaseAuth.instance;
@@ -134,6 +144,11 @@ Future<void> savePhoneNumber(String phoneNumber) async {
                           //   {
                           //     sp!.setBool("skip", true);
                           //   }
+                           ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("OTP successfully sent"),
+                              ),
+                            );
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -142,6 +157,16 @@ Future<void> savePhoneNumber(String phoneNumber) async {
                         },
                         codeAutoRetrievalTimeout: (String verificationId) {},
                       );
+                      }catch(e)
+                      {
+                         // Handle exceptions during phone number verification
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Error sending OTP. Please try again later."),
+                          ),
+                        );
+                      }
                     },
                     child: const Text("Send the code")),
               )
