@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gobank/login/auth_ctrl.dart';
+import 'package:gobank/profile/myprofile.dart';
 import 'package:gobank/splashscreen.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,7 @@ void main() async {
       child: const GetMaterialApp(
         
         home: Splashscreen(),
+        // home: MyProfile(),
         debugShowCheckedModeBanner: false,
       ),
     ),

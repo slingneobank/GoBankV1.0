@@ -127,6 +127,9 @@ Future<void> savePhoneNumber(String phoneNumber) async {
                         verificationFailed: (FirebaseAuthException e) {},
                         codeSent: (String verificationId, int? resendToken) {
                           MyPhone.verify = verificationId;
+                          print("code sent"
+                              );
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(

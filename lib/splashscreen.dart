@@ -17,16 +17,14 @@ import 'package:gobank/pages/digitalcard_detail.dart';
 import 'package:gobank/pages/history.dart';
 import 'package:gobank/profile/myprofile.dart';
 
-
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 import 'card/createxcard.dart';
 import 'home/NotificationServices.dart';
-
+import 'login/loginCheck.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({Key? key}) : super(key: key);
@@ -38,7 +36,11 @@ class Splashscreen extends StatefulWidget {
 class _SplashscreenState extends State<Splashscreen> {
   late ColorNotifire notifire;
   //final authCtrl = Get.put<AuthCtrl>(AuthCtrl());
-
+Future<bool> isFirstTime()async{
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool isfirstTime = prefs.getBool('isFirstTime') ?? true;
+  return isfirstTime;
+}
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
     bool? previusstate = prefs.getBool("setIsDark");
@@ -48,7 +50,8 @@ class _SplashscreenState extends State<Splashscreen> {
       notifire.setIsDark = previusstate;
     }
   }
-NotificationServices notificationServices = NotificationServices();
+
+  NotificationServices notificationServices = NotificationServices();
   @override
   void initState() {
     super.initState();
@@ -58,7 +61,7 @@ NotificationServices notificationServices = NotificationServices();
     notificationServices.setupInteractMessage(context);
     notificationServices.isTokenRefresh();
 
-    notificationServices.getDeviceToken().then((value){
+    notificationServices.getDeviceToken().then((value) {
       if (kDebugMode) {
         print('device token');
         print(value);
@@ -67,13 +70,29 @@ NotificationServices notificationServices = NotificationServices();
     getdarkmodepreviousstate();
     Timer(
       const Duration(seconds: 3),
-      () => Navigator.push( 
-        context,
-        MaterialPageRoute(
-          builder: (context) =>  Onbonding(),//onbonding  
-          
-        ),
-      ),
+      () async{
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        bool isfirstTime = prefs.getBool('isFirstTime') ?? true;
+
+        if(await isfirstTime)
+          {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Onbonding(), //onbonding
+              ),
+            );
+          }
+        else{
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LoginCheck(), //onbonding
+            ),
+          );
+        }
+
+      },
     );
   }
 
