@@ -7,16 +7,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 class MyPhone extends StatefulWidget {
   const MyPhone({Key? key}) : super(key: key);
   static String verify = '';
-  
+
   @override
   State<MyPhone> createState() => _MyPhoneState();
 }
 
 class _MyPhoneState extends State<MyPhone> {
   TextEditingController countryController = TextEditingController();
-  SharedPreferences? sp;
-  FirebaseAuth auth=FirebaseAuth.instance;
   var phone = "";
+  FirebaseAuth auth=FirebaseAuth.instance;
   @override
   void initState() {
   
@@ -122,8 +121,7 @@ Future<void> savePhoneNumber(String phoneNumber) async {
                     onPressed: () async {
                       try{
                       await savePhoneNumber(countryController.text + phone);
-                      
-                      await auth.verifyPhoneNumber(
+                      await FirebaseAuth.instance.verifyPhoneNumber(
                         phoneNumber: countryController.text + phone,
                         
                         verificationCompleted:
@@ -149,6 +147,9 @@ Future<void> savePhoneNumber(String phoneNumber) async {
                                 content: Text("OTP successfully sent"),
                               ),
                             );
+                          print("code sent"
+                              );
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
