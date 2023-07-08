@@ -437,8 +437,8 @@ class _OnbondingState extends State<Onbonding> {
                   ),
                   GestureDetector(
                     onTap: () async{
-                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                      await prefs.setBool('isFirstTime', false);
+                      
+                      onboard!.setBool('onboard', true);
                       Navigator.push(
                         context,
                         MaterialPageRoute(

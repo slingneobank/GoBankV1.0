@@ -11,6 +11,8 @@ class minkycpage extends StatefulWidget {
   State<minkycpage> createState() => _minkycpageState();
 }
 
+
+
 class _minkycpageState extends State<minkycpage> {
   bool isSelected = false;
   String responseMessage = '';
@@ -72,6 +74,11 @@ class _minkycpageState extends State<minkycpage> {
       );
     }
   }
+
+@override
+void dispose() {
+  super.dispose();
+}
 
   @override
   Widget build(BuildContext context) {

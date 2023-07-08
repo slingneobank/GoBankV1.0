@@ -9,6 +9,7 @@ import 'package:gobank/home/loan/personalloan_form.dart';
 import 'package:gobank/home/topup/topupcard/topup.dart';
 import 'package:gobank/login/minkycpage.dart';
 import 'package:gobank/login/minnativekyclogin.dart';
+import 'package:gobank/login/phone.dart';
 import 'package:gobank/login/verify.dart';
 
 import 'package:gobank/onbonding.dart';
@@ -69,28 +70,11 @@ Future<bool> isFirstTime()async{
     });
     getdarkmodepreviousstate();
     Timer(
-      const Duration(seconds: 3),
-      () async{
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        bool isfirstTime = prefs.getBool('isFirstTime') ?? true;
-
-        if(await isfirstTime)
-          {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Onbonding(), //onbonding
-              ),
-            );
-          }
-        else{
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LoginCheck(), //onbonding
-            ),
-          );
-        }
+      const Duration(seconds: 7),
+      () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) =>  
+        onboard!.get("onboard")==true?MyPhone():Onbonding()
+        ,));
 
       },
     );
@@ -122,12 +106,12 @@ Future<bool> isFirstTime()async{
               Column(
                 children: [
                   SizedBox(
-                    height: height / 2.4,
+                    height: height / 3,
                   ),
                   Center(
                     child: Image.asset(
-                      "images/logo1.png",
-                      height: height / 7,
+                      "asset/images/logodark.gif",
+                      height: height / 3,
                     ),
                   ),
                 ],

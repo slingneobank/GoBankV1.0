@@ -21,13 +21,14 @@ class MyVerify extends StatefulWidget {
 class _MyVerifyState extends State<MyVerify> {
   final authCtrl = Get.find<AuthCtrl>();
   String otp = "";
+ // FirebaseAuth auth=FirebaseAuth.instance;
   // final FirebaseAuth auth = authCtrl.auth;
   void verifyFun() async {
     try {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
           verificationId: MyPhone.verify, smsCode: otp);
       final FirebaseAuth auth = authCtrl.auth;
-      await auth.signInWithCredential(credential);
+       auth.signInWithCredential(credential);
       // check if user exists
       bool userExist = await searchForMobileNumber();
       if (userExist == true) {
