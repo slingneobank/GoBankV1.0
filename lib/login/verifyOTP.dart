@@ -149,6 +149,7 @@ class _MyVerifyState extends State<MyVerify> {
                 // submittedPinTheme: submittedPinTheme,
 
                 // showCursor: true,
+                 inputDecoration: InputDecoration(border: OutlineInputBorder()),
                 onSubmit: (pin) => otp = pin,
               ),
               const SizedBox(

@@ -36,7 +36,10 @@ class _sling_storebannerpageState extends State<sling_storebannerpage> {
             return Column(
               children: [
                 Expanded(
-                  child: PageView.builder(
+                  child: 
+                  documents.length==0
+                  ? Center(child: CircularProgressIndicator(),)
+                  : PageView.builder(
                     controller: _pageController,
                     itemCount: documents.length,
                     itemBuilder: (context, index) {
@@ -53,10 +56,15 @@ class _sling_storebannerpageState extends State<sling_storebannerpage> {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10.0),
-                            child: Image.network(
-                              imageUrl,
-                              fit: BoxFit.cover,
-                            ),
+                            child: FadeInImage.assetNetwork(
+                              placeholder: 'asset/images/loading.gif',
+                               image: imageUrl,
+                               fit: BoxFit.cover,
+                               ),
+                            // child: Image.network(
+                            //   imageUrl,
+                            //   fit: BoxFit.cover,
+                            // ),
                           ),
                         ),
                       );

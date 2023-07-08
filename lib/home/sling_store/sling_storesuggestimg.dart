@@ -72,7 +72,9 @@ class _sling_storesuggestimgState extends State<sling_storesuggestimg> {
             return Column(
               children: [
                 Expanded(
-                  child: ListView.builder(
+                  child: 
+                  documents.length==0?Center(child: CircularProgressIndicator(),):
+                  ListView.builder(
                       scrollDirection: Axis.horizontal,
                       controller: _scrollController,
                       itemCount: documents.length,

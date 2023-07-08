@@ -6,7 +6,9 @@ import 'package:gobank/login/auth_ctrl.dart';
 import 'package:gobank/profile/myprofile.dart';
 import 'package:gobank/splashscreen.dart';
 import 'package:gobank/utils/colornotifire.dart';
+import 'package:gobank/utils/media.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message)async {
@@ -16,6 +18,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message)async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+   onboard =  await SharedPreferences.getInstance();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   Get.put(AuthCtrl());
   Get.lazyPut(()=>AuthCtrl());
