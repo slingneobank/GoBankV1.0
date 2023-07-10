@@ -1,11 +1,13 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gobank/home/CustomCardView.dart';
 import 'package:gobank/home/demosplash.dart';
 import 'package:gobank/home/home.dart';
 import 'package:gobank/home/loan/personalloan_form.dart';
-
+import 'package:gobank/login/verifyOTP.dart';
+import '../utils/media.dart';
 import 'package:gobank/home/topup/topupcard/topup.dart';
 import 'package:gobank/login/minkycpage.dart';
 import 'package:gobank/login/minnativekyclogin.dart';
@@ -37,11 +39,7 @@ class Splashscreen extends StatefulWidget {
 class _SplashscreenState extends State<Splashscreen> {
   late ColorNotifire notifire;
   //final authCtrl = Get.put<AuthCtrl>(AuthCtrl());
-Future<bool> isFirstTime()async{
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool isfirstTime = prefs.getBool('isFirstTime') ?? true;
-  return isfirstTime;
-}
+
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
     bool? previusstate = prefs.getBool("setIsDark");
@@ -72,14 +70,50 @@ Future<bool> isFirstTime()async{
     Timer(
       const Duration(seconds: 7),
       () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) =>  
-        onboard!.get("onboard")==true?MyPhone():Onbonding()
-        ,));
+        checkUserStatus();
+        // Navigator.push(context, MaterialPageRoute(builder: (context) => // Home()
+        // onboard!.get("onboard")==true?MyPhone():Onbonding()
+        // ,));
 
       },
     );
   }
 
+
+  void checkUserStatus() async {
+    Future.delayed(Duration(seconds: 3), () async {
+  bool isFirstTimevalue = await isFirstTime();
+  if (isFirstTimevalue) {
+    navigateToScreen(Onbonding());
+  } else {
+    bool isLoggedInValue = await isLoggedIn();
+    if (isLoggedInValue) {
+      bool isVerifiedValue = await isVerified();
+      if (isVerifiedValue) {
+        bool isMINKYCCompleteValue = await isMINKYCComplete();
+        if (isMINKYCCompleteValue) {
+          navigateToScreen(Home());
+        } else {
+          navigateToScreen(minkycpage());
+        }
+     } else {
+       navigateToScreen(MyPhone());
+      }
+    } else {
+      navigateToScreen(MyPhone());
+    }
+  }
+  });
+}
+
+  void navigateToScreen(Widget screen) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => screen),
+      );
+    });
+  }
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);

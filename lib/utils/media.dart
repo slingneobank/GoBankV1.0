@@ -24,3 +24,43 @@ SharedPreferences? onboard;
     return "https://www.youtube.com/watch?v=sD9IyJqSIaE";
   }
 }
+
+Future<bool> isFirstTime() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getBool('is_first_time') ?? true;
+}
+
+Future<void> saveFirstTimeStatus(bool isFirstTime) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('is_first_time', isFirstTime);
+}
+
+Future<bool> isLoggedIn() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getBool('is_logged_in') ?? false;
+}
+
+Future<void> saveLoggedInStatus(bool isLoggedIn) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('is_logged_in', isLoggedIn);
+}
+
+Future<bool> isVerified() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getBool('is_verified') ?? false;
+}
+
+Future<void> saveVerificationStatus(bool isVerified) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('is_verified', isVerified);
+}
+
+Future<bool> isMINKYCComplete() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getBool('is_minkyc_complete') ?? false;
+}
+
+Future<void> saveMINKYCStatus(bool isMINKYCComplete) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('is_minkyc_complete', isMINKYCComplete);
+}

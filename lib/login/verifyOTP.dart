@@ -8,8 +8,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gobank/login/auth_ctrl.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home/home.dart';
+import '../utils/media.dart';
 
 class MyVerify extends StatefulWidget {
   const MyVerify({Key? key}) : super(key: key);
@@ -30,28 +32,31 @@ class _MyVerifyState extends State<MyVerify> {
       final FirebaseAuth auth = authCtrl.auth;
        auth.signInWithCredential(credential);
       // check if user exists
+      saveVerificationStatus(true);
       bool userExist = await searchForMobileNumber();
-      if (userExist == true) {
-      //   Navigator.pushAndRemoveUntil(
-      //       context,
-      //       MaterialPageRoute(
-      //         builder: (context) =>
-      //             const Home(), //before routed to verifyOTP.dart
-      //       ),
-      //       (route) => false);
-      // } else {
+    //  if (userExist == true) {
+    //     Navigator.pushAndRemoveUntil(
+    //         context,
+    //         MaterialPageRoute(
+    //           builder: (context) =>
+    //               const Home(), //before routed to verifyOTP.dart
+    //         ),
+    //         (route) => false);
+    //   } else {
+      
+        Navigator.pop(context);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) =>  const minkycpage(), // Home
           ),
         );
-      }
+    //  }
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: 'Wrong otp',
-        backgroundColor: Colors.grey,
-      );
+      // Fluttertoast.showToast(
+      //   msg: 'Wrong otp',
+      //   backgroundColor: Colors.grey,
+      // );
     }
   }
 
@@ -102,7 +107,7 @@ class _MyVerifyState extends State<MyVerify> {
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MyPhone(),));
           },
           icon: const Icon(
             Icons.arrow_back_ios_rounded,

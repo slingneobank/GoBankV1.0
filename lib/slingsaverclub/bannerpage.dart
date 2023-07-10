@@ -131,14 +131,38 @@ class _BannerPageState extends State<BannerPage> {
   //     flag = true;
   //   });
   // }
- Future<void> fetchImageUrls() async {
+//  Future<void> fetchImageUrls() async {
+//   if (isConnected && imageUrls.isEmpty) {
+//     imageUrls = await getImageUrls();
+//     await saveImageUrlsToDatabase(imageUrls);
+//     print("Images are retrieved from Firebase Storage.");
+//   } else if (!isConnected && localImageUrls.isEmpty) {
+//     localImageUrls = await getImageUrlsFromDatabase();
+//     print("Images are retrieved from the local database.");
+//   }
+
+//   setState(() {
+//     flag = true;
+//     isLoading = false;
+//   });
+// }
+
+Future<void> fetchImageUrls() async {
   if (isConnected && imageUrls.isEmpty) {
-    imageUrls = await getImageUrls();
-    await saveImageUrlsToDatabase(imageUrls);
-    print("Images are retrieved from Firebase Storage.");
+    try {
+      imageUrls = await getImageUrls();
+      await saveImageUrlsToDatabase(imageUrls);
+      print("Images are retrieved from Firebase Storage.");
+    } catch (e) {
+      print("Error retrieving image URLs: $e");
+    }
   } else if (!isConnected && localImageUrls.isEmpty) {
-    localImageUrls = await getImageUrlsFromDatabase();
-    print("Images are retrieved from the local database.");
+    try {
+      localImageUrls = await getImageUrlsFromDatabase();
+      print("Images are retrieved from the local database.");
+    } catch (e) {
+      print("Error retrieving image URLs from the local database: $e");
+    }
   }
 
   setState(() {
@@ -146,7 +170,6 @@ class _BannerPageState extends State<BannerPage> {
     isLoading = false;
   });
 }
-
 
 Directory? appDir;
   Future<List<String>> getImageUrls() async {

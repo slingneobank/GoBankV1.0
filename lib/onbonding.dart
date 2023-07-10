@@ -438,7 +438,8 @@ class _OnbondingState extends State<Onbonding> {
                   GestureDetector(
                     onTap: () async{
                       
-                      onboard!.setBool('onboard', true);
+                     // onboard!.setBool('onboard', true);
+                      saveFirstTimeStatus(false);
                       Navigator.push(
                         context,
                         MaterialPageRoute(

@@ -15,6 +15,8 @@ import 'package:gobank/login/minnativekycotp.dart';
 import 'package:gobank/verification/verificationdone.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../utils/media.dart';
 class FirebaseHelper {
   final databaseReference = FirebaseDatabase.instance.reference();
  
@@ -150,7 +152,7 @@ class _minnativekycloginState extends State<minnativekyclogin> {
                         print("minkycid is $storedminKycUniqueId");
                         // send notification from one device to another
                             // notificationServices.getDeviceToken().then((value)async{
-
+                        saveMINKYCStatus(true);
                          Navigator.push(context, MaterialPageRoute(builder: (_) => const Home()));
                         // Show dialog box with "KYC verified successfully" message
                           setState(() {

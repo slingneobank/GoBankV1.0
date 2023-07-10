@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:gobank/login/verifyOTP.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../utils/media.dart';
+
 class MyPhone extends StatefulWidget {
   const MyPhone({Key? key}) : super(key: key);
   static String verify = '';
@@ -15,13 +17,25 @@ class MyPhone extends StatefulWidget {
 class _MyPhoneState extends State<MyPhone> {
   TextEditingController countryController = TextEditingController();
   var phone = "";
+   bool isLoading = false;
   FirebaseAuth auth=FirebaseAuth.instance;
   @override
   void initState() {
   
     countryController.text = "+91";
     super.initState();
+    setState(() {
+      isLoading=false;
+    });
   }
+  // @override
+  // void dispose() {
+  //   setState(() {
+  //     isLoading = false;
+  //   });
+  //   super.dispose();
+  // }
+   
 Future<void> savePhoneNumber(String phoneNumber) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('phone_number', phoneNumber);
@@ -119,7 +133,11 @@ Future<void> savePhoneNumber(String phoneNumber) async {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
                     onPressed: () async {
+                       
                       try{
+                        setState(() {
+                            isLoading = true;
+                          });
                       await savePhoneNumber(countryController.text + phone);
                       await FirebaseAuth.instance.verifyPhoneNumber(
                         phoneNumber: countryController.text + phone,
@@ -149,7 +167,8 @@ Future<void> savePhoneNumber(String phoneNumber) async {
                             );
                           print("code sent"
                               );
-
+                          saveLoggedInStatus(true);
+                          Navigator.pop(context);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -169,7 +188,9 @@ Future<void> savePhoneNumber(String phoneNumber) async {
                         );
                       }
                     },
-                    child: const Text("Send the code")),
+                    child: isLoading
+                         ? CircularProgressIndicator() 
+                         : Text("Send the code")),
               )
             ],
           ),

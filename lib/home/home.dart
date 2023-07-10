@@ -195,7 +195,7 @@ class _HomeState extends State<Home> {
   void initState() {
     // TODO: implement initState
     super.initState();
-     requestStoragePermission();
+    // requestStoragePermission();
     
    
    checkInternetConnectivity(); // Check the initial internet connectivity state

@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:gobank/login/auth_controller.dart';
 import 'package:gobank/login/minnativekyclogin.dart';
 
+import '../utils/media.dart';
+
 class minkycpage extends StatefulWidget {
   const minkycpage({Key? key}) : super(key: key);
 
@@ -34,7 +36,7 @@ class _minkycpageState extends State<minkycpage> {
       });
        print(token);
     });
-     
+      
       // Navigate to the next screen
       Navigator.push(
         context,
