@@ -26,39 +26,45 @@ class _MyVerifyState extends State<MyVerify> {
  // FirebaseAuth auth=FirebaseAuth.instance;
   // final FirebaseAuth auth = authCtrl.auth;
   void verifyFun() async {
-    try {
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: MyPhone.verify, smsCode: otp);
-      final FirebaseAuth auth = authCtrl.auth;
-       auth.signInWithCredential(credential);
-      // check if user exists
-      saveVerificationStatus(true);
-      bool userExist = await searchForMobileNumber();
-    //  if (userExist == true) {
-    //     Navigator.pushAndRemoveUntil(
-    //         context,
-    //         MaterialPageRoute(
-    //           builder: (context) =>
-    //               const Home(), //before routed to verifyOTP.dart
-    //         ),
-    //         (route) => false);
-    //   } else {
-      
-        Navigator.pop(context);
+  try {
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+      verificationId: MyPhone.verify,
+      smsCode: otp,
+    );
+
+    final FirebaseAuth auth = authCtrl.auth;
+    await auth.signInWithCredential(credential);
+
+    saveVerificationStatus(true);
+    bool userExist = await searchForMobileNumber();
+
+    Fluttertoast.showToast(
+      msg: 'OTP Verified',
+      backgroundColor: Colors.grey,
+    );
+
+    Future.delayed(Duration(seconds: 1), () {
+      // if (userExist) {
+      //   Navigator.pushAndRemoveUntil(
+      //     context,
+      //     MaterialPageRoute(builder: (context) => const Home()),
+      //     (route) => false,
+      //   );
+      // } else {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-            builder: (context) =>  const minkycpage(), // Home
-          ),
+          MaterialPageRoute(builder: (context) => const minkycpage()),
         );
-    //  }
-    } catch (e) {
-      // Fluttertoast.showToast(
-      //   msg: 'Wrong otp',
-      //   backgroundColor: Colors.grey,
-      // );
-    }
+     // }
+    });
+  } catch (e) {
+    Fluttertoast.showToast(
+      msg: 'Wrong OTP',
+      backgroundColor: Colors.grey,
+    );
   }
+}
+
 
   Future<bool> searchForMobileNumber() async {
     QuerySnapshot snapshot = await FirebaseFirestore.instance

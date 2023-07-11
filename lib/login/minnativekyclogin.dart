@@ -29,6 +29,8 @@ class FirebaseHelper {
     });
   }
 
+
+
 Future<String?> retrieveMinKycUniqueId(String phoneNumber) async {
   try {
     DatabaseReference reference = databaseReference.child('kyc_users').child(phoneNumber).child('minKycUniqueId');
@@ -132,6 +134,7 @@ class _minnativekycloginState extends State<minnativekyclogin> {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('minKycUniqueId', minKycUniqueId);
+      await prefs.setString('username', _usernameController.text);
       String responseMessage = responseData['responseMessage'];
       setState(() {
         _response = responseData.toString();

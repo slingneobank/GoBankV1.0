@@ -18,6 +18,7 @@ import 'package:gobank/home/scanpay/scan.dart';
 import 'package:gobank/home/seealltransaction.dart';
 import 'package:gobank/home/sling_store/sling_storemain.dart';
 import 'package:gobank/login/auth_controller.dart';
+import 'package:gobank/login/minnativekyclogin.dart';
 import 'package:gobank/pages/CardDetails.dart';
 import 'package:gobank/profile/profile.dart';
 import 'package:gobank/slingsaverclub/bottomsheetpage.dart';
@@ -65,7 +66,12 @@ class _HomeState extends State<Home> {
       notifire.setIsDark = previusstate;
     }
   }
- 
+   Future<void> getUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    username = prefs.getString('username');
+    setState(() {});
+  }
+  String? username;
   Widget currentScreen = const Home();
   int currentTab = 0;
   final List screens = [
@@ -204,6 +210,7 @@ class _HomeState extends State<Home> {
     checkInternetConnectivity(); // Check the initial internet connectivity state
     notification_loan();
      notification_FD();
+      getUsername();
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       print(result);
       if (result != ConnectivityResult.none) {
@@ -225,6 +232,7 @@ class _HomeState extends State<Home> {
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
   }
+  
   void notification_FD()
   {
      notificationServices.getDeviceToken().then((value)async{
@@ -615,13 +623,13 @@ class _HomeState extends State<Home> {
                     SizedBox(
                       height: height / 100,
                     ),
-                    // Text(
-                    //   authCtrl.auth.currentUser!.phoneNumber ?? 'mynumber',
-                    //   style: TextStyle(
-                    //       color: notifire.getdarkscolor,
-                    //       fontSize: height / 40,
-                    //       fontFamily: 'Gilroy Bold'),
-                    // ),
+                    Text(
+                      '${username ?? "Guest"}',
+                      style: TextStyle(
+                          color: notifire.getdarkscolor,
+                          fontSize: height / 40,
+                          fontFamily: 'Gilroy Bold'),
+                    ),
                   ],
                 ),
                 const Spacer(),

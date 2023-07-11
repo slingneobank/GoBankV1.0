@@ -40,13 +40,13 @@ class _BannerPageState extends State<BannerPage> {
     //fetchImageUrls();
   
     checkInternetConnectivity(); // Check the initial internet connectivity state
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) async{
       if (result != ConnectivityResult.none) {
         setState(() {
           isConnected = true;
           isLoading=false;
         });
-        fetchImageUrls();
+        await fetchImageUrls();
       } else {
         setState(() {
           isConnected = false;
@@ -74,9 +74,9 @@ class _BannerPageState extends State<BannerPage> {
                 children: [
                   OutlinedButton(
                     child: const Text('Retry'),
-                    onPressed: () {
+                    onPressed: () async{
                       Navigator.of(context).pop();
-                      fetchImageUrls();
+                      await fetchImageUrls();
                     },
                   ),
                   const SizedBox(width: 20,),
@@ -167,9 +167,15 @@ Future<void> fetchImageUrls() async {
 
   setState(() {
     flag = true;
-    isLoading = false;
   });
+  
+  if (isConnected || localImageUrls.isNotEmpty) {
+    setState(() {
+      isLoading = false;
+    });
+  }
 }
+
 
 Directory? appDir;
   Future<List<String>> getImageUrls() async {
@@ -302,7 +308,7 @@ Future<void> saveImageUrlsToDatabase(List<String> urls) async {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return SizedBox(
       height: 160,
-      child: imageUrls.length==0
+      child: isLoading
               ?
               Center(child: CircularProgressIndicator())
             : (isConnected && imageUrls.isNotEmpty)

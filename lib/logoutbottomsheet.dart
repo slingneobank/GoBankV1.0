@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:gobank/login/phone.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
@@ -63,6 +64,10 @@ class _CustomButtonState extends State<CustomButton> {
    Future<void> removePhoneNumber() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('phone_number');
+    await prefs.remove('username');
+    await prefs.remove('is_logged_in');
+    await prefs.remove('is_verified');
+    await prefs.remove('is_minkyc_complete');
   }
   @override
   Widget build(BuildContext context) {
@@ -105,7 +110,7 @@ class _CustomButtonState extends State<CustomButton> {
                 setState(() {
                   _selectedButton = 'Logout';
                 });
-                //removePhoneNumber();
+                removePhoneNumber();
                 FirebaseAuth auth=FirebaseAuth.instance;
                 await auth.signOut();
                 
