@@ -22,6 +22,7 @@ class MyVerify extends StatefulWidget {
 
 class _MyVerifyState extends State<MyVerify> {
   final authCtrl = Get.find<AuthCtrl>();
+  final TextEditingController _pinController = TextEditingController();
   String otp = "";
  // FirebaseAuth auth=FirebaseAuth.instance;
   // final FirebaseAuth auth = authCtrl.auth;
@@ -62,6 +63,30 @@ class _MyVerifyState extends State<MyVerify> {
       msg: 'Wrong OTP',
       backgroundColor: Colors.grey,
     );
+     // Retry verification
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Wrong OTP'),
+          content: const Text('Please enter the correct OTP.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Retry'),
+              onPressed: () {
+               
+                 Navigator.of(context).pop();
+                  setState(() {
+                  otp = "";
+                  _pinController.clear();
+                });
+              },
+            ),
+          ],
+        );
+      },
+    );
+    
   }
 }
 
@@ -154,15 +179,31 @@ class _MyVerifyState extends State<MyVerify> {
               const SizedBox(
                 height: 30,
               ),
-              PinPut(
-                fieldsCount: 6,
-                // defaultPinTheme: defaultPinTheme,
-                // focusedPinTheme: focusedPinTheme,
-                // submittedPinTheme: submittedPinTheme,
+              // PinPut(
+              //   fieldsCount: 6,
+              //   // defaultPinTheme: defaultPinTheme,
+              //   // focusedPinTheme: focusedPinTheme,
+              //   // submittedPinTheme: submittedPinTheme,
 
-                // showCursor: true,
-                 inputDecoration: InputDecoration(border: OutlineInputBorder()),
-                onSubmit: (pin) => otp = pin,
+              //   // showCursor: true,
+              //    inputDecoration: InputDecoration(border: OutlineInputBorder()),
+              //   onSubmit: (pin) => otp = pin,
+              // ),
+              PinPut(
+                controller: _pinController,
+                fieldsCount: 6,
+                inputDecoration: InputDecoration(border: OutlineInputBorder()),
+                onChanged: (value) {
+                  setState(() {
+                    otp = value; // Update the otp variable
+                  });
+                },
+                onSubmit: (pin) {
+                  setState(() {
+                    otp = pin; // Update the otp variable
+                  });
+                  verifyFun();
+                },
               ),
               const SizedBox(
                 height: 20,

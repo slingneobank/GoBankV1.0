@@ -56,6 +56,7 @@ class _HomeState extends State<Home> {
   late ScrollController _scrollController;
   late ColorNotifire notifire;
   PersistentBottomSheetController? _bottomSheetController;
+  DateTime pre_backpress = DateTime.now();
   
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
@@ -596,496 +597,58 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: notifire.getprimerycolor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: height / 20,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: width / 20,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      CustomStrings.goodmorning,
-                      style: TextStyle(
-                          color: notifire.getdarkgreycolor,
-                          fontSize: height / 50,
-                          fontFamily: 'Gilroy Medium'),
-                    ),
-                    SizedBox(
-                      height: height / 100,
-                    ),
-                    Text(
-                      '${username ?? "Guest"}',
-                      style: TextStyle(
-                          color: notifire.getdarkscolor,
-                          fontSize: height / 40,
-                          fontFamily: 'Gilroy Bold'),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MyCard(),
-                      ),
-                    );
-                  },
-                  child: Image.asset(
-                    "images/message1.png",
-                    color: notifire.getdarkscolor,
-                    height: height / 30,
-                  ),
-                ),
-                SizedBox(
-                  width: width / 30,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            const Notificationindex(CustomStrings.notification),
-                      ),
-                    );
-                  },
-                  child: Image.asset(
-                    "images/notification.png",
-                    color: notifire.getdarkscolor,
-                    height: height / 30,
-                  ),
-                ),
-                SizedBox(
-                  width: width / 20,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: height / 80,
-            ),
-            Stack(
-              children: [
-                Container(
-                    color: notifire.getbackcolor,
-                    child: Image.asset("images/backphoto.png")),
-                Column(
-                  children: [
-                    SizedBox(
-                      height: height / 30,
-                    ),
-                    Center(
-                      child: Container(
-                        height: height / 35,
-                        width: width / 1.5,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          ),
-                          color: Color(0xff8978fa),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Container(
-                        height: height / 7,
-                        width: width / 1.2,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          ),
-                          color: notifire.getbluecolor,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: height / 40,
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsets.symmetric(horizontal: width / 20),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    CustomStrings.totalcardbalance,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: height / 50,
-                                        fontFamily: 'Gilroy Medium'),
-                                  ),
-                                  const Spacer(),
-                                  Column(
-                                    children: [
-                                      Image.asset(
-                                        "images/rupay.png",
-                                        height: height / 45,
-                                        fit: BoxFit.contain,
-                                      ),
-                                      Text(
-                                        CustomStrings.rupaycard,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: height / 70,
-                                            fontFamily: 'Gilroy Medium'),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: width / 20),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: height / 20,
-                                    width: width / 2.4,
-                                    color: selection
-                                        ? Colors.transparent
-                                        : Colors.transparent,
-                                    child: selection
-                                        ? Text(
-                                            "$loadAmount",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: height / 35,
-                                                fontFamily: 'Gilroy Bold'),
-                                          )
-                                        : Text(
-                                            "********",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: height / 20,
-                                                fontFamily: 'Gilroy Bold'),
-                                          ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        selection = !selection;
-                                      });
-                                    },
-                                    child: selection
-                                        ? Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: height / 100),
-                                            child: Image.asset(
-                                              "images/eye.png",
-                                              color: Colors.white,
-                                              height: height / 40,
-                                            ),
-                                          )
-                                        : Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: height / 100),
-                                            child: const Icon(
-                                              Icons.remove_red_eye,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: width / 30),
-                        child: Container(
-                          height: height / 6.5,
-                          width: width,
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                            color: notifire.getdarkwhitecolor,
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                color: notifire.getbluecolor.withOpacity(0.4),
-                                blurRadius: 15.0,
-                                offset: const Offset(0.0, 0.75),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: height / 50,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Stack(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              generateToken('payvoy.uatuser', 'X4oVUECF9EWhX9');
-                                              // Navigator.push(
-                                              //   context,
-                                              //   MaterialPageRoute(
-                                              //     builder: (context) =>
-                                              //        const  CardDetails(),
-                                              //   ),
-                                              // );
-                                            },
-                                            child: Container(
-                                              height: height / 15,
-                                              width: width / 7,
-                                              decoration: BoxDecoration(
-                                                color:
-                                                    notifire.gettabwhitecolor,
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  Radius.circular(10),
-                                                ),
-                                              ),
-                                              child: Center(
-                                                child: Image.asset(
-                                                  "images/scanpay.png",
-                                                  height: height / 20,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: height / 60,
-                                          ),
-                                          Text(
-                                            " Debit card",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontFamily: "Gilroy Bold",
-                                                color: notifire.getdarkscolor,
-                                                fontSize: height / 65),
-                                          ),
-                                        ],
-                                      ),
-                                      Positioned(
-                                        top: -5,
-                                        right: 15,
-                                        child: Container(
-                                          padding: const EdgeInsets.all(4.0),
-                                          decoration: BoxDecoration(
-                                            color: Colors.yellow[300],
-                                            borderRadius:
-                                                BorderRadius.circular(32.0),
-                                            boxShadow: [
-                                              const BoxShadow(
-                                                color: Colors.white,
-                                                offset: Offset(-4.0, -4.0),
-                                                blurRadius: 16.0,
-                                              ),
-                                              BoxShadow(
-                                                color: Colors.black
-                                                    .withOpacity(0.2),
-                                                offset: const Offset(4.0, 4.0),
-                                                blurRadius: 16.0,
-                                              ),
-                                            ],
-                                          ),
-                                          // A text widget with some style
-                                          child: Text(
-                                            'Sling',
-                                            style: TextStyle(
-                                              color: Colors.grey[800],
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 7,
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const SendMoney(),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          height: height / 15,
-                                          width: width / 7,
-                                          decoration: BoxDecoration(
-                                            color: notifire.gettabwhitecolor,
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                          child: Center(
-                                            child: Image.asset(
-                                              "images/transfer.png",
-                                              height: height / 20,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: height / 60,
-                                      ),
-                                      Text(
-                                        "Add Money",
-                                        style: TextStyle(
-                                            fontFamily: "Gilroy Bold",
-                                            color: notifire.getdarkscolor,
-                                            fontSize: height / 55),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                   const personalloan(),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          height: height / 15,
-                                          width: width / 7,
-                                          decoration: BoxDecoration(
-                                            color: notifire.gettabwhitecolor,
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                          child: Center(
-                                            child: Image.asset(
-                                              "images/request.png",
-                                              height: height / 20,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: height / 60,
-                                      ),
-                                      Text(
-                                        "Apply for a Loan",
-                                        style: TextStyle(
-                                            fontFamily: "Gilroy Bold",
-                                            color: notifire.getdarkscolor,
-                                            fontSize: height / 55),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const SavingsStory(),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          height: height / 15,
-                                          width: width / 7,
-                                          decoration: BoxDecoration(
-                                            color: notifire.gettabwhitecolor,
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                          child: Center(
-                                            child: Image.asset(
-                                              "images/topup.png",
-                                              height: height / 20,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: height / 60,
-                                      ),
-                                      Text(
-                                        "Open a FD",
-                                        style: TextStyle(
-                                            fontFamily: "Gilroy Bold",
-                                            color: notifire.getdarkscolor,
-                                            fontSize: height / 55),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            // SizedBox(
-            //   height: height / 30,
-            // ),
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: width / 30),
-            //   child: Container(
-            //       height: height / 7,
-            //       decoration: const BoxDecoration(
-            //         borderRadius: BorderRadius.all(
-            //           Radius.circular(10),
-            //         ),
-            //       ),
-            //       child: const CouponSliders()),
-            // ),
-            SizedBox(
-              height: height / 30,
-            ),
-            const SizedBox(
-              child: BannerPage(),
-            ),
-            SizedBox(
-              height: height / 30,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: width / 18),
-              child: Row(
+    return WillPopScope(
+      onWillPop: () async {
+          final timegap = DateTime.now().difference(pre_backpress);
+          final cantExit = timegap >= Duration(seconds: 2);
+          pre_backpress = DateTime.now();
+          if (cantExit) {
+            //show snackbar
+            final snack = SnackBar(
+              content: Text('Press Back button again to Exit'),
+              duration: Duration(seconds: 2),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snack);
+            return false;
+          } else {
+            return true;
+          }
+        },
+      child: Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: notifire.getprimerycolor,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: height / 20,
+              ),
+              Row(
                 children: [
-                  Text(
-                    CustomStrings.discoverservices,
-                    style: TextStyle(
-                        fontFamily: "Gilroy Bold",
-                        color: notifire.getdarkscolor,
-                        fontSize: height / 40),
+                  SizedBox(
+                    width: width / 20,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        CustomStrings.goodmorning,
+                        style: TextStyle(
+                            color: notifire.getdarkgreycolor,
+                            fontSize: height / 50,
+                            fontFamily: 'Gilroy Medium'),
+                      ),
+                      SizedBox(
+                        height: height / 100,
+                      ),
+                      Text(
+                        '${username ?? "Guest"}',
+                        style: TextStyle(
+                            color: notifire.getdarkscolor,
+                            fontSize: height / 40,
+                            fontFamily: 'Gilroy Bold'),
+                      ),
+                    ],
                   ),
                   const Spacer(),
                   GestureDetector(
@@ -1093,573 +656,885 @@ class _HomeState extends State<Home> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Seeallpayment(),
+                          builder: (context) => const MyCard(),
                         ),
                       );
                     },
-                    child: Container(
-                      color: Colors.transparent,
-                      child: Text(
-                        CustomStrings.seeall,
-                        style: TextStyle(
-                            fontFamily: "Gilroy Bold",
-                            color: notifire.getbluecolor,
-                            fontSize: height / 45),
-                      ),
+                    child: Image.asset(
+                      "images/message1.png",
+                      color: notifire.getdarkscolor,
+                      height: height / 30,
                     ),
                   ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: height / 50,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: width / 20),
-              child: Container(
-                color: Colors.transparent,
-                height: height / 7,
-                width: width,
-                child: GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.only(bottom: height / 15),
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: height / 9,
-                      mainAxisExtent: height / 8,
-                      childAspectRatio: 4 / 2,
-                      crossAxisSpacing: height / 30,
-                      mainAxisSpacing: height / 50,
-                    ),
-                    itemCount: img.length,
-                    itemBuilder: (BuildContext ctx, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          if (index == 0) {
-                            // Get.to(() => const SlingStore());
-                            navigator!.push(MaterialPageRoute(
-                              builder: (context) => const sling_storemain(),
-                            ));
-                          } else {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const Scan(),
-                              ),
-                            );
-                          }
-                        },
-                        child: Column(
-                          children: [
-                            Container(
-                              height: height / 15,
-                              width: width / 7,
-                              decoration: BoxDecoration(
-                                color: notifire.gettabwhitecolor,
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              child: Center(
-                                child: Image.asset(
-                                  img[index],
-                                  height: height / 20,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: height / 90,
-                            ),
-                            Center(
-                              child: Text(
-                                paymentname[index],
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontFamily: "Gilroy Bold",
-                                    color: notifire.getdarkscolor,
-                                    fontSize: height / 55),
-                              ),
-                            ),
-                          ],
+                  SizedBox(
+                    width: width / 30,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const Notificationindex(CustomStrings.notification),
                         ),
                       );
-                    }),
-              ),
-            ),
-            SizedBox(
-              height: height / 100,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: width / 18),
-              child: Row(
-                children: [
-                  Text(
-                    CustomStrings.giftcardsection,
-                    style: TextStyle(
-                        fontFamily: "Gilroy Bold",
-                        color: notifire.getdarkscolor,
-                        fontSize: height / 40),
+                    },
+                    child: Image.asset(
+                      "images/notification.png",
+                      color: notifire.getdarkscolor,
+                      height: height / 30,
+                    ),
+                  ),
+                  SizedBox(
+                    width: width / 20,
                   ),
                 ],
               ),
-            ),
-            SizedBox(
-              height: height / 60,
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.only(top: 10, left: width / 20, right: width / 20),
-              child: Container(
-                height: height / 2.5,
-                width: width,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 239, 251, 253),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  children: [
-                    Container(
-                      height: height / 30,
-                      width: width, // Adjust the width as needed
-                      // Add your content for the first child here
-                      child: SizedBox(),
-                    ),
-                    // SizedBox(
-                    //   height: height / 90,
-                    // ),
-                    Expanded(
-                      child: GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.only(bottom: height / 20),
-                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: height / 9,
-                          mainAxisExtent: height / 8,
-                          childAspectRatio: 3 / 2,
-                          crossAxisSpacing: height / 30,
-                          mainAxisSpacing: height / 30,
+              SizedBox(
+                height: height / 80,
+              ),
+              Stack(
+                children: [
+                  Container(
+                      color: notifire.getbackcolor,
+                      child: Image.asset("images/backphoto.png")),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: height / 30,
+                      ),
+                      Center(
+                        child: Container(
+                          height: height / 35,
+                          width: width / 1.5,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
+                            ),
+                            color: Color(0xff8978fa),
+                          ),
                         ),
-                        itemCount: giftimg.length,
-                        itemBuilder: (BuildContext ctx, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              if (index == 7) {
-                                navigator!.push(MaterialPageRoute(
-                                    builder: (context) => buyvoucher()));
-                              } else {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => giftofferform(
-                                          icon: giftimg[index],
-                                          storename: giftname[index],
-                                          discount: giftdiscount[index]),
-                                    ));
-                              }
-                            },
+                      ),
+                      Center(
+                        child: Container(
+                          height: height / 7,
+                          width: width / 1.2,
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
+                            ),
+                            color: notifire.getbluecolor,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: height / 40,
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: width / 20),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      CustomStrings.totalcardbalance,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: height / 50,
+                                          fontFamily: 'Gilroy Medium'),
+                                    ),
+                                    const Spacer(),
+                                    Column(
+                                      children: [
+                                        Image.asset(
+                                          "images/rupay.png",
+                                          height: height / 45,
+                                          fit: BoxFit.contain,
+                                        ),
+                                        Text(
+                                          CustomStrings.rupaycard,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: height / 70,
+                                              fontFamily: 'Gilroy Medium'),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: width / 20),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: height / 20,
+                                      width: width / 2.4,
+                                      color: selection
+                                          ? Colors.transparent
+                                          : Colors.transparent,
+                                      child: selection
+                                          ? Text(
+                                              "$loadAmount",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: height / 35,
+                                                  fontFamily: 'Gilroy Bold'),
+                                            )
+                                          : Text(
+                                              "********",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: height / 20,
+                                                  fontFamily: 'Gilroy Bold'),
+                                            ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          selection = !selection;
+                                        });
+                                      },
+                                      child: selection
+                                          ? Padding(
+                                              padding: EdgeInsets.only(
+                                                  bottom: height / 100),
+                                              child: Image.asset(
+                                                "images/eye.png",
+                                                color: Colors.white,
+                                                height: height / 40,
+                                              ),
+                                            )
+                                          : Padding(
+                                              padding: EdgeInsets.only(
+                                                  bottom: height / 100),
+                                              child: const Icon(
+                                                Icons.remove_red_eye,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: width / 30),
+                          child: Container(
+                            height: height / 6.5,
+                            width: width,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                              color: notifire.getdarkwhitecolor,
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                  color: notifire.getbluecolor.withOpacity(0.4),
+                                  blurRadius: 15.0,
+                                  offset: const Offset(0.0, 0.75),
+                                ),
+                              ],
+                            ),
                             child: Column(
                               children: [
-                                giftdiscount[index].isNotEmpty
-                                    ? Container(
-                                        height: 15,
-                                        width: 50,
-                                        decoration: BoxDecoration(
-                                          color: Colors.amber[300],
-                                          borderRadius:
-                                              BorderRadius.circular(2),
+                                SizedBox(
+                                  height: height / 50,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Stack(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                generateToken('payvoy.uatuser', 'X4oVUECF9EWhX9');
+                                                // Navigator.push(
+                                                //   context,
+                                                //   MaterialPageRoute(
+                                                //     builder: (context) =>
+                                                //        const  CardDetails(),
+                                                //   ),
+                                                // );
+                                              },
+                                              child: Container(
+                                                height: height / 15,
+                                                width: width / 7,
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      notifire.gettabwhitecolor,
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                    Radius.circular(10),
+                                                  ),
+                                                ),
+                                                child: Center(
+                                                  child: Image.asset(
+                                                    "images/scanpay.png",
+                                                    height: height / 20,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: height / 60,
+                                            ),
+                                            Text(
+                                              " Debit card",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontFamily: "Gilroy Bold",
+                                                  color: notifire.getdarkscolor,
+                                                  fontSize: height / 65),
+                                            ),
+                                          ],
                                         ),
-                                        child: Center(
-                                          child: Text(
-                                            "${giftdiscount[index]}% Off",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontFamily: "Gilroy Bold",
-                                              color: notifire.getdarkscolor,
-                                              fontSize: height / 55,
+                                        Positioned(
+                                          top: -5,
+                                          right: 15,
+                                          child: Container(
+                                            padding: const EdgeInsets.all(4.0),
+                                            decoration: BoxDecoration(
+                                              color: Colors.yellow[300],
+                                              borderRadius:
+                                                  BorderRadius.circular(32.0),
+                                              boxShadow: [
+                                                const BoxShadow(
+                                                  color: Colors.white,
+                                                  offset: Offset(-4.0, -4.0),
+                                                  blurRadius: 16.0,
+                                                ),
+                                                BoxShadow(
+                                                  color: Colors.black
+                                                      .withOpacity(0.2),
+                                                  offset: const Offset(4.0, 4.0),
+                                                  blurRadius: 16.0,
+                                                ),
+                                              ],
+                                            ),
+                                            // A text widget with some style
+                                            child: Text(
+                                              'Sling',
+                                              style: TextStyle(
+                                                color: Colors.grey[800],
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 7,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const SendMoney(),
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            height: height / 15,
+                                            width: width / 7,
+                                            decoration: BoxDecoration(
+                                              color: notifire.gettabwhitecolor,
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                            ),
+                                            child: Center(
+                                              child: Image.asset(
+                                                "images/transfer.png",
+                                                height: height / 20,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      )
-                                    : SizedBox(),
-                                Container(
-                                  height: height / 15,
-                                  width: width / 7,
-                                  decoration: BoxDecoration(
-                                    color: notifire.gettabwhitecolor,
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                        SizedBox(
+                                          height: height / 60,
+                                        ),
+                                        Text(
+                                          "Add Money",
+                                          style: TextStyle(
+                                              fontFamily: "Gilroy Bold",
+                                              color: notifire.getdarkscolor,
+                                              fontSize: height / 55),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  child: Center(
-                                    child: Image.asset(
-                                      giftimg[index],
-                                      height: height / 20,
+                                    Column(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                     const personalloan(),
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            height: height / 15,
+                                            width: width / 7,
+                                            decoration: BoxDecoration(
+                                              color: notifire.gettabwhitecolor,
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                            ),
+                                            child: Center(
+                                              child: Image.asset(
+                                                "images/request.png",
+                                                height: height / 20,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: height / 60,
+                                        ),
+                                        Text(
+                                          "Apply for a Loan",
+                                          style: TextStyle(
+                                              fontFamily: "Gilroy Bold",
+                                              color: notifire.getdarkscolor,
+                                              fontSize: height / 55),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: height / 90,
-                                ),
-                                Center(
-                                  child: Text(
-                                    giftname[index],
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy Bold",
-                                      color: notifire.getdarkscolor,
-                                      fontSize: height / 55,
+                                    Column(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const SavingsStory(),
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            height: height / 15,
+                                            width: width / 7,
+                                            decoration: BoxDecoration(
+                                              color: notifire.gettabwhitecolor,
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                            ),
+                                            child: Center(
+                                              child: Image.asset(
+                                                "images/topup.png",
+                                                height: height / 20,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: height / 60,
+                                        ),
+                                        Text(
+                                          "Open a FD",
+                                          style: TextStyle(
+                                              fontFamily: "Gilroy Bold",
+                                              color: notifire.getdarkscolor,
+                                              fontSize: height / 55),
+                                        ),
+                                      ],
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              // SizedBox(
+              //   height: height / 30,
+              // ),
+              // Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: width / 30),
+              //   child: Container(
+              //       height: height / 7,
+              //       decoration: const BoxDecoration(
+              //         borderRadius: BorderRadius.all(
+              //           Radius.circular(10),
+              //         ),
+              //       ),
+              //       child: const CouponSliders()),
+              // ),
+              SizedBox(
+                height: height / 30,
+              ),
+              const SizedBox(
+                child: BannerPage(),
+              ),
+              SizedBox(
+                height: height / 30,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: width / 18),
+                child: Row(
+                  children: [
+                    Text(
+                      CustomStrings.discoverservices,
+                      style: TextStyle(
+                          fontFamily: "Gilroy Bold",
+                          color: notifire.getdarkscolor,
+                          fontSize: height / 40),
+                    ),
+                    const Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Seeallpayment(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        child: Text(
+                          CustomStrings.seeall,
+                          style: TextStyle(
+                              fontFamily: "Gilroy Bold",
+                              color: notifire.getbluecolor,
+                              fontSize: height / 45),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: height / 50,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: width / 20),
+                child: Container(
+                  color: Colors.transparent,
+                  height: height / 7,
+                  width: width,
+                  child: GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.only(bottom: height / 15),
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: height / 9,
+                        mainAxisExtent: height / 8,
+                        childAspectRatio: 4 / 2,
+                        crossAxisSpacing: height / 30,
+                        mainAxisSpacing: height / 50,
+                      ),
+                      itemCount: img.length,
+                      itemBuilder: (BuildContext ctx, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            if (index == 0) {
+                              // Get.to(() => const SlingStore());
+                              navigator!.push(MaterialPageRoute(
+                                builder: (context) => const sling_storemain(),
+                              ));
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const Scan(),
+                                ),
+                              );
+                            }
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                height: height / 15,
+                                width: width / 7,
+                                decoration: BoxDecoration(
+                                  color: notifire.gettabwhitecolor,
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Image.asset(
+                                    img[index],
+                                    height: height / 20,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: height / 90,
+                              ),
+                              Center(
+                                child: Text(
+                                  paymentname[index],
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontFamily: "Gilroy Bold",
+                                      color: notifire.getdarkscolor,
+                                      fontSize: height / 55),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                ),
+              ),
+              SizedBox(
+                height: height / 100,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: width / 18),
+                child: Row(
+                  children: [
+                    Text(
+                      CustomStrings.giftcardsection,
+                      style: TextStyle(
+                          fontFamily: "Gilroy Bold",
+                          color: notifire.getdarkscolor,
+                          fontSize: height / 40),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: height / 60,
+              ),
+              Padding(
+                padding:
+                    EdgeInsets.only(top: 10, left: width / 20, right: width / 20),
+                child: Container(
+                  height: height / 2.5,
+                  width: width,
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 239, 251, 253),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: height / 30,
+                        width: width, // Adjust the width as needed
+                        // Add your content for the first child here
+                        child: SizedBox(),
+                      ),
+                      // SizedBox(
+                      //   height: height / 90,
+                      // ),
+                      Expanded(
+                        child: GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.only(bottom: height / 20),
+                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: height / 9,
+                            mainAxisExtent: height / 8,
+                            childAspectRatio: 3 / 2,
+                            crossAxisSpacing: height / 30,
+                            mainAxisSpacing: height / 30,
+                          ),
+                          itemCount: giftimg.length,
+                          itemBuilder: (BuildContext ctx, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                if (index == 7) {
+                                  navigator!.push(MaterialPageRoute(
+                                      builder: (context) => buyvoucher()));
+                                } else {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => giftofferform(
+                                            icon: giftimg[index],
+                                            storename: giftname[index],
+                                            discount: giftdiscount[index]),
+                                      ));
+                                }
+                              },
+                              child: Column(
+                                children: [
+                                  giftdiscount[index].isNotEmpty
+                                      ? Container(
+                                          height: 15,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: Colors.amber[300],
+                                            borderRadius:
+                                                BorderRadius.circular(2),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              "${giftdiscount[index]}% Off",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily: "Gilroy Bold",
+                                                color: notifire.getdarkscolor,
+                                                fontSize: height / 55,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : SizedBox(),
+                                  Container(
+                                    height: height / 15,
+                                    width: width / 7,
+                                    decoration: BoxDecoration(
+                                      color: notifire.gettabwhitecolor,
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Image.asset(
+                                        giftimg[index],
+                                        height: height / 20,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: height / 90,
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      giftname[index],
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: "Gilroy Bold",
+                                        color: notifire.getdarkscolor,
+                                        fontSize: height / 55,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      Container(
+                        height: height / 25,
+                        width: width, // Adjust the width as needed
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                          ),
+                          child: Container(
+                            color: const Color.fromARGB(255, 142, 219, 145),
+                            child: Center(
+                              child: Text(
+                                'Instant Discount. No Limits. 100+ Brands!',
+                                style: TextStyle(
+                                  color: notifire.getdarkscolor,
+                                  fontSize: height / 55,
+                                  fontFamily: 'Gilroy Bold',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+    
+              SizedBox(
+                height: height / 40,
+              ),
+    
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: width / 18),
+                child: Row(
+                  children: [
+                    Text(
+                      CustomStrings.slingsaverclub,
+                      style: TextStyle(
+                          fontFamily: "Gilroy Bold",
+                          color: notifire.getdarkscolor,
+                          fontSize: height / 40),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: height / 80,
+              ),
+              SizedBox(
+                height: 230,
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: imageUrls.length==0
+                          ? Center(child: CircularProgressIndicator())
+                          : (isConnected && imageUrls.isNotEmpty)
+                              ? ListView.builder(
+                                  controller: _scrollController,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: imageUrls.length,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () => _onImageTap(index),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 5.0),
+                                        child: Container(
+                                          width: 150,
+                                          //height: 200,
+                                          margin: EdgeInsets.only(
+                                              left: index != 0 ? 10.0 : 0.0),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            child: buildImageWidget(
+                                                imageUrls[index]),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                )
+                              : (localImageUrls.isNotEmpty)
+                                  ? ListView.builder(
+                                      controller: _scrollController,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: localImageUrls.length,
+                                      itemBuilder: (context, index) {
+                                        return GestureDetector(
+                                          onTap: () => _onImageTap(index),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5.0),
+                                            child: Container(
+                                              width: 150,
+                                              margin: EdgeInsets.only(
+                                                  left: index != 0 ? 10.0 : 0.0),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                child: buildImageWidget(
+                                                    localImageUrls[index]),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    )
+                                  : const Center(child: CircularProgressIndicator()),
+                    ),
+                    SizedBox(height: height / 40),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List<Widget>.generate(
+                        isConnected ? imageUrls.length : localImageUrls.length,
+                        (int index) {
+                          bool isActive = (index == activeIndex);
+                          bool isImageUrl =
+                              (isConnected && index < imageUrls.length);
+    
+                          return AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            margin: const EdgeInsets.symmetric(horizontal: 3.0),
+                            height: 7.0,
+                            width: isActive ? 7.0 : 7.0,
+                            decoration: BoxDecoration(
+                              color: isActive ? Colors.blue : Colors.grey,
+                              borderRadius: BorderRadius.circular(5.0),
                             ),
                           );
                         },
                       ),
                     ),
-                    Container(
-                      height: height / 25,
-                      width: width, // Adjust the width as needed
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(10),
-                          bottomRight: Radius.circular(10),
-                        ),
-                        child: Container(
-                          color: const Color.fromARGB(255, 142, 219, 145),
-                          child: Center(
-                            child: Text(
-                              'Instant Discount. No Limits. 100+ Brands!',
-                              style: TextStyle(
-                                color: notifire.getdarkscolor,
-                                fontSize: height / 55,
-                                fontFamily: 'Gilroy Bold',
-                              ),
-                            ),
+                  ],
+                ),
+              ),
+    
+              SizedBox(height: height / 80),
+              //add here indicator
+              SizedBox(
+                height: height / 80,
+              ),
+              const SizedBox(
+                height: 200,
+                //width: width-30,
+                child: SliderPage(),
+              ),
+              SizedBox(
+                height: height / 80,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: width / 18),
+                child: Row(
+                  children: [
+                    Text(
+                      CustomStrings.lasttransaction,
+                      style: TextStyle(
+                          fontFamily: "Gilroy Bold",
+                          color: notifire.getdarkscolor,
+                          fontSize: height / 40),
+                    ),
+                    const Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Seealltransaction(),
                           ),
+                        );
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        child: Text(
+                          CustomStrings.seeall,
+                          style: TextStyle(
+                              fontFamily: "Gilroy Bold",
+                              color: notifire.getbluecolor,
+                              fontSize: height / 45),
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
-
-            SizedBox(
-              height: height / 40,
-            ),
-
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: width / 18),
-              child: Row(
-                children: [
-                  Text(
-                    CustomStrings.slingsaverclub,
-                    style: TextStyle(
-                        fontFamily: "Gilroy Bold",
-                        color: notifire.getdarkscolor,
-                        fontSize: height / 40),
-                  ),
-                ],
+              SizedBox(
+                height: height / 50,
               ),
-            ),
-            SizedBox(
-              height: height / 80,
-            ),
-            SizedBox(
-              height: 230,
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: imageUrls.length==0
-                        ? Center(child: CircularProgressIndicator())
-                        : (isConnected && imageUrls.isNotEmpty)
-                            ? ListView.builder(
-                                controller: _scrollController,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: imageUrls.length,
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                    onTap: () => _onImageTap(index),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 5.0),
-                                      child: Container(
-                                        width: 150,
-                                        //height: 200,
-                                        margin: EdgeInsets.only(
-                                            left: index != 0 ? 10.0 : 0.0),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: buildImageWidget(
-                                              imageUrls[index]),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              )
-                            : (localImageUrls.isNotEmpty)
-                                ? ListView.builder(
-                                    controller: _scrollController,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: localImageUrls.length,
-                                    itemBuilder: (context, index) {
-                                      return GestureDetector(
-                                        onTap: () => _onImageTap(index),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 5.0),
-                                          child: Container(
-                                            width: 150,
-                                            margin: EdgeInsets.only(
-                                                left: index != 0 ? 10.0 : 0.0),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              child: buildImageWidget(
-                                                  localImageUrls[index]),
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  )
-                                : const Center(child: CircularProgressIndicator()),
-                  ),
-                  SizedBox(height: height / 40),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List<Widget>.generate(
-                      isConnected ? imageUrls.length : localImageUrls.length,
-                      (int index) {
-                        bool isActive = (index == activeIndex);
-                        bool isImageUrl =
-                            (isConnected && index < imageUrls.length);
-
-                        return AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          margin: const EdgeInsets.symmetric(horizontal: 3.0),
-                          height: 7.0,
-                          width: isActive ? 7.0 : 7.0,
-                          decoration: BoxDecoration(
-                            color: isActive ? Colors.blue : Colors.grey,
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            SizedBox(height: height / 80),
-            //add here indicator
-            SizedBox(
-              height: height / 80,
-            ),
-            const SizedBox(
-              height: 200,
-              //width: width-30,
-              child: SliderPage(),
-            ),
-            SizedBox(
-              height: height / 80,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: width / 18),
-              child: Row(
-                children: [
-                  Text(
-                    CustomStrings.lasttransaction,
-                    style: TextStyle(
-                        fontFamily: "Gilroy Bold",
-                        color: notifire.getdarkscolor,
-                        fontSize: height / 40),
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Seealltransaction(),
-                        ),
-                      );
-                    },
+              Container(
+                height: height / 3,
+                color: Colors.transparent,
+                child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  itemCount: transaction.length,
+                  itemBuilder: (context, index) => Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: width / 22, vertical: height / 100),
                     child: Container(
-                      color: Colors.transparent,
-                      child: Text(
-                        CustomStrings.seeall,
-                        style: TextStyle(
-                            fontFamily: "Gilroy Bold",
-                            color: notifire.getbluecolor,
-                            fontSize: height / 45),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: height / 50,
-            ),
-            Container(
-              height: height / 3,
-              color: Colors.transparent,
-              child: ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.zero,
-                itemCount: transaction.length,
-                itemBuilder: (context, index) => Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: width / 22, vertical: height / 100),
-                  child: Container(
-                    height: height / 11,
-                    width: width,
-                    decoration: BoxDecoration(
-                      color: notifire.getdarkwhitecolor,
-                      border: Border.all(
-                        color: Colors.grey.withOpacity(0.2),
-                      ),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: width / 20),
-                      child: Row(
-                        children: [
-                          Container(
-                            height: height / 15,
-                            width: width / 7,
-                            decoration: BoxDecoration(
-                              color: notifire.gettabwhitecolor,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            child: Center(
-                              child: Image.asset(
-                                transaction[index],
-                                height: height / 20,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: width / 30,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: height / 70,
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    transactionname[index],
-                                    style: TextStyle(
-                                        fontFamily: "Gilroy Bold",
-                                        color: notifire.getdarkscolor,
-                                        fontSize: height / 50),
-                                  ),
-                                  // SizedBox(width: width / 7,),
-                                ],
-                              ),
-                              SizedBox(
-                                height: height / 100,
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    transactiondate[index],
-                                    style: TextStyle(
-                                        fontFamily: "Gilroy Medium",
-                                        color: notifire.getdarkgreycolor
-                                            .withOpacity(0.6),
-                                        fontSize: height / 60),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              SizedBox(
-                                height: height / 70,
-                              ),
-                              Text(
-                                transactionamount[index],
-                                style: TextStyle(
-                                    fontFamily: "Gilroy Bold",
-                                    color: transactioncolor[index],
-                                    fontSize: height / 45),
-                              ),
-                              SizedBox(
-                                height: height / 100,
-                              ),
-                              Text(
-                                "Order ID:***ase21",
-                                style: TextStyle(
-                                    fontFamily: "Gilroy Medium",
-                                    color: notifire.getdarkgreycolor
-                                        .withOpacity(0.6),
-                                    fontSize: height / 60),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              height: height / 7.8,
-              color: Colors.transparent,
-              child: ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.zero,
-                itemCount: cashbankname.length,
-                itemBuilder: (context, index) => Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: width / 20, vertical: height / 100),
-                  child: InkWell(
-                    onTap: () {
-                      // if (index == 0) {
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) =>
-                      //           const Notificationindex(CustomStrings.cashback),
-                      //     ),
-                      //   );
-                      // } else if (index == 1) {
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) => const HelpSupport(
-                      //         "Refer A Friend",
-                      //       ),
-                      //     ),
-                      //   );
-                      // } else
-                      if (index == 0) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HelpAndSupport(),
-                          ),
-                        );
-                      }
-                    },
-                    child: Container(
-                      height: height / 9,
+                      height: height / 11,
                       width: width,
                       decoration: BoxDecoration(
                         color: notifire.getdarkwhitecolor,
@@ -1685,7 +1560,7 @@ class _HomeState extends State<Home> {
                               ),
                               child: Center(
                                 child: Image.asset(
-                                  cashbankimg[index],
+                                  transaction[index],
                                   height: height / 20,
                                 ),
                               ),
@@ -1702,7 +1577,7 @@ class _HomeState extends State<Home> {
                                 Row(
                                   children: [
                                     Text(
-                                      cashbankname[index],
+                                      transactionname[index],
                                       style: TextStyle(
                                           fontFamily: "Gilroy Bold",
                                           color: notifire.getdarkscolor,
@@ -1716,135 +1591,45 @@ class _HomeState extends State<Home> {
                                 ),
                                 Row(
                                   children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          cashbankdiscription[index],
-                                          style: TextStyle(
-                                              fontFamily: "Gilroy Medium",
-                                              color: notifire.getdarkgreycolor
-                                                  .withOpacity(0.6),
-                                              fontSize: height / 70),
-                                        ),
-                                        Text(
-                                          cashbankdiscription2[index],
-                                          style: TextStyle(
-                                              fontFamily: "Gilroy Medium",
-                                              color: notifire.getdarkgreycolor
-                                                  .withOpacity(0.6),
-                                              fontSize: height / 60),
-                                        ),
-                                      ],
+                                    Text(
+                                      transactiondate[index],
+                                      style: TextStyle(
+                                          fontFamily: "Gilroy Medium",
+                                          color: notifire.getdarkgreycolor
+                                              .withOpacity(0.6),
+                                          fontSize: height / 60),
                                     ),
                                   ],
                                 ),
                               ],
                             ),
                             const Spacer(),
-                            Icon(Icons.arrow_forward_ios,
-                                color: notifire.getdarkscolor,
-                                size: height / 40),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              height: height / 6,
-              color: Colors.transparent,
-              child: ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.zero,
-                itemCount: 1,
-                itemBuilder: (context, index) => Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: width / 20, vertical: height / 100),
-                  child: InkWell(
-                    onTap: () {},
-                    child: Container(
-                      height: height / 7,
-                      width: width,
-                      decoration: BoxDecoration(
-                        color: notifire.getdarkwhitecolor,
-                        border: Border.all(
-                          color: Colors.grey.withOpacity(0.2),
-                        ),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: width / 20),
-                        child: Row(
-                          children: [
-                            Container(
-                              height: height / 10,
-                              width: width / 6,
-                              decoration: BoxDecoration(
-                                color: notifire.gettabwhitecolor,
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              child: Center(
-                                child: Image.asset(
-                                  'images/rating.png',
-                                  height: height / 5,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: width / 30,
-                            ),
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 SizedBox(
                                   height: height / 70,
                                 ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      CustomStrings.lovingsling,
-                                      style: TextStyle(
-                                          fontFamily: "Gilroy Bold",
-                                          color: notifire.getdarkscolor,
-                                          fontSize: height / 50),
-                                    ),
-                                    // SizedBox(width: width / 7,),
-                                  ],
+                                Text(
+                                  transactionamount[index],
+                                  style: TextStyle(
+                                      fontFamily: "Gilroy Bold",
+                                      color: transactioncolor[index],
+                                      fontSize: height / 45),
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    openRatingDialog(context);
-                                  },
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        CustomStrings.rating,
-                                        style: TextStyle(
-                                          fontFamily: "Gilroy Bold",
-                                          color: const Color.fromARGB(
-                                              255, 210, 194, 51),
-                                          fontSize: height / 50,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
+                                SizedBox(
+                                  height: height / 100,
+                                ),
+                                Text(
+                                  "Order ID:***ase21",
+                                  style: TextStyle(
+                                      fontFamily: "Gilroy Medium",
+                                      color: notifire.getdarkgreycolor
+                                          .withOpacity(0.6),
+                                      fontSize: height / 60),
+                                ),
                               ],
                             ),
-                            const Spacer(),
-                            Icon(Icons.arrow_forward_ios,
-                                color: notifire.getdarkscolor,
-                                size: height / 40),
                           ],
                         ),
                       ),
@@ -1852,187 +1637,421 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-      // backgroundColor: notifire.getprimerycolor,
-      //   body: PageStorage(
-      //     bucket: bucket,
-      //     child: currentScreen,
-      //   ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: notifire.getbluecolor,
-        child: Image.asset(
-          "images/scan1.png",
-          height: height / 30,
-        ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const Scan(),
-            ),
-          );
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-      resizeToAvoidBottomInset: false,
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 10,
-        child: Container(
-          color: notifire.getprimerydarkcolor,
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: width / 30,
-                  ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Home(),
-                          ));
-                      setState(
-                        () {
-                          currentScreen = const Home();
-                          currentTab = 0;
-                        },
-                      );
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        currentTab == 0
-                            ? Image.asset(
-                                "images/home1.png",
-                                height: height / 34,
-                                color: notifire.getbluecolor,
-                              )
-                            : Image.asset(
-                                "images/home.png",
-                                height: height / 33,
-                                color: notifire.getdarkscolor,
+              Container(
+                height: height / 7.8,
+                color: Colors.transparent,
+                child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  itemCount: cashbankname.length,
+                  itemBuilder: (context, index) => Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: width / 20, vertical: height / 100),
+                    child: InkWell(
+                      onTap: () {
+                        // if (index == 0) {
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) =>
+                        //           const Notificationindex(CustomStrings.cashback),
+                        //     ),
+                        //   );
+                        // } else if (index == 1) {
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => const HelpSupport(
+                        //         "Refer A Friend",
+                        //       ),
+                        //     ),
+                        //   );
+                        // } else
+                        if (index == 0) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HelpAndSupport(),
+                            ),
+                          );
+                        }
+                      },
+                      child: Container(
+                        height: height / 9,
+                        width: width,
+                        decoration: BoxDecoration(
+                          color: notifire.getdarkwhitecolor,
+                          border: Border.all(
+                            color: Colors.grey.withOpacity(0.2),
+                          ),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: width / 20),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: height / 15,
+                                width: width / 7,
+                                decoration: BoxDecoration(
+                                  color: notifire.gettabwhitecolor,
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Image.asset(
+                                    cashbankimg[index],
+                                    height: height / 20,
+                                  ),
+                                ),
                               ),
-                      ],
+                              SizedBox(
+                                width: width / 30,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: height / 70,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        cashbankname[index],
+                                        style: TextStyle(
+                                            fontFamily: "Gilroy Bold",
+                                            color: notifire.getdarkscolor,
+                                            fontSize: height / 50),
+                                      ),
+                                      // SizedBox(width: width / 7,),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: height / 100,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            cashbankdiscription[index],
+                                            style: TextStyle(
+                                                fontFamily: "Gilroy Medium",
+                                                color: notifire.getdarkgreycolor
+                                                    .withOpacity(0.6),
+                                                fontSize: height / 70),
+                                          ),
+                                          Text(
+                                            cashbankdiscription2[index],
+                                            style: TextStyle(
+                                                fontFamily: "Gilroy Medium",
+                                                color: notifire.getdarkgreycolor
+                                                    .withOpacity(0.6),
+                                                fontSize: height / 60),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const Spacer(),
+                              Icon(Icons.arrow_forward_ios,
+                                  color: notifire.getdarkscolor,
+                                  size: height / 40),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  SizedBox(
-                    width: width / 20,
-                  ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Analytics(),
-                          ));
-                      setState(
-                        () {
-                          currentScreen = const Analytics();
-                          currentTab = 1;
-                        },
-                      );
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        currentTab == 1
-                            ? Image.asset(
-                                "images/order1.png",
-                                height: height / 33,
-                                color: notifire.getbluecolor,
-                              )
-                            : Image.asset("images/variant.png",
-                                height: height / 33,
-                                color: notifire.getdarkscolor),
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MyCard(),
-                          ));
-                      setState(
-                        () {
-                          currentScreen = const MyCard();
-                          currentTab = 3;
-                        },
-                      );
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        currentTab == 3
-                            ? Image.asset(
-                                "images/wallet.png",
-                                height: height / 30,
-                                color: notifire.getbluecolor,
-                              )
-                            : Image.asset("images/message1.png",
-                                height: height / 30,
-                                color: notifire.getdarkscolor),
-                      ],
+              Container(
+                height: height / 6,
+                color: Colors.transparent,
+                child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  itemCount: 1,
+                  itemBuilder: (context, index) => Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: width / 20, vertical: height / 100),
+                    child: InkWell(
+                      onTap: () {},
+                      child: Container(
+                        height: height / 7,
+                        width: width,
+                        decoration: BoxDecoration(
+                          color: notifire.getdarkwhitecolor,
+                          border: Border.all(
+                            color: Colors.grey.withOpacity(0.2),
+                          ),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: width / 20),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: height / 10,
+                                width: width / 6,
+                                decoration: BoxDecoration(
+                                  color: notifire.gettabwhitecolor,
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Image.asset(
+                                    'images/rating.png',
+                                    height: height / 5,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: width / 30,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: height / 70,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        CustomStrings.lovingsling,
+                                        style: TextStyle(
+                                            fontFamily: "Gilroy Bold",
+                                            color: notifire.getdarkscolor,
+                                            fontSize: height / 50),
+                                      ),
+                                      // SizedBox(width: width / 7,),
+                                    ],
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      openRatingDialog(context);
+                                    },
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          CustomStrings.rating,
+                                          style: TextStyle(
+                                            fontFamily: "Gilroy Bold",
+                                            color: const Color.fromARGB(
+                                                255, 210, 194, 51),
+                                            fontSize: height / 50,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                              const Spacer(),
+                              Icon(Icons.arrow_forward_ios,
+                                  color: notifire.getdarkscolor,
+                                  size: height / 40),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  SizedBox(
-                    width: width / 20,
-                  ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Profile(),
-                          ));
-                      setState(
-                        () {
-                          currentScreen = const Profile();
-                          currentTab = 4;
-                        },
-                      );
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        currentTab == 4
-                            ? Image.asset(
-                                "images/profile1.png",
-                                height: height / 30,
-                                color: notifire.getbluecolor,
-                              )
-                            : Image.asset("images/profile.png",
-                                height: height / 30,
-                                color: notifire.getdarkscolor),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: width / 30,
-                  ),
-                ],
+                ),
               ),
             ],
+          ),
+        ),
+        // backgroundColor: notifire.getprimerycolor,
+        //   body: PageStorage(
+        //     bucket: bucket,
+        //     child: currentScreen,
+        //   ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: notifire.getbluecolor,
+          child: Image.asset(
+            "images/scan1.png",
+            height: height / 30,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Scan(),
+              ),
+            );
+          },
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+        resizeToAvoidBottomInset: false,
+        bottomNavigationBar: BottomAppBar(
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 10,
+          child: Container(
+            color: notifire.getprimerydarkcolor,
+            height: 60,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: width / 30,
+                    ),
+                    MaterialButton(
+                      minWidth: 40,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Home(),
+                            ));
+                        setState(
+                          () {
+                            currentScreen = const Home();
+                            currentTab = 0;
+                          },
+                        );
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          currentTab == 0
+                              ? Image.asset(
+                                  "images/home1.png",
+                                  height: height / 34,
+                                  color: notifire.getbluecolor,
+                                )
+                              : Image.asset(
+                                  "images/home.png",
+                                  height: height / 33,
+                                  color: notifire.getdarkscolor,
+                                ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: width / 20,
+                    ),
+                    MaterialButton(
+                      minWidth: 40,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Analytics(),
+                            ));
+                        setState(
+                          () {
+                            currentScreen = const Analytics();
+                            currentTab = 1;
+                          },
+                        );
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          currentTab == 1
+                              ? Image.asset(
+                                  "images/order1.png",
+                                  height: height / 33,
+                                  color: notifire.getbluecolor,
+                                )
+                              : Image.asset("images/variant.png",
+                                  height: height / 33,
+                                  color: notifire.getdarkscolor),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    MaterialButton(
+                      minWidth: 40,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MyCard(),
+                            ));
+                        setState(
+                          () {
+                            currentScreen = const MyCard();
+                            currentTab = 3;
+                          },
+                        );
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          currentTab == 3
+                              ? Image.asset(
+                                  "images/wallet.png",
+                                  height: height / 30,
+                                  color: notifire.getbluecolor,
+                                )
+                              : Image.asset("images/message1.png",
+                                  height: height / 30,
+                                  color: notifire.getdarkscolor),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: width / 20,
+                    ),
+                    MaterialButton(
+                      minWidth: 40,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Profile(),
+                            ));
+                        setState(
+                          () {
+                            currentScreen = const Profile();
+                            currentTab = 4;
+                          },
+                        );
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          currentTab == 4
+                              ? Image.asset(
+                                  "images/profile1.png",
+                                  height: height / 30,
+                                  color: notifire.getbluecolor,
+                                )
+                              : Image.asset("images/profile.png",
+                                  height: height / 30,
+                                  color: notifire.getdarkscolor),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: width / 30,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

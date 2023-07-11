@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gobank/login/auth_controller.dart';
@@ -13,41 +12,46 @@ class minkycpage extends StatefulWidget {
   State<minkycpage> createState() => _minkycpageState();
 }
 
-
-
 class _minkycpageState extends State<minkycpage> {
   bool isSelected = false;
   String responseMessage = '';
   bool isLoading = false;
+  bool isDisposed = false; // Add a flag to track the widget's disposal
+
+  @override
+  void dispose() {
+    super.dispose();
+    isDisposed = true; // Set the flag to true when the widget is disposed
+  }
+
   Future<void> generateToken(String username, String apiKey) async {
     AuthController authController = AuthController();
     setState(() {
       isLoading = true;
     });
     try {
-      Future.delayed(Duration(seconds: 2), () async{
       String? token = await authController.generateToken(username, apiKey);
-      
-      setState(() {
-        responseMessage = 'Token generated successfully. Refresh Token: $token';
-      });
-       setState(() {
-        isLoading = false;
-      });
-       print(token);
-    });
-      
-      // Navigate to the next screen
+
+      if (!isDisposed) {
+        setState(() {
+          responseMessage = 'Token generated successfully. Refresh Token: $token';
+          isLoading = false;
+        });
+      }
+
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const minnativekyclogin()),
       );
       print(responseMessage);
     } catch (e) {
-      setState(() {
-        responseMessage = 'Error: $e';
-      });
-      print(responseMessage);
+      if (!isDisposed) {
+        setState(() {
+          responseMessage = 'Error: $e';
+          isLoading = false;
+        });
+      }
+
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -56,16 +60,12 @@ class _minkycpageState extends State<minkycpage> {
           actions: [
             TextButton(
               onPressed: () {
-                // Exit the app
-                //Navigator.of(context).pop();
                 SystemNavigator.pop();
-                // exit(0);//forcefully terminate app to background
               },
               child: const Text('Exit'),
             ),
             TextButton(
               onPressed: () {
-                // Retry the token generation
                 generateToken(username, apiKey);
                 Navigator.of(context).pop();
               },
@@ -76,11 +76,6 @@ class _minkycpageState extends State<minkycpage> {
       );
     }
   }
-
-@override
-void dispose() {
-  super.dispose();
-}
 
   @override
   Widget build(BuildContext context) {
@@ -111,173 +106,170 @@ void dispose() {
           bool _hasContentOverflow =
               constraints.maxHeight < MediaQuery.of(context).size.height;
           return SingleChildScrollView(
-              physics: _hasContentOverflow
-                  ? const AlwaysScrollableScrollPhysics()
-                  : const NeverScrollableScrollPhysics(),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      const SizedBox(height: 30),
-                      const Text(
-                        'Complete Account Setup',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 22),
-                        textAlign: TextAlign.center,
+            physics: _hasContentOverflow
+                ? const AlwaysScrollableScrollPhysics()
+                : const NeverScrollableScrollPhysics(),
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    const SizedBox(height: 30),
+                    const Text(
+                      'Complete Account Setup',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'As per RBI Guidelines, you have to verify your identity to open your account',
+                      style: TextStyle(fontSize: 15, color: Colors.grey),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      height: 80,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.grey[200],
                       ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        'As per RBI Guidelines, you have to verify your identity to open your account',
-                        style: TextStyle(fontSize: 15, color: Colors.grey),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 20),
-                      Container(
-                        height: 80,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: Colors.grey[200],
+                      child: ListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 20.0),
+                        leading: Container(
+                          width: 50.0,
+                          height: 50.0,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: AssetImage('asset/images/adhar.png'),
+                              fit: BoxFit.fitWidth,
+                            ),
+                          ),
                         ),
-                        child: ListTile(
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 20.0),
-                          leading: Container(
-                            width: 50.0,
-                            height: 50.0,
-                            decoration: const BoxDecoration(
+                        title: const Text(
+                          'Aadhar Card',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        trailing: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isSelected = !isSelected;
+                            });
+                          },
+                          child: Container(
+                            width: 24.0,
+                            height: 24.0,
+                            decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: AssetImage('asset/images/adhar.png'),
-                                fit: BoxFit.fitWidth,
-                              ),
+                              color: isSelected ? Colors.green : Colors.grey,
                             ),
-                          ),
-                          title: const Text(
-                            'Aadhar Card',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                          trailing: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                isSelected = !isSelected;
-                              });
-                            },
-                            child: Container(
-                              width: 24.0,
-                              height: 24.0,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: isSelected ? Colors.green : Colors.grey,
-                              ),
-                              child: const Icon(
-                                Icons.check,
-                                color: Colors.white,
-                                size: 16.0,
-                              ),
+                            child: const Icon(
+                              Icons.check,
+                              color: Colors.white,
+                              size: 16.0,
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      GestureDetector(
-                        onTap: () {},
-                        child: const Center(
-                          child: Text(
-                            "Don't have an Aadhar card?",
-                            style: TextStyle(color: Colors.amber),
-                          ),
+                    ),
+                    const SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {},
+                      child: const Center(
+                        child: Text(
+                          "Don't have an Aadhar card?",
+                          style: TextStyle(color: Colors.amber),
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'asset/images/adhar.png',
-                            width: 25,
-                            height: 25,
-                          ),
-                          const SizedBox(width: 10),
-                          const Text(
-                            'Trusted by 15 lakh families',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Gilroy',
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 15),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'asset/images/adhar.png',
-                            width: 25,
-                            height: 25,
-                          ),
-                          const SizedBox(width: 10),
-                          const Text(
-                            'Takes one minute to complete',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w100,
-                              fontFamily: 'Gilroy',
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 25),
-                      const Center(
-                        child: Text("Powered by"),
-                      ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        height: 25,
-                        child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: Image.asset('asset/images/adhar.png'),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'asset/images/adhar.png',
+                          width: 25,
+                          height: 25,
                         ),
-                      ),
-                      const SizedBox(height: 80),  
-                      GestureDetector(
-                        onTap: () {
-                          generateToken('payvoy.uatuser', 'X4oVUECF9EWhX9');
-                          //Navigator.push(context,MaterialPageRoute(builder: (context) => minnativekyclogin()));
-                        },
-                        child: Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.circular(10),
+                        const SizedBox(width: 10),
+                        const Text(
+                          'Trusted by 15 lakh families',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Gilroy',
                           ),
-
-                          child: Center(
-                            child: isLoading
-                            ? CircularProgressIndicator()
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'asset/images/adhar.png',
+                          width: 25,
+                          height: 25,
+                        ),
+                        const SizedBox(width: 10),
+                        const Text(
+                          'Takes one minute to complete',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w100,
+                            fontFamily: 'Gilroy',
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 25),
+                    const Center(
+                      child: Text("Powered by"),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      height: 25,
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: Image.asset('asset/images/adhar.png'),
+                      ),
+                    ),
+                    const SizedBox(height: 80),
+                    GestureDetector(
+                      onTap: () {
+                        generateToken('payvoy.uatuser', 'X4oVUECF9EWhX9');
+                      },
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.amber,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: isLoading
+                              ? CircularProgressIndicator()
                               : Text(
-                                'Continue',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                  'Continue',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
                                 ),
-                              
-
-                            ),
-                          ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ));
+              ),
+            ),
+          );
         },
       ),
     );
