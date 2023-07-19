@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:connectivity/connectivity.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -195,7 +196,7 @@ class _HomeState extends State<Home> {
   final DatabaseHelper databaseHelper = DatabaseHelper();
   Directory? appDir;
   var loadAmount = 0;
-  var referenceNumber = '9255511767';
+  var referenceNumber = '';
   
   NotificationServices notificationServices = NotificationServices();
   @override
@@ -227,13 +228,49 @@ class _HomeState extends State<Home> {
       }
     });
      getReferenceNumberFromSharedPreferences();
-    
-    makeGetRequest(referenceNumber);
+    getReferenceNumber();
+   setState(() {
+      makeGetRequest(referenceNumber);
+   });
     fetchImageUrls();
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
   }
   
+
+Future<void> getReferenceNumber() async {
+  DatabaseReference databaseRef = FirebaseDatabase.instance.reference();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? phoneNumber = prefs.getString('mobileNumber');
+  print("phonenumber $phoneNumber");
+
+  // Retrieve the reference number from SharedPreferences
+  referenceNumber = prefs.getString('referenceNumber') ?? '';
+
+  // If the reference number is null, retrieve it from the "digital_card_issuance" table
+  if (referenceNumber.isEmpty) {
+    DatabaseEvent event = await databaseRef.child('digital_card_issuance').once();
+    DataSnapshot snapshot = event.snapshot;
+    Map<dynamic, dynamic>? digitalCardData = snapshot.value as Map<dynamic, dynamic>?;
+    if (digitalCardData != null && phoneNumber != null && digitalCardData.containsKey(phoneNumber)) {
+      int? referenceNumberInt = digitalCardData[phoneNumber]['referenceNumber'] as int?;
+      referenceNumber = referenceNumberInt?.toString() ?? '';
+
+      // Store the reference number in SharedPreferences
+      await prefs.setString('referenceNumber', referenceNumber);
+    }
+  }
+
+  print('Reference Number: $referenceNumber');
+}
+
+
+
+
+
+
+
+
   void notification_FD()
   {
      notificationServices.getDeviceToken().then((value)async{
@@ -345,6 +382,7 @@ class _HomeState extends State<Home> {
         loadAmount = data['loadAmount'];
       });
       print(response.body);
+      print("loadamount$loadAmount");
     } else {
       setState(() {
         loadAmount = 0;

@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gobank/pages/digitalcard.dart';
 import 'package:gobank/pages/history.dart';
 import 'package:gobank/pages/physicalcard.dart';
+import 'package:gobank/profile/weviewshow.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,14 +24,17 @@ class _CardDetailsState extends State<CardDetails> {
   var blockUnblockCardValue = false;
   var mergeChannelsValue = false;
   double _sliderValue = 500;
-  String referenceNumber = '9255511767';
+  String referenceNumber = '';
+  SharedPreferences? _prefs;
   
+
   bool manageValue = true;
   @override
   void initState() {
     super.initState();
     notifire = ColorNotifire(); // Initialize the notifire variable
     getdarkmodepreviousstate();
+    _loadReferenceNumber();
     getReferenceNumberFromSharedPreferences();
   }
    void _setSliderValue(BuildContext context, double value) {
@@ -37,7 +42,11 @@ class _CardDetailsState extends State<CardDetails> {
       _sliderValue = value;
     });
   }
-
+  Future<void> _loadReferenceNumber() async {
+    _prefs = await SharedPreferences.getInstance();
+    referenceNumber = _prefs!.getString('referenceNumber') ?? '';
+    setState(() {});
+  }
   void _cancelSelection() {
     // Implement the cancel logic here
   }
@@ -53,6 +62,46 @@ class _CardDetailsState extends State<CardDetails> {
     } else {
       notifire.setIsDark = previusstate;
     }
+  }
+  void carddetailsAPIRequest(String referenceNumber)async
+  {
+     String? token = await _getAuthorizationToken();
+  if (token == null) {
+    setState(() {
+      responseMessage = 'Authorization token not found';
+    });
+    return;
+  }
+  try {
+    final response = await http.get(
+     Uri.parse('https://issuanceapis-uat.pinelabs.com/v1/cards/attributes/$referenceNumber'),
+      headers: {
+        'accept': 'application/json',
+        'authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      String cardLink = jsonData['cardDetailResponse']['cardLink'];
+      final databaseReference = FirebaseDatabase.instance.reference();
+      databaseReference.child('card_responses').child(referenceNumber).set(jsonData);
+    
+      print(cardLink);
+      print(response.body);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => webViewshow(
+            urllink: "https://$cardLink"),
+          ),
+        
+      );
+    }
+  }catch(e)
+  {
+    print(e);
+  }
   }
   void makeAPIRequest(String referenceNumber) async {
     var apiUrl = 'https://issuanceapis-uat.pinelabs.com/v1/cards/attributes/states/update';
@@ -80,6 +129,7 @@ class _CardDetailsState extends State<CardDetails> {
     if (response.statusCode == 200) {
       // API request successful
       var responseBody = response.body;
+      showToasttop(manageValue ? 'Active Card' : 'Block Card');
       // Process the response body as needed
       print(responseBody);
     } else {
@@ -94,7 +144,7 @@ class _CardDetailsState extends State<CardDetails> {
  
   Future<void> getReferenceNumberFromSharedPreferences() async {
     var sharedPreferences = await SharedPreferences.getInstance();
-    referenceNumber = sharedPreferences.getString('referenceNumber') ?? '9255511767';
+    referenceNumber = sharedPreferences.getString('referenceNumber') ?? '';
    
 
     if (referenceNumber.isNotEmpty) {
@@ -206,7 +256,16 @@ class _CardDetailsState extends State<CardDetails> {
                            color: notifire.gettabwhitecolor,
                            fontSize: height / 45)),
                         Expanded(
-                          child: TextButton(
+                          child: referenceNumber.isNotEmpty?
+                            SizedBox(
+                              width: 50,
+                              height: 50,
+                              // child: Container(
+                              //   color: Colors.green,
+                              //   child: Text('Reference Number: $referenceNumber'),
+                              // ),
+                            )
+                          : TextButton(
                             onPressed: () {
                               getCardSchemes();
                             },
@@ -237,15 +296,16 @@ class _CardDetailsState extends State<CardDetails> {
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               child: ListTile(
-                                title:  Text("Order Card",
+                                title:  Text(
+                                  "Card Details",
                                 style: TextStyle(fontFamily: "Gilroy medium",
                                     color: notifire.gettabwhitecolor,
                                     fontSize: height / 45),
-                                    ),
+                                ),
                                 trailing: IconButton(
                                   onPressed: () {
-                                   // Navigator.pushNamed(context, '/physicalcard');
-                                   navigator!.push(MaterialPageRoute(builder: (context) => const physicalcard(),));
+                                    Navigator.pop(context);
+                                   carddetailsAPIRequest(referenceNumber);
                                   },
                                   icon:  Icon(Icons.arrow_forward_ios,color: notifire.gettabwhitecolor,),
                                 ),
@@ -274,6 +334,34 @@ class _CardDetailsState extends State<CardDetails> {
                                   onPressed: () {
                                    // Navigator.pushNamed(context, '/history');
                                     navigator!.push(MaterialPageRoute(builder: (context) => const TransactionHistoryPage(),));
+                                  },
+                                  icon:  Icon(Icons.arrow_forward_ios,color: notifire.gettabwhitecolor,),
+                                ),
+                              ),
+                            ),
+                          ),
+                           
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 10,
+                              left: 10,
+                              right: 10,
+                            ),
+                            child: Card(
+                              color: const Color.fromARGB(255, 55, 59, 78),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: ListTile(
+                                title:  Text("Order Card",
+                                style: TextStyle(fontFamily: "Gilroy medium",
+                                    color: notifire.gettabwhitecolor,
+                                    fontSize: height / 45),
+                                    ),
+                                trailing: IconButton(
+                                  onPressed: () {
+                                   // Navigator.pushNamed(context, '/physicalcard');
+                                   navigator!.push(MaterialPageRoute(builder: (context) => const physicalcard(),));
                                   },
                                   icon:  Icon(Icons.arrow_forward_ios,color: notifire.gettabwhitecolor,),
                                 ),

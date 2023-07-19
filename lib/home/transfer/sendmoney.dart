@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +11,7 @@ import 'package:gobank/utils/media.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:http/http.dart' as http;
 import '../../utils/colornotifire.dart';
 
 class SendMoney extends StatefulWidget {
@@ -20,7 +24,7 @@ class SendMoney extends StatefulWidget {
 class _SendMoneyState extends State<SendMoney> with SingleTickerProviderStateMixin{
 
   late ColorNotifire notifire;
-
+    var loadAmount = 0;
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
     bool? previusstate = prefs.getBool("setIsDark");
@@ -37,12 +41,99 @@ class _SendMoneyState extends State<SendMoney> with SingleTickerProviderStateMix
   //   const SendAll(),
   //   const SendAll(),
   // ];
-
+    String referenceNumber = '';
+  SharedPreferences? prefs;
   @override
   void initState() {
     super.initState();
     //controller = TabController(length: 4, vsync: this);
+    _loadReferenceNumber();
+    getReferenceNumberFromSharedPreferences();
+    fetchCardSchemeId(referenceNumber);
   }
+ Future<void> _loadReferenceNumber() async {
+    prefs = await SharedPreferences.getInstance();
+    referenceNumber = prefs!.getString('referenceNumber') ?? '';
+    print(referenceNumber);
+    setState(() {});
+  }
+
+
+Future<void> fetchCardSchemeId(String referenceNumber) async {
+  try {
+    final databaseReference = FirebaseDatabase.instance.reference();
+    DatabaseEvent event = await databaseReference
+        .child('card_responses')
+        .child(referenceNumber)
+        .once();
+    DataSnapshot snapshot = event.snapshot;
+
+    // Print the entire snapshot.value to understand its structure
+    print('Snapshot Value: ${snapshot.value}');
+    prefs = await SharedPreferences.getInstance();
+    referenceNumber = prefs!.getString('referenceNumber') ?? '';
+    print(referenceNumber);
+    // Check if the snapshot exists and contains data
+    if (snapshot.value != null) {
+      Map<dynamic, dynamic>? data = snapshot.value as Map<dynamic, dynamic>?;
+      Map<dynamic, dynamic>? cardDetailResponse = data?[referenceNumber]?['cardDetailResponse'];
+      int? cardSchemeId = cardDetailResponse?['cardSchemeId'];
+       
+      if (cardSchemeId != null) {
+        print('Card Scheme Id: $cardSchemeId');
+      } else {
+        print('Card Scheme Id not found in the snapshot.');
+      }
+      await prefs!.setInt('cardSchemeId', cardSchemeId!);
+    } else {
+      print('Reference number not found.');
+    }
+  } catch (e) {
+    print('Error fetching data: $e');
+  }
+}
+
+ Future<void> getReferenceNumberFromSharedPreferences() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    referenceNumber = sharedPreferences.getString('referenceNumber')??'';
+
+    if (referenceNumber.isNotEmpty) {
+      makeGetRequest(referenceNumber);
+    } else {
+      setState(() {
+        loadAmount = 0;
+      });
+    }
+  }
+  Future<void> makeGetRequest(String referenceNumber) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    var token = sharedPreferences.getString('token');
+
+    var url = Uri.parse('https://issuanceapis-uat.pinelabs.com/v1/cards/balances/$referenceNumber');
+
+    var headers = {
+      'accept': 'application/json',
+      'authorization': 'Bearer $token',
+    };
+
+    var response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      setState(() {
+        loadAmount = data['loadAmount'];
+      });
+      print(response.body);
+      print("loadamount$loadAmount");
+    } else {
+      setState(() {
+        loadAmount = 0;
+      });
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
@@ -147,7 +238,7 @@ class _SendMoneyState extends State<SendMoney> with SingleTickerProviderStateMix
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text("₹ 0.0",
+                                          Text("₹$loadAmount ",
                                           style: TextStyle(
                                             fontFamily: "Gilroy bold",
                                             color: notifire.getdarkscolor,
@@ -327,10 +418,10 @@ class _LoadmoneytoaccountState extends State<Loadmoneytoaccount> {
     }
   }
  List walletlistindex = [
-    "50",
     "100",
     "500",
     "1000",
+    "2000",
   
   ];
   int walletpriceindex = -1;
@@ -341,10 +432,61 @@ class _LoadmoneytoaccountState extends State<Loadmoneytoaccount> {
   Colors.orangeAccent,
   // Add more colors as needed
 ];
-
+    String referenceNumber = '';
+    int? cardschemeid;
+  SharedPreferences? prefs;
+  var loadAmount = 0;
   @override
   void initState() {
     super.initState();
+    _loadReferenceNumber();
+    getReferenceNumberFromSharedPreferences();
+  }
+   Future<void> _loadReferenceNumber() async {
+    prefs = await SharedPreferences.getInstance();
+    referenceNumber = prefs!.getString('referenceNumber') ?? '';
+    cardschemeid=prefs!.getInt('cardSchemeId');
+    print(referenceNumber);
+    print(cardschemeid);
+    setState(() {});
+  }
+    Future<void> getReferenceNumberFromSharedPreferences() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    referenceNumber = sharedPreferences.getString('referenceNumber')??'';
+
+    if (referenceNumber.isNotEmpty) {
+      makeGetRequest(referenceNumber);
+    } else {
+      setState(() {
+        loadAmount = 0;
+      });
+    }
+  }
+  Future<void> makeGetRequest(String referenceNumber) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    var token = sharedPreferences.getString('token');
+
+    var url = Uri.parse('https://issuanceapis-uat.pinelabs.com/v1/cards/balances/$referenceNumber');
+
+    var headers = {
+      'accept': 'application/json',
+      'authorization': 'Bearer $token',
+    };
+
+    var response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      setState(() {
+        loadAmount = data['loadAmount'];
+      });
+      print(response.body);
+      print("loadamount$loadAmount");
+    } else {
+      setState(() {
+        loadAmount = 0;
+      });
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -437,7 +579,7 @@ class _LoadmoneytoaccountState extends State<Loadmoneytoaccount> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text("₹ 0.0",
+                                        Text("₹ $loadAmount",
                                         style: TextStyle(
                                           fontFamily: "Gilroy bold",
                                           color: notifire.getdarkscolor,

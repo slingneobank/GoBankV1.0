@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:gobank/utils/media.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -16,77 +15,70 @@ class TransactionHistoryPage extends StatefulWidget {
 class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
   bool isLoading = true;
   List<Transaction> transactions = [];
-   String? referenceNumber;
-   String responseMessage = '';
+  String? referenceNumber;
+  String responseMessage = '';
+
   @override
   void initState() {
     super.initState();
-     getReferenceNumber();
-    fetchData();
+   
+    getReferenceNumberFromSharedPreferences();
   }
+Future<void> getReferenceNumberFromSharedPreferences() async {
+  var sharedPreferences = await SharedPreferences.getInstance();
+  referenceNumber = sharedPreferences.getString('referenceNumber');
+  print(referenceNumber);
+  if (referenceNumber != null ) {
+    fetchData(referenceNumber!);
+  } else {
+    setState(() {
+      isLoading = false;
+      print("Reference Number is not available");
+    });
+  }
+}
+
   Future<String?> _getAuthorizationToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
     return token;
   }
 
-  Future<void> getReferenceNumber() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? number = prefs.getString('referenceNumber');
-    setState(() {
-      referenceNumber = number;
-    });
-  }
- Future<void> fetchData() async {
-  String? token = await _getAuthorizationToken();
-  if (token == null) {
-    setState(() {
-      responseMessage = 'Authorization token not found';
-    });
-    return;
-  }
-  try {
-    final response = await http.get(
-      // Uri.parse('https://issuanceapis-uat.pinelabs.com/v1/cards/transactions/$referenceNumber'),
-      Uri.parse('https://issuanceapis-uat.pinelabs.com/v1/cards/transactions/7818167833'),
-      headers: {
-        'accept': 'application/json',
-        'authorization': 'Bearer $token',
-      },
-    );
+  Future<void> fetchData(String referenceNumber) async {
+    String? token = await _getAuthorizationToken();
+    if (token == null) {
+      setState(() {
+        responseMessage = 'Authorization token not found';
+      });
+      return;
+    }
+    try {
+      final response = await http.get(
+        Uri.parse('https://issuanceapis-uat.pinelabs.com/v1/cards/transactions/$referenceNumber'),
+        headers: {
+          'accept': 'application/json',
+          'authorization': 'Bearer $token',
+        },
+      );
 
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      final dynamic transactionData = jsonData['transactions'];
-
-      if (transactionData != null && transactionData is List<dynamic>) {
+      if (response.statusCode == 200) {
         setState(() {
+          final jsonData = jsonDecode(response.body);
+          print(jsonData);
+          final List<dynamic> transactionData = jsonData['transactionDetailList'];
           transactions = transactionData.map((data) => Transaction.fromJson(data)).toList();
           isLoading = false;
         });
       } else {
-        // Handle the case when there are no transactions
-        setState(() {
-          transactions = []; // Set an empty list
-          isLoading = false;
-          responseMessage = jsonData['responseMessage'] ?? '';
-        });
-        print(responseMessage);
+        throw Exception('Failed to fetch transaction history');
       }
-    } else {
-      throw Exception('Failed to fetch transaction history');
+    } catch (error) {
+      setState(() {
+        isLoading = false;
+      });
+      print('Error: $error');
     }
-  } catch (error) {
-    setState(() {
-      isLoading = false;
-    });
-    print('Error: $error');
   }
-}
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -101,11 +93,11 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
           icon: const Icon(Icons.arrow_back_ios_new_sharp),
         ),
         title: Text(
-          "Transcation History",
+          "Transaction History",
           style: TextStyle(
             fontFamily: "Gilroy medium",
             color: Colors.white,
-            fontSize: height / 35,
+            fontSize: 18,
           ),
         ),
         centerTitle: true,
@@ -122,7 +114,7 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
     );
   }
 
-    Widget showLoadingScreen() {
+  Widget showLoadingScreen() {
     return Shimmer(
       gradient: const LinearGradient(
         begin: Alignment.topLeft,
@@ -161,14 +153,14 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
   }
 
   Widget showContent() {
-    if (transactions.isEmpty) {
+    if (transactions.isEmpty || referenceNumber==null) {
       return Center(
         child: Text(
           'Transaction history not available',
           style: TextStyle(
             fontFamily: "Gilroy medium",
             color: Colors.white,
-            fontSize: height / 45,
+            fontSize: 14,
           ),
         ),
       );
@@ -178,12 +170,51 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
       itemCount: transactions.length,
       itemBuilder: (context, index) {
         final transaction = transactions[index];
-        return ListTile(
-          leading: CircleAvatar(
-            child: Text(transaction.transactionType.toString()),
+        return Card(
+          child: Container(
+            height: 100,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                   
+                    Text('invoiceNumber:${transaction.invoiceNumber}',
+                       style: TextStyle(
+                       fontFamily: "Gilroy medium",
+                       color: Colors.black,
+                       fontSize: 14,
+                     ),
+                    ),
+                    
+                     Text('Amount: ${transaction.transactionAmount}',
+                    style: TextStyle(
+                      fontFamily: "Gilroy medium",
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
+                     ),
+                     Text('transactionType: ${transaction.transactionType}',
+                    style: TextStyle(
+                      fontFamily: "Gilroy medium",
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
+                    ),
+                    Text('transactionDate: ${transaction.transactionDate}',
+                    style: TextStyle(
+                      fontFamily: "Gilroy medium",
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
+                    ),
+                  ],
+                  ),
+            ),
           ),
-          title: Text('Amount: ${transaction.transactionAmount}'),
-          subtitle: Text('Merchant: ${transaction.merchantName}'),
+            
+          
+          
         );
       },
     );
@@ -195,26 +226,20 @@ class Transaction {
   final double transactionAmount;
   final int transactionType;
   final String invoiceNumber;
-  final String merchantName;
-  final String merchantCity;
 
   Transaction({
     required this.transactionDate,
     required this.transactionAmount,
     required this.transactionType,
     required this.invoiceNumber,
-    required this.merchantName,
-    required this.merchantCity,
   });
 
   factory Transaction.fromJson(Map<String, dynamic> json) {
     return Transaction(
       transactionDate: json['transactionDate'] ?? '',
-      transactionAmount: json['transactionAmount'] ?? 0,
+      transactionAmount: json['transactionAmount']?.toDouble() ?? 0.0,
       transactionType: json['transactionType'] ?? 0,
       invoiceNumber: json['invoiceNumber'] ?? '',
-      merchantName: json['merchantName'] ?? '',
-      merchantCity: json['merchantCity'] ?? '',
     );
   }
 }

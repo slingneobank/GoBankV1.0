@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gobank/home/home.dart';
 import 'package:gobank/pages/digitalcard_detail.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,6 +38,7 @@ class _digitalcardState extends State<digitalcard> {
     getCardSchemeId();
      notifire = ColorNotifire(); // Initialize the notifire variable
     getdarkmodepreviousstate();
+    getuserdetails();
    String uniqueNumber = const Uuid().v4();
    externalCardIdentifierController.text = uniqueNumber;
     externalRequestIdController.text = uniqueNumber;
@@ -58,10 +60,23 @@ class _digitalcardState extends State<digitalcard> {
     print(token);
     return token;
   }
-
+  String?username;
+  String? mobile;
+  String? email;
+   Future<void> getuserdetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    username= prefs.getString('username');
+    mobile= prefs.getString('mobileNumber');
+    email=prefs.getString('email');
+    mobileNumberController.text=mobile! ?? '';
+    emailController.text=email! ?? '';
+    customerNameController.text=username! ?? '';
+    setState(() {});
+  }
   Future<void> getCardSchemeId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? id = prefs.getInt('cardSchemeId');
+    
     setState(() {
       cardSchemeId = id;
        cardSchemeController.text = cardSchemeId != null ? cardSchemeId.toString() : 'N/A';
@@ -114,7 +129,7 @@ Future<void> createDigitalCardOrder() async {
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
-
+      print('Response Body: ${response.body}');
       final databaseReference = FirebaseDatabase.instance.reference();
       final phoneNumber = mobileNumberController.text;
       final data = {
@@ -129,10 +144,11 @@ Future<void> createDigitalCardOrder() async {
       setState(() {
         responseMessage = jsonResponse['responseMessage'];
       });
-
-      navigator!.push(
-        MaterialPageRoute(builder: (context) => const digitalcard_detail()),
-      );
+      Navigator.pop(context);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const Home(),));
+      setState(() {
+        
+      });
     } else {
       print('API Request Failed with Status Code: ${response.statusCode}');
       print('Response Body: ${response.body}');
@@ -293,6 +309,7 @@ Future<void> createDigitalCardOrder() async {
                           },
                         ),
                         TextFormField(
+                          enabled:  false,
                           controller: mobileNumberController,
                           decoration: InputDecoration(
                             labelText: 'Mobile No*',
@@ -348,6 +365,7 @@ Future<void> createDigitalCardOrder() async {
                         ),
                         
                         TextFormField(
+                          enabled: false,
                           controller: customerNameController,
                           decoration: InputDecoration(
                             labelText: 'Customer Name*',
@@ -376,6 +394,7 @@ Future<void> createDigitalCardOrder() async {
                         
                         
                         TextFormField(
+                          enabled: false,
                           controller: emailController,
                           decoration: InputDecoration(
                             labelText: 'Email*',

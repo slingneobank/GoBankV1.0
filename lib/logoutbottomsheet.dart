@@ -65,6 +65,10 @@ class _CustomButtonState extends State<CustomButton> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('phone_number');
     await prefs.remove('username');
+    await prefs.remove('username');
+    await prefs.remove('mobileNumber');
+    await prefs.remove('email');
+    await prefs.remove('referenceNumber');
     await prefs.remove('is_logged_in');
     await prefs.remove('is_verified');
     await prefs.remove('is_minkyc_complete');

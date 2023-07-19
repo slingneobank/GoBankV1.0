@@ -16,23 +16,19 @@ class _minkycpageState extends State<minkycpage> {
   bool isSelected = false;
   String responseMessage = '';
   bool isLoading = false;
-  bool isDisposed = false; // Add a flag to track the widget's disposal
 
-  @override
-  void dispose() {
-    super.dispose();
-    isDisposed = true; // Set the flag to true when the widget is disposed
-  }
 
   Future<void> generateToken(String username, String apiKey) async {
     AuthController authController = AuthController();
-    setState(() {
-      isLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
     try {
       String? token = await authController.generateToken(username, apiKey);
 
-      if (!isDisposed) {
+     if (mounted) {
         setState(() {
           responseMessage = 'Token generated successfully. Refresh Token: $token';
           isLoading = false;
@@ -45,7 +41,7 @@ class _minkycpageState extends State<minkycpage> {
       );
       print(responseMessage);
     } catch (e) {
-      if (!isDisposed) {
+      if (mounted) {
         setState(() {
           responseMessage = 'Error: $e';
           isLoading = false;
@@ -66,7 +62,9 @@ class _minkycpageState extends State<minkycpage> {
             ),
             TextButton(
               onPressed: () {
-                generateToken(username, apiKey);
+                if (mounted) {
+                  generateToken(username, apiKey);
+                }
                 Navigator.of(context).pop();
               },
               child: const Text('Retry'),

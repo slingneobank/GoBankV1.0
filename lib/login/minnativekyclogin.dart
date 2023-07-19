@@ -135,6 +135,8 @@ class _minnativekycloginState extends State<minnativekyclogin> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('minKycUniqueId', minKycUniqueId);
       await prefs.setString('username', _usernameController.text);
+      await prefs.setString('mobileNumber', _mobileController.text);
+      await prefs.setString('email', _emailController.text);
       String responseMessage = responseData['responseMessage'];
       setState(() {
         _response = responseData.toString();

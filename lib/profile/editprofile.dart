@@ -27,7 +27,22 @@ class _EditProfileState extends State<EditProfile> {
       notifire.setIsDark = previusstate;
     }
   }
-
+   String?username;
+  String? mobile;
+  String? email;
+   Future<void> getuserdetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    username= prefs.getString('username');
+    mobile= prefs.getString('mobileNumber');
+    email=prefs.getString('email');
+    setState(() {});
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getuserdetails();
+  }
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
@@ -137,11 +152,14 @@ class _EditProfileState extends State<EditProfile> {
                   height: height / 50,
                 ),
                 Profiletextfilds.textField(
+                  username,
                     notifire.getdarkscolor,
                     notifire.getdarkgreycolor,
                     notifire.getbluecolor,
                     CustomStrings.fullnames,
-                    notifire.getdarkwhitecolor),
+                    notifire.getdarkwhitecolor,
+                    
+                    ),
                 SizedBox(
                   height: height / 50,
                 ),
@@ -163,11 +181,14 @@ class _EditProfileState extends State<EditProfile> {
                   height: height / 50,
                 ),
                 Profiletextfilds.textField(
+                  email,
                     notifire.getdarkscolor,
                     notifire.getdarkgreycolor,
                     notifire.getbluecolor,
                     CustomStrings.email,
-                    notifire.getdarkwhitecolor),
+                    notifire.getdarkwhitecolor,
+                    
+                    ),
                 SizedBox(
                   height: height / 50,
                 ),
@@ -189,11 +210,14 @@ class _EditProfileState extends State<EditProfile> {
                   height: height / 50,
                 ),
                 Profiletextfilds.textField(
+                  mobile,
                     notifire.getdarkscolor,
                     notifire.getdarkgreycolor,
                     notifire.getbluecolor,
                     CustomStrings.phonenumbers,
-                    notifire.getdarkwhitecolor),
+                    notifire.getdarkwhitecolor,
+                    
+                    ),
                 SizedBox(
                   height: height / 50,
                 ),

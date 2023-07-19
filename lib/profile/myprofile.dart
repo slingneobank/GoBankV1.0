@@ -76,14 +76,19 @@ class _MyProfileState extends State<MyProfile> {
   void initState() {
     super.initState();
     getdarkmodepreviousstate();
-    getPhoneNumber();
+    getuserdetails();
   }
-   Future<void> getPhoneNumber() async {
-    String? number;
+  String?username;
+  String? mobile;
+  String? email;
+   Future<void> getuserdetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    number=await prefs.getString('phone_number');
-    print(number);
+    username= prefs.getString('username');
+    mobile= prefs.getString('mobileNumber');
+    email=prefs.getString('email');
+    setState(() {});
   }
+   
 
   @override
   Widget build(BuildContext context) {
@@ -163,14 +168,14 @@ class _MyProfileState extends State<MyProfile> {
                   height: height / 50,
                 ),
                 Text(
-                  "Brooklyn Simmons",
+                  "$username" ?? '',
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: height / 45,
                       fontFamily: 'Gilroy Bold'),
                 ),
                 Text(
-                  "gilroy@email.com",
+                  "$email" ?? '',
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: height / 55,
@@ -223,30 +228,30 @@ class _MyProfileState extends State<MyProfile> {
                       color: Colors.grey[100],
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Center(
+                    child:  Center(
                         child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              "🎂 ",
-                              style: TextStyle(
-                                  color: Colors.purple,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: 'Gilroy Medium'),
-                            ),
-                            Text(
-                              "22/02/2222",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Gilroy Medium'),
-                            ),
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     Text(
+                        //       "🎂 ",
+                        //       style: TextStyle(
+                        //           color: Colors.purple,
+                        //           fontSize: 18,
+                        //           fontWeight: FontWeight.w400,
+                        //           fontFamily: 'Gilroy Medium'),
+                        //     ),
+                        //     Text(
+                        //       "22/02/2222",
+                        //       style: TextStyle(
+                        //           color: Colors.black,
+                        //           fontSize: 13,
+                        //           fontWeight: FontWeight.bold,
+                        //           fontFamily: 'Gilroy Medium'),
+                        //     ),
+                        //   ],
+                        // ),
                         Row(
                           children: [
                             Text(
@@ -258,7 +263,7 @@ class _MyProfileState extends State<MyProfile> {
                                   fontFamily: 'Gilroy Medium'),
                             ),
                             Text(
-                              "1992828888",
+                              '$mobile' ?? '',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 13,
