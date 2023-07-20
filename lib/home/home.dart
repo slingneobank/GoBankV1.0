@@ -229,6 +229,7 @@ class _HomeState extends State<Home> {
     });
      getReferenceNumberFromSharedPreferences();
     getReferenceNumber();
+      fetchCardSchemeId(referenceNumber);
    setState(() {
       makeGetRequest(referenceNumber);
    });
@@ -265,7 +266,56 @@ Future<void> getReferenceNumber() async {
 }
 
 
+Future<void> fetchCardSchemeId(String referenceNumber) async {
+  try {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    referenceNumber = prefs!.getString('referenceNumber') ?? '';
+    print(referenceNumber);
+    String storedReferenceNumber = prefs.getString('referenceNumber') ?? '';
+    print("stored $storedReferenceNumber");
+    if (referenceNumber == storedReferenceNumber) {
+      final databaseReference = FirebaseDatabase.instance.reference();
+      DatabaseEvent event =
+          await databaseReference.child('card_responses').child(referenceNumber).once();
+      DataSnapshot snapshot=event.snapshot;
+      // Print the entire snapshot.value to understand its structure
+      print('Snapshot Value: ${snapshot.value}');
 
+      // Check if the snapshot exists and contains data
+          
+       if (snapshot.value != null) {
+      Map<dynamic, dynamic>? data = snapshot.value as Map<dynamic, dynamic>?;
+      int? cardSchemeId = data?['cardDetailResponse']?['cardSchemeId'];
+       
+      if (cardSchemeId != null) {
+        print('Card Scheme Id: $cardSchemeId');
+        await prefs!.setInt('cardSchemeId', cardSchemeId!);
+      } else {
+        print('Card Scheme Id not found in the snapshot.');
+      }
+    } else {
+        print('Reference number not found.');
+      }
+    } else {
+      // Show a dialog box to create a digital card
+      showDialog(
+        context: context, // You'll need to pass the context to this function
+        builder: (context) => AlertDialog(
+          title: Text('Create Digital Card'),
+          content: Text('First, create a digital card.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  } catch (e) {
+    print('Error fetching data: $e');
+  }
+}
 
 
 

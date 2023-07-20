@@ -13,15 +13,17 @@ class Personalise extends StatefulWidget {
 }
 
 class _PersonaliseState extends State<Personalise> {
+  TextEditingController name=TextEditingController();
   late ColorNotifire notifire;
-  var enteredText = "Name";
-
+  var enteredText = "name";
+ SharedPreferences? prefs;
   @override
   void initState() {
     super.initState();
-    enteredText = "Enter Name";
+  
     notifire = ColorNotifire(); // Initialize the notifire variable
     getdarkmodepreviousstate();
+    initSharedPreferences();
   }
 
   getdarkmodepreviousstate() async {
@@ -33,7 +35,9 @@ class _PersonaliseState extends State<Personalise> {
       notifire.setIsDark = previusstate;
     }
   }
-
+   void initSharedPreferences() async {
+    prefs = await SharedPreferences.getInstance();
+  }
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
@@ -126,6 +130,7 @@ class _PersonaliseState extends State<Personalise> {
                         const SizedBox(width: 2), // Add some spacing between the divider and the TextField
                         Expanded(
                           child: TextField(
+                            controller: name,
                             decoration: const InputDecoration(
                               hintText: "Enter Name",
                               hintStyle: TextStyle(color: Colors.white),
@@ -138,6 +143,7 @@ class _PersonaliseState extends State<Personalise> {
                             onChanged: (value) {
                               setState(() {
                                 enteredText = value;
+                                
                               });
                             },
                           ),
@@ -153,8 +159,10 @@ class _PersonaliseState extends State<Personalise> {
                // margin: EdgeInsets.only(top: 20),
                 height: h * 0.06,
                 width: 230,
-                child: TextButton(
-                  onPressed: () {
+                child: OutlinedButton(
+                  onPressed: () async{
+                    name.text=enteredText;
+                    await prefs!.setString('nameofcard', enteredText);
                     navigator!.push(
                       MaterialPageRoute(builder: (context) => checkOut()),
                     );

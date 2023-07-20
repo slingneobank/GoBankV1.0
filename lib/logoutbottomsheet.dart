@@ -72,6 +72,8 @@ class _CustomButtonState extends State<CustomButton> {
     await prefs.remove('is_logged_in');
     await prefs.remove('is_verified');
     await prefs.remove('is_minkyc_complete');
+    await prefs.remove('cardSchemeId');
+    await prefs.remove('nameofcard');
   }
   @override
   Widget build(BuildContext context) {

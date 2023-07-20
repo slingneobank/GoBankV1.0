@@ -49,7 +49,7 @@ class _SendMoneyState extends State<SendMoney> with SingleTickerProviderStateMix
     //controller = TabController(length: 4, vsync: this);
     _loadReferenceNumber();
     getReferenceNumberFromSharedPreferences();
-    fetchCardSchemeId(referenceNumber);
+  
   }
  Future<void> _loadReferenceNumber() async {
     prefs = await SharedPreferences.getInstance();
@@ -59,39 +59,42 @@ class _SendMoneyState extends State<SendMoney> with SingleTickerProviderStateMix
   }
 
 
-Future<void> fetchCardSchemeId(String referenceNumber) async {
-  try {
-    final databaseReference = FirebaseDatabase.instance.reference();
-    DatabaseEvent event = await databaseReference
-        .child('card_responses')
-        .child(referenceNumber)
-        .once();
-    DataSnapshot snapshot = event.snapshot;
 
-    // Print the entire snapshot.value to understand its structure
-    print('Snapshot Value: ${snapshot.value}');
-    prefs = await SharedPreferences.getInstance();
-    referenceNumber = prefs!.getString('referenceNumber') ?? '';
-    print(referenceNumber);
-    // Check if the snapshot exists and contains data
-    if (snapshot.value != null) {
-      Map<dynamic, dynamic>? data = snapshot.value as Map<dynamic, dynamic>?;
-      Map<dynamic, dynamic>? cardDetailResponse = data?[referenceNumber]?['cardDetailResponse'];
-      int? cardSchemeId = cardDetailResponse?['cardSchemeId'];
+
+
+// Future<void> fetchCardSchemeId(String referenceNumber) async {
+//   try {
+//     final databaseReference = FirebaseDatabase.instance.reference();
+//     DatabaseEvent event = await databaseReference
+//         .child('card_responses')
+//         .child(referenceNumber)
+//         .once();
+//     DataSnapshot snapshot = event.snapshot;
+
+//     // Print the entire snapshot.value to understand its structure
+//     print('Snapshot Value: ${snapshot.value}');
+//     prefs = await SharedPreferences.getInstance();
+//     referenceNumber = prefs!.getString('referenceNumber') ?? '';
+//     print(referenceNumber);
+//     // Check if the snapshot exists and contains data
+//     if (snapshot.value != null) {
+//       Map<dynamic, dynamic>? data = snapshot.value as Map<dynamic, dynamic>?;
+//       Map<dynamic, dynamic>? cardDetailResponse = data?[referenceNumber]?['cardDetailResponse'];
+//       int? cardSchemeId = cardDetailResponse?['cardSchemeId'];
        
-      if (cardSchemeId != null) {
-        print('Card Scheme Id: $cardSchemeId');
-      } else {
-        print('Card Scheme Id not found in the snapshot.');
-      }
-      await prefs!.setInt('cardSchemeId', cardSchemeId!);
-    } else {
-      print('Reference number not found.');
-    }
-  } catch (e) {
-    print('Error fetching data: $e');
-  }
-}
+//       if (cardSchemeId != null) {
+//         print('Card Scheme Id: $cardSchemeId');
+//       } else {
+//         print('Card Scheme Id not found in the snapshot.');
+//       }
+//       await prefs!.setInt('cardSchemeId', cardSchemeId!);
+//     } else {
+//       print('Reference number not found.');
+//     }
+//   } catch (e) {
+//     print('Error fetching data: $e');
+//   }
+// }
 
  Future<void> getReferenceNumberFromSharedPreferences() async {
     var sharedPreferences = await SharedPreferences.getInstance();
