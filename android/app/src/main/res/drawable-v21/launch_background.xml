@@ -8,6 +8,8 @@
     <!-- <item>
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/logo" />
+            android:src="@mipmap/logo" 
+            
+            />
     </item> -->
 </layer-list>

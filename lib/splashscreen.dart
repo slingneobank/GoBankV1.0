@@ -67,8 +67,10 @@ class _SplashscreenState extends State<Splashscreen> {
       }
     });
     getdarkmodepreviousstate();
-    
-       // checkUserStatus();
+    Timer(Duration(seconds: 2), () { 
+        checkUserStatus();
+    });
+      
         // Navigator.push(context, MaterialPageRoute(builder: (context) => // Home()
         // onboard!.get("onboard")==true?MyPhone():Onbonding()
         // ,));
@@ -118,20 +120,18 @@ class _SplashscreenState extends State<Splashscreen> {
     width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: notifire.getprimerycolor,
-      body:SafeArea(
-        child:  Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-         
-          Image.asset(
-            "asset/images/logo_splash.jpeg",
-            height: 300,
-          ),
-        ],
+      body:Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+       crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+       
+        Image.asset(
+          "asset/images/logo_splash_big.png",
+          
         ),
-        
-        ),
+        CircularProgressIndicator(color: Color(0xffFD6E01)),
+      ],
+      ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.only(left: 10,right: 10),
           child:
@@ -146,6 +146,7 @@ class _SplashscreenState extends State<Splashscreen> {
                                       color: notifire.getdarkscolor,
                                       fontSize: height / 40),
               ),
+              SizedBox(width: 5,),
               SizedBox(
                 height: 70,
                 child: Image.asset("asset/images/secure.png"))
