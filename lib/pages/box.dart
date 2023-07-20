@@ -36,7 +36,7 @@ class box extends StatelessWidget {
                   // color: Colors.grey,
                   child: Center(
                     child: Image.asset(
-                      'asset/images/card.png',
+                      'asset/images/card_img.jpeg',
                       fit: BoxFit.cover,
                       
                       // width: 100,

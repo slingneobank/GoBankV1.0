@@ -72,7 +72,7 @@ class benefit extends StatelessWidget {
                             decoration:const  BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: AssetImage('asset/images/card.png'),
+                                image: AssetImage('asset/images/card_img.jpeg'),
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -121,7 +121,7 @@ class benefit extends StatelessWidget {
                             decoration:const  BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: AssetImage('asset/images/card.png'),
+                                image: AssetImage('asset/images/card_img.jpeg'),
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -164,7 +164,7 @@ class benefit extends StatelessWidget {
                             decoration:const  BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: AssetImage('asset/images/card.png'),
+                                image: AssetImage('asset/images/card_img.jpeg'),
                                 fit: BoxFit.fill,
                               ),
                             ),

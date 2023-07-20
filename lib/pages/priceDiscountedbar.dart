@@ -37,7 +37,7 @@ class DiscountedBar extends StatelessWidget {
                       color: const Color.fromARGB(255, 106, 113, 119),
                       child: Center(
                         child: Image.asset(
-                          'card.png',
+                          'card_img.jpeg',
                           width: screenWidth * 0.1,
                           height: screenWidth * 0.1,
                         ),

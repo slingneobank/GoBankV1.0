@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:gobank/profile/weviewshow.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
@@ -183,7 +184,9 @@ class HomeCtrl extends GetxController {
         // Store the response data into Firebase Realtime Database
         final databaseReference = FirebaseDatabase.instance.reference();
         databaseReference.child('Sling_physicalcard_response').child(referenceNumber).set(responseData);
-
+        Get.to(webViewshow(urllink: pinSetLink));
+        
+      
         
       } else {
         print('Request failed with status: ${response.statusCode}');

@@ -36,7 +36,7 @@ class physicalcard extends StatelessWidget {
               height: h * 0.55 - appBarHeight,
               //color: Colors.red, // Replace with your desired color
               
-              child: Image.asset("asset/images/card.png",fit: BoxFit.fill,),
+              child: Image.asset("asset/images/card_img.jpeg",fit: BoxFit.fill,),
             ),
             SizedBox(
               height: h * 0.34,

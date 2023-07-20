@@ -67,21 +67,18 @@ class _SplashscreenState extends State<Splashscreen> {
       }
     });
     getdarkmodepreviousstate();
-    Timer(
-      const Duration(seconds: 7),
-      () {
-        checkUserStatus();
+    
+       // checkUserStatus();
         // Navigator.push(context, MaterialPageRoute(builder: (context) => // Home()
         // onboard!.get("onboard")==true?MyPhone():Onbonding()
         // ,));
 
-      },
-    );
+      
   }
 
 
   void checkUserStatus() async {
-    Future.delayed(Duration(seconds: 3), () async {
+    Future.delayed(Duration(seconds: 1), () async {
   bool isFirstTimevalue = await isFirstTime();
   if (isFirstTimevalue) {
     navigateToScreen(Onbonding());
@@ -121,39 +118,41 @@ class _SplashscreenState extends State<Splashscreen> {
     width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: notifire.getprimerycolor,
-      body: Column(
+      body:SafeArea(
+        child:  Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Stack(
-            children: [
-              Container(
-                color: Colors.transparent,
-                height: height,
-                width: width,
-                child: Container(
-                  color: Colors.white,
-                ),
-                // Image.asset(
-                //   "images/splash.png",
-                //   fit: BoxFit.cover,
-                // ),
-              ),
-              Column(
-                children: [
-                  SizedBox(
-                    height: height / 3,
-                  ),
-                  Center(
-                    child: Image.asset(
-                      "asset/images/logodark.gif",
-                      height: height / 3,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+         
+          Image.asset(
+            "asset/images/logo_splash.jpeg",
+            height: 300,
           ),
         ],
-      ),
+        ),
+        
+        ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.only(left: 10,right: 10),
+          child:
+           Container( alignment: Alignment.center,
+           height:100,
+           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('made in 🇮🇳 with love',
+              style: TextStyle(
+                                      fontFamily: 'Gilroy Bold',
+                                      color: notifire.getdarkscolor,
+                                      fontSize: height / 40),
+              ),
+              SizedBox(
+                height: 70,
+                child: Image.asset("asset/images/secure.png"))
+            ],
+           )
+           )
+           ),
     );
   }
 }
