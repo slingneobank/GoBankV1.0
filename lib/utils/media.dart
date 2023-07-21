@@ -12,6 +12,7 @@ int activecontainerindex=0;
 List containerindicator=[];
 SharedPreferences? onboard; 
 
+
  Future<String> getVideoUrlFromStorage() async {
   // Assuming you have a reference to the video file in Firebase Storage
   Reference videoRef = FirebaseStorage.instance.ref().child('Video/addmoney.mp4');
@@ -81,9 +82,9 @@ void showToasttop(String message) {
   Fluttertoast.showToast(
      msg: message,
     toastLength: Toast.LENGTH_SHORT,
-    gravity: ToastGravity.TOP,
+    gravity: ToastGravity.CENTER,
     timeInSecForIosWeb: 1,
-    backgroundColor: Colors.red,
+    backgroundColor: Color(0xff4b4b5a),
     textColor: Colors.white,
     fontSize: 16.0,
   );

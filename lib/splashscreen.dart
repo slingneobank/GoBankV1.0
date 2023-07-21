@@ -7,6 +7,7 @@ import 'package:gobank/home/demosplash.dart';
 import 'package:gobank/home/home.dart';
 import 'package:gobank/home/loan/personalloan_form.dart';
 import 'package:gobank/login/verifyOTP.dart';
+import 'package:gobank/pages/orderplaced.dart';
 import '../utils/media.dart';
 import 'package:gobank/home/topup/topupcard/topup.dart';
 import 'package:gobank/login/minkycpage.dart';
@@ -125,11 +126,13 @@ class _SplashscreenState extends State<Splashscreen> {
        crossAxisAlignment: CrossAxisAlignment.center,
       children: [
        
-        Image.asset(
-          "asset/images/logo_splash_big.png",
-          
+        Center(
+          child: Image.asset(
+            "asset/images/logo_splash_big.png",
+            
+          ),
         ),
-        CircularProgressIndicator(color: Color(0xffFD6E01)),
+        Center(child: CircularProgressIndicator(color: Color(0xffFD6E01))),
       ],
       ),
         bottomNavigationBar: Padding(

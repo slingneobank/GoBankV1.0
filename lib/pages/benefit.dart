@@ -72,7 +72,7 @@ class benefit extends StatelessWidget {
                             decoration:const  BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: AssetImage('asset/images/card_img.jpeg'),
+                                image: AssetImage('asset/images/card.png'),
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -121,7 +121,7 @@ class benefit extends StatelessWidget {
                             decoration:const  BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: AssetImage('asset/images/card_img.jpeg'),
+                                image: AssetImage('asset/images/card.png'),
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -164,7 +164,7 @@ class benefit extends StatelessWidget {
                             decoration:const  BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: AssetImage('asset/images/card_img.jpeg'),
+                                image: AssetImage('asset/images/card.png'),
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -207,6 +207,7 @@ class benefit extends StatelessWidget {
               ),
               onPressed: () {
                // Navigator.pushNamed(context, '/per');
+               Navigator.pop(context);
                navigator!.push(MaterialPageRoute(builder: (context) => const Personalise(),));
               },
               style: ButtonStyle(

@@ -158,29 +158,29 @@ class _minnativekycloginState extends State<minnativekyclogin> {
                         // send notification from one device to another
                             // notificationServices.getDeviceToken().then((value)async{
                         saveMINKYCStatus(true);
-                         Navigator.push(context, MaterialPageRoute(builder: (_) => const Home()));
+                         //Navigator.push(context, MaterialPageRoute(builder: (_) => const Home()));
                         // Show dialog box with "KYC verified successfully" message
-                          setState(() {
-                            _dialogMessage = 'KYC verified successfully';
-                          });
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('Success'),
-                                content: Text(_dialogMessage),
-                                actions: <Widget>[
-                                  TextButton(
-                                    child: const Text('OK'),
-                                    onPressed: () {
+                          // setState(() {
+                          //   _dialogMessage = 'KYC verified successfully';
+                          // });
+                          // showDialog(
+                          //   context: context,
+                          //   builder: (BuildContext context) {
+                          //     return AlertDialog(
+                          //       title: const Text('Success'),
+                          //       content: Text(_dialogMessage),
+                          //       actions: <Widget>[
+                          //         TextButton(
+                          //           child: const Text('OK'),
+                          //           onPressed: () {
                                      
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
+                          //             Navigator.of(context).pop();
+                          //           },
+                          //         ),
+                          //       ],
+                          //     );
+                          //   },
+                          // );
 
                             //   var data = {
                             //     'to' : value.toString(),

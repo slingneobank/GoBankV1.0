@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gobank/logoutbottomsheet.dart';
 import 'package:gobank/profile/editprofile.dart';
@@ -77,10 +79,14 @@ class _MyProfileState extends State<MyProfile> {
     super.initState();
     getdarkmodepreviousstate();
     getuserdetails();
+    getminkycuniqeid();
+    fetchProfileImage();
   }
   String?username;
   String? mobile;
   String? email;
+  String minKycUniqueId='';
+  String? profileImageUrl;
    Future<void> getuserdetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     username= prefs.getString('username');
@@ -88,8 +94,43 @@ class _MyProfileState extends State<MyProfile> {
     email=prefs.getString('email');
     setState(() {});
   }
-   
+   getminkycuniqeid()async
+   {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      minKycUniqueId= await prefs.getString('storedminKycUniqueId') ?? '';
+      print("minKycUniqueId is:- $minKycUniqueId");
+   }
+Future<String?> fetchProfileImageUrl(String minKycUniqueId) async {
+  final databaseReference = FirebaseDatabase.instance.reference();
+  DatabaseEvent event = await databaseReference.child('users_profile').child(minKycUniqueId).once();
+  DataSnapshot snapshot=event.snapshot;
+  Map<dynamic, dynamic>? userData = snapshot.value as Map<dynamic, dynamic>?;
 
+  // Check if the snapshot contains data and if the 'profileImageUrl' key is present
+  if (userData != null && userData.containsKey('profileImageUrl')) {
+    return userData['profileImageUrl'] as String?;
+  } else {
+    // If 'profileImageUrl' is not available or the snapshot is empty, return null or a default image URL
+    return null;
+  }
+}
+Future<void> fetchProfileImage() async {
+    String? imageUrl = await fetchProfileImageUrl(minKycUniqueId);
+
+    if (imageUrl != null) {
+      // If profile image URL is available, load the image from Firebase Storage
+      final ref = FirebaseStorage.instance.ref().child(imageUrl);
+      String downloadUrl = await ref.getDownloadURL();
+      setState(() {
+        profileImageUrl = downloadUrl;
+      });
+    } else {
+      // If profile image URL is not available, use a default image or show a placeholder
+      setState(() {
+        profileImageUrl = null; // Set this to your default image URL or null
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
@@ -162,7 +203,10 @@ class _MyProfileState extends State<MyProfile> {
                     color: Colors.transparent,
                     shape: BoxShape.circle,
                   ),
-                  child: Image.asset("images/man4.png"),
+                  child: profileImageUrl != null
+                        ? ClipOval(child: Image.network(profileImageUrl!, fit: BoxFit.cover))
+                        : Image.asset("images/man4.png"), // Replace "images/man4.png" with your default image path
+                
                 ),
                 SizedBox(
                   height: height / 50,

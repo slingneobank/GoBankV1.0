@@ -11,7 +11,7 @@ import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:flutter_switch/flutter_switch.dart';
 class CardDetails extends StatefulWidget {
   const CardDetails({Key? key}) : super(key: key);
 
@@ -28,7 +28,7 @@ class _CardDetailsState extends State<CardDetails> {
   SharedPreferences? _prefs;
   
 
-  bool manageValue = true;
+  bool manageValue = false;
   @override
   void initState() {
     super.initState();
@@ -37,6 +37,7 @@ class _CardDetailsState extends State<CardDetails> {
     _loadReferenceNumber();
     getReferenceNumberFromSharedPreferences();
   }
+  
    void _setSliderValue(BuildContext context, double value) {
     setState(() {
       _sliderValue = value;
@@ -129,12 +130,12 @@ class _CardDetailsState extends State<CardDetails> {
     if (response.statusCode == 200) {
       // API request successful
       var responseBody = response.body;
-      showToasttop(manageValue ? 'Active Card' : 'Block Card');
+      //showToasttop(manageValue ? 'Active Card' : 'Block Card');
       // Process the response body as needed
       print(responseBody);
     } else {
       // API request failed
-      print('API request failed with status code: ${response.statusCode}');
+    print('API request failed with status code: ${response.statusCode}');
     print('Response body: ${response.body}');
     print('Response headers: ${response.headers}');
 
@@ -148,7 +149,9 @@ class _CardDetailsState extends State<CardDetails> {
    
 
     if (referenceNumber.isNotEmpty) {
-       makeAPIRequest(referenceNumber);
+      setState(() {
+         makeAPIRequest(referenceNumber);
+      });
     } else {
       setState(() {
         setState(() {
@@ -242,7 +245,7 @@ class _CardDetailsState extends State<CardDetails> {
                 const SizedBox(height: 10,),
                 SizedBox(
                   height: h * 0.5,
-                  child: Image.asset("card2.jpg"),
+                  child: Image.asset("asset/images/card.png"),
                 ),
                 SizedBox(
                   height: h * 0.1,
@@ -361,6 +364,7 @@ class _CardDetailsState extends State<CardDetails> {
                                 trailing: IconButton(
                                   onPressed: () {
                                    // Navigator.pushNamed(context, '/physicalcard');
+                                   
                                    navigator!.push(MaterialPageRoute(builder: (context) => const physicalcard(),));
                                   },
                                   icon:  Icon(Icons.arrow_forward_ios,color: notifire.gettabwhitecolor,),
@@ -448,7 +452,7 @@ class _CardDetailsState extends State<CardDetails> {
                                                       builder:
                                                           (BuildContext context) {
                                                        
-      
+                                                            
                                                         return Container(
                                                           color: Colors.black,
                                                           height: 200,
@@ -481,17 +485,42 @@ class _CardDetailsState extends State<CardDetails> {
                                                                   fontSize: height / 45
                                                                     ),
                                                                   ),
-                                                                  Switch(
-                                                                    activeColor: Colors.amber,
-                                                                    value: manageValue,
-                                                                    onChanged: (value) {
-                                                                      setState(() {
-                                                                        manageValue = value;
-                                                                      });
-                                                                      getReferenceNumberFromSharedPreferences();
-                                                                    },
+                                                                  // Switch(
+                                                                  //   activeColor: Colors.amber,
+                                                                  //   value: manageValue,
+                                                                  //   onChanged: (value) {
+                                                                  //     setState(() {
+                                                                        
+                                                                  //       manageValue = value;
+                                                                  //     });
+                                                                  //     getReferenceNumberFromSharedPreferences();
+                                                                      
+                                                                  //       showToasttop(manageValue ? 'Active Card' : 'Block Card');
+                                                                      
+                                                                      
+                                                                  //   },
+                                                                  // ),
+                                                                  FlutterSwitch(
+                                                                      width: 50.0,
+                                                                      height: 25.0,
+                                                                      valueFontSize: 25.0,
+                                                                      toggleSize: 25.0,
+                                                                      value: manageValue,
+                                                                      borderRadius: 30.0,
+                                                                      padding: 5.0,
+                                                                      //showOnOff: true,
+                                                                      activeColor: Colors.amber,
+                                                                      toggleColor: Colors.black,
+                                                                      onToggle: (val) {
+                                                                        setState(() {
+                                                                         manageValue = val;
+                                                                        });
+                                                                        getReferenceNumberFromSharedPreferences();
+                                                                      
+                                                                        showToasttop(manageValue ? 'Active Card' : 'Block Card');
+                                                                      
+                                                                      },
                                                                   ),
-                        
                                                                 ],
                                                               ),
                                                               const SizedBox(

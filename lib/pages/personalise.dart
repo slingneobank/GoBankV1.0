@@ -78,7 +78,7 @@ class _PersonaliseState extends State<Personalise> {
                   alignment: Alignment.center,
                   children: [
                     Positioned(
-                      child: Image.asset('asset/images/card2.jpg'),
+                      child: Image.asset('asset/images/card.png'),
                     ),
                     Positioned(
                       child: Container(
@@ -163,6 +163,7 @@ class _PersonaliseState extends State<Personalise> {
                   onPressed: () async{
                     name.text=enteredText;
                     await prefs!.setString('nameofcard', enteredText);
+                    Navigator.pop(context);
                     navigator!.push(
                       MaterialPageRoute(builder: (context) => checkOut()),
                     );

@@ -1,8 +1,43 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gobank/utils/media.dart';
+class box extends StatefulWidget {
+  const box({super.key});
 
-class box extends StatelessWidget {
-  const box({Key? key}) : super(key: key);
+  @override
+  State<box> createState() => _boxState();
+}
+
+class _boxState extends State<box> {
+  int amount=0;
+  int offer_amount=0;
+  
+  
+
+  Future<void> fetchDataFromFirestore() async {
+    try {
+      
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('sling_physicalcard').doc('1').get();
+      
+      int newAmount = snapshot['amount'];
+       int newoffer_amount = snapshot['offer_amount'];
+      setState(() {
+        amount = newAmount;
+        offer_amount=newoffer_amount;
+      });
+    } catch (e) {
+      // Handle errors if any
+      print("Error fetching data: $e");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    
+      fetchDataFromFirestore();
+   
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +71,7 @@ class box extends StatelessWidget {
                   // color: Colors.grey,
                   child: Center(
                     child: Image.asset(
-                      'asset/images/card_img.jpeg',
+                      'asset/images/card.png',
                       fit: BoxFit.cover,
                       
                       // width: 100,
@@ -58,7 +93,7 @@ class box extends StatelessWidget {
                       style: TextStyle(fontFamily: "Gilroy Bold",
                                color: Colors.white,
                                fontSize: height / 45)),
-                       Text("Price - \u{20B9}199",
+                       Text("Price - \u{20B9}$offer_amount",
                        style: TextStyle(fontFamily: "Gilroy Bold",
                                color: Colors.white,
                                fontSize: height / 50)),
@@ -98,7 +133,7 @@ class box extends StatelessWidget {
                                                 fontSize: height / 45),
                                             ),
                                         Text(
-                                          '399.0',
+                                          '$amount',
                                           style: TextStyle(fontFamily: "Gilroy Bold",
                                                   color: Colors.white,
                                                   fontSize: height / 40)
@@ -115,7 +150,7 @@ class box extends StatelessWidget {
                                                   fontSize: height / 45),
                                                   ),
                                         Text(
-                                          '200.0',
+                                          '${amount-offer_amount}',
                                            style: TextStyle(fontFamily: "Gilroy Bold",
                                                   color: Colors.white,
                                                   fontSize: height / 40),
@@ -138,7 +173,7 @@ class box extends StatelessWidget {
                                                   fontSize: height / 45),
                                                   ),
                                         Text(
-                                          '199.0',
+                                          '$offer_amount',
                                            style: TextStyle(fontFamily: "Gilroy Bold",
                                                   color: Colors.white,
                                                   fontSize: height / 40),

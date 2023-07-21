@@ -8,9 +8,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gobank/login/auth_ctrl.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home/home.dart';
+import '../utils/colornotifire.dart';
 import '../utils/media.dart';
 
 class MyVerify extends StatefulWidget {
@@ -21,6 +23,7 @@ class MyVerify extends StatefulWidget {
 }
 
 class _MyVerifyState extends State<MyVerify> {
+  late ColorNotifire notifire;
   final authCtrl = Get.find<AuthCtrl>();
   final TextEditingController _pinController = TextEditingController();
   String otp = "";
@@ -104,9 +107,19 @@ class _MyVerifyState extends State<MyVerify> {
       return false; // Target mobile number not found
     }
   }
-
+ getdarkmodepreviousstate() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool? previusstate = prefs.getBool("setIsDark");
+    if (previusstate == null) {
+      notifire.setIsDark = false;
+    } else {
+      notifire.setIsDark = previusstate;
+    }
+  }
   @override
   Widget build(BuildContext context) {
+    
+    notifire = Provider.of<ColorNotifire>(context, listen: true);
     // final defaultPinTheme = PinTheme(
     //   width: 56,
     //   height: 56,
@@ -239,6 +252,56 @@ class _MyVerifyState extends State<MyVerify> {
           ),
         ),
       ),
+      bottomNavigationBar: 
+           Padding(
+              padding: const EdgeInsets.only(left: 10,right: 10),
+             child: Container( 
+              alignment: Alignment.center,
+             height:60,
+             child: SizedBox(
+              child: Column(
+                children: [
+                  Text("By tapping on Create Account, you agree to the",
+                  style: TextStyle(
+                            color: notifire.getdarkgreycolor,
+                            fontSize: 15,
+                            fontFamily: 'Gilroy Medium'),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Terms of Service",
+                      
+                       style: TextStyle(
+                            color: notifire.getdarkscolor,
+                            fontSize: 15,
+                            fontFamily: 'Gilroy Medium',
+                            decoration: TextDecoration.underline,
+                            decorationThickness: 1.5,
+                            ),
+                      ),
+                      Text(" & ",
+                       style: TextStyle(
+                            color: notifire.getdarkgreycolor,
+                            fontSize: 15,
+                            fontFamily: 'Gilroy Medium'),
+                      ),
+                      Text("Privacy Policy",
+                       style: TextStyle(
+                            color: notifire.getdarkscolor,
+                            fontSize: 15,
+                            fontFamily: 'Gilroy Medium',
+                            decoration: TextDecoration.underline,
+                            decorationThickness: 1.5,
+                            ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+              )
+             ),
+           ),
     );
   }
 }

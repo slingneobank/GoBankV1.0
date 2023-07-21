@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gobank/pages/orderplaced.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -37,11 +39,14 @@ class _checkOutState extends State<checkOut> {
   String? uniqueNumber;
   String? token;
   String?username;
+   int amount=0;
+  int offer_amount=0;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _loaddata();
+    fetchDataFromFirestore();
   }
   Future<void> _loaddata() async {
     prefs = await SharedPreferences.getInstance();
@@ -57,6 +62,28 @@ class _checkOutState extends State<checkOut> {
     print(username);
     setState(() {});
   }
+  
+  
+  
+
+  Future<void> fetchDataFromFirestore() async {
+    try {
+      
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('sling_physicalcard').doc('1').get();
+      
+      int newAmount = snapshot['amount'];
+       int newoffer_amount = snapshot['offer_amount'];
+      setState(() {
+        amount = newAmount;
+        offer_amount=newoffer_amount;
+      });
+    } catch (e) {
+      // Handle errors if any
+      print("Error fetching data: $e");
+    }
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
@@ -280,7 +307,7 @@ class _checkOutState extends State<checkOut> {
                                   String pinCode = pinCodeController.text;
                                   await homeCtrl.razorpayphysicalcheckout(
                                       context,
-                                      199,
+                                      offer_amount,
                                       "Add Wallet",
                                       houseNumber,
                                       roadName,
@@ -292,11 +319,11 @@ class _checkOutState extends State<checkOut> {
                                
                                   
               
-                                // physicalcardissuance();
+                                 //physicalcardissuance();
                                 // Navigator.pop(context);
                                 
                               },
-                              child: Text('Pay - \u{20B9}199',
+                              child: Text('Pay - \u{20B9}$offer_amount',
                               style: TextStyle(fontFamily: "Gilroy Bold",
                                  color: Colors.black,
                                  fontSize: height / 45)),
@@ -365,7 +392,7 @@ String uniqueNumber = const Uuid().v4();
       // Store the response data into Firebase Realtime Database
       final databaseReference = FirebaseDatabase.instance.reference();
       databaseReference.child('Sling_physicalcard_response').child(referenceNumber!).set(responseData);
-
+      Get.to(orderplaced(urllink: pinSetLink));
       // Or if you want to store it under a specific node, for example, "issued_cards":
       // databaseReference.child('issued_cards').child(uniqueNumber).set(responseData);
     

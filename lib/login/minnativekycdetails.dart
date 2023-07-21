@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -13,10 +14,11 @@ import 'package:gobank/home/home.dart';
 
 import 'package:gobank/login/auth_controller.dart';
 import 'package:gobank/verification/verificationdone.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 
 
@@ -50,30 +52,65 @@ String _dialogMessage = '';
   String responseMessage = '';
     late DatabaseReference kycDetailsRef; // Declare the kycDetailsRef variable
     NotificationServices notificationServices = NotificationServices();
+    String? minKycUniqueId;
+    File? _image;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     initializeFirebase();
-    // notificationServices.requestNotificationPermission();
-    // notificationServices.forgroundMessage();
-    // notificationServices.firebaseInit(context);
-    // notificationServices.setupInteractMessage(context);
-    // notificationServices.isTokenRefresh();
-
-    // notificationServices.getDeviceToken().then((value){
-    //   if (kDebugMode) {
-    //     print('device token');
-    //     print(value);
-    //   }
-    // });
-   // print(widget.storekycid);
+    getminkycuniqeid();
   }
-   // Initialize Firebase
+   getminkycuniqeid()async
+   {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      minKycUniqueId= await prefs.getString('storedminKycUniqueId') ?? '';
+      print(minKycUniqueId);
+   }
   void initializeFirebase() async {
     await Firebase.initializeApp();
     //kycDetailsRef = FirebaseDatabase.instance.reference().child('kyc_details').child('documentNumber');
   kycDetailsRef = FirebaseDatabase.instance.reference().child('kyc_details');
+  }
+   Future<void> _pickImage() async {
+    final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      // TODO: Upload the image to Firebase Storage
+      // Implement the uploadImageToStorage function (explained later)
+       setState(() {
+        _image = File(pickedFile.path);
+      });
+      String imageUrl = await uploadImageToStorage(File(pickedFile.path));
+      if (imageUrl.isNotEmpty) {
+        // TODO: Save the image URL to the Realtime Database
+        // Implement the saveImageUrlToDatabase function (explained later)
+        await saveImageUrlToDatabase(imageUrl);
+      }
+    } else {
+      print('No image selected.');
+    }
+  }
+  // Function to upload the image to Firebase Storage
+  Future<String> uploadImageToStorage(File imageFile) async {
+    try {
+      String fileName = 'kyc_profile_images/${DateTime.now().millisecondsSinceEpoch}.jpg';
+      firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref(fileName);
+      await ref.putFile(imageFile);
+      String downloadUrl = await ref.getDownloadURL();
+      return downloadUrl;
+    } catch (e) {
+      print('Error uploading image: $e');
+      return '';
+    }
+  }
+
+  // Function to save the image URL to the Realtime Database
+  Future<void> saveImageUrlToDatabase(String imageUrl) async {
+    DatabaseReference userRef = FirebaseDatabase.instance.reference().child('users_profile').child(minKycUniqueId!);
+    
+    // Save the image URL under the "profileImageUrl" key
+    await userRef.update({'profileImageUrl': imageUrl});
   }
  void verifyDocument() async{
  
@@ -156,36 +193,27 @@ String _dialogMessage = '';
                         child: LayoutBuilder(
                           builder: (context, constraints) {
                             return Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                             // crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                // Padding(
-                                //   padding: EdgeInsets.symmetric(vertical: 4.0),
-                                //   child: Container(
-                                //     height: 50.0,
-                                //     decoration: BoxDecoration(
-                                //       border: Border.all(color: Colors.black),
-                                //       borderRadius: BorderRadius.circular(8.0),
-                                //     ),
-                                //     child: Padding(
-                                //       padding: EdgeInsets.symmetric(horizontal: 16.0),
-                                //       child: TextFormField(
-                                //         controller: _aadharController,
-                                //         decoration: InputDecoration(
-                                //           contentPadding:
-                                //               EdgeInsets.only(top: 12.0, bottom: 8.0),
-                                //           hintText: 'Aadhar Card Number',
-                                          
-                                //           border: InputBorder.none,
-                                //         ),
-                                //         maxLength: 12,
-                                //         keyboardType: TextInputType.number,
-                                //         onChanged: (value) {
-                                //           _aadharNumber = value;
-                                //         },
-                                //       ),
-                                //     ),
-                                //   ),
-                                // ),
+                                InkWell(
+                                  onTap: () {
+                                    _pickImage();
+                                  },
+                                  child: Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.black),
+                                      //borderRadius: BorderRadius.circular(8.0),
+                                      shape: BoxShape.circle
+                                    ),
+                                     child:  _image != null
+                                      ? ClipOval(
+                                          child: Image.file(_image!, fit: BoxFit.cover),
+                                        ) // Display the selected image if available in a circular shape
+                                      : Icon(Icons.add_a_photo, size: 30),
+                                  ),
+                                ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 4.0),
                                   child: Container(
@@ -441,7 +469,6 @@ String _dialogMessage = '';
                         ),
                       ),
                     ),
-                  //Expanded(child: SizedBox()),
                   GestureDetector(
                     onTap: () {
                       
@@ -597,6 +624,7 @@ String _dialogMessage = '';
               onPressed: () {
                 // Retry the token generation
                 verifykycdocument();
+                uploadImageToStorage(_image!);
                 Navigator.of(context).pop();
               },
               child: const Text('Retry'),

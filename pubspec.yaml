@@ -54,7 +54,7 @@ dependencies:
   syncfusion_flutter_gauges:
   uuid: ^3.0.4
   get: ^4.6.5
-  
+  flutter_switch: ^0.3.2
   firebase_database: ^10.1.0
   firebase_storage: ^11.1.0
   image_picker: ^0.8.7+1
@@ -129,7 +129,7 @@ flutter:
     - asset/animation/
     - asset/images/
     - card.png
-    - card2.jpg
+    
     # - vecteezy_payment-promissory-note-animation-for-transaction-pen_8105890_118.mp4
 
 

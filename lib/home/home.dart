@@ -58,24 +58,10 @@ class _HomeState extends State<Home> {
   late ColorNotifire notifire;
   PersistentBottomSheetController? _bottomSheetController;
   DateTime pre_backpress = DateTime.now();
-  
-  getdarkmodepreviousstate() async {
-    final prefs = await SharedPreferences.getInstance();
-    bool? previusstate = prefs.getBool("setIsDark");
-    if (previusstate == null) {
-      notifire.setIsDark = false;
-    } else {
-      notifire.setIsDark = previusstate;
-    }
-  }
-   Future<void> getUsername() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    username = prefs.getString('username');
-    setState(() {});
-  }
   String? username;
   Widget currentScreen = const Home();
   int currentTab = 0;
+  
   final List screens = [
     const Home(),
     const Analytics(),
@@ -92,7 +78,7 @@ class _HomeState extends State<Home> {
     "images/ticket.png",
     //"images/bill.png",
     // "images/mastercard.png",
-  ];
+    ];
   List giftimg = [
     "asset/images/amazon.png",
     "asset/images/bigbasket.png",
@@ -101,8 +87,7 @@ class _HomeState extends State<Home> {
     "asset/images/swiggy.png",
     "asset/images/zomato.png",
     "asset/images/flipkart.png",
-    "asset/images/more.png",
-  ];
+    "asset/images/more.png",];
   List giftname = [
     "Amazon",
     "Bigbasket",
@@ -111,8 +96,7 @@ class _HomeState extends State<Home> {
     "Swiggy",
     "Zomato",
     "Flipkart",
-    "100+\nMore"
-  ];
+    "100+\nMore"];
   List giftdiscount = ["5", "5", "5", "5", "2", "5", "3", ""];
   List paymentname = [
     "Sling_store",
@@ -130,89 +114,68 @@ class _HomeState extends State<Home> {
     //"Buy Coupons",
     // CustomStrings.allservices,
     //"Credit Card"
-  ];
-
+    ];
   List transaction = [
     "images/starbuckscoffee.png",
     "images/spotify.png",
-    "images/netflix.png"
-  ];
-
+    "images/netflix.png"];
   List cashbankimg = [
     //"images/cashback.png",
     // "images/merchant1.png",
-    "images/helpandsupport.png"
-  ];
+    "images/helpandsupport.png"];
   List transactionname = [
     CustomStrings.starbuckscoffee,
     CustomStrings.spotifypremium,
-    CustomStrings.netflixpremium,
-  ];
+    CustomStrings.netflixpremium,];
   List transactioncolor = [
     Colors.red,
     Colors.green,
-    Colors.red,
-  ];
+    Colors.red,];
   List transactionamount = [
     "-\$.55.000",
     "+\$.27.000",
-    "-\$.34.000",
-  ];
+    "-\$.34.000",];
   List cashbankname = [
     // CustomStrings.cashback,
     // "Refer A Friend",
-    CustomStrings.helpandsuppors,
-  ];
+    CustomStrings.helpandsuppors,];
   List cashbankdiscription = [
     // CustomStrings.scratchcards,
     // CustomStrings.startsccepting,
-    CustomStrings.relatedpaytm,
-  ];
+    CustomStrings.relatedpaytm,];
   List transactiondate = [
     "12 Oct 2021 . 16:03",
     "8 Oct 2021 . 12:05",
-    "4 Oct 2021 . 09:25",
-  ];
+    "4 Oct 2021 . 09:25",];
   List cashbankdiscription2 = [
     // CustomStrings.scratchcards2,
     // CustomStrings.startsccepting2,
-    CustomStrings.relatedpaytm2,
-  ];
+    CustomStrings.relatedpaytm2,];
   bool selection = true;
-
   int activeIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final FirebaseStorage storage = FirebaseStorage.instance;
-  final String folderPath =
-      'offer_images'; // Path to your Firebase Storage folder
+  final String folderPath ='offer_images'; // Path to your Firebase Storage folder
   List<String> imageUrls = [];
   bool flag = false;
   bool isLoading = true;
   bool isConnected = false;
   List<String> localImageUrls = [];
-  final List<String> localImagesList =
-      []; // Create an empty list to store local paths
-
+  final List<String> localImagesList = []; // Create an empty list to store local paths
   final DatabaseHelper databaseHelper = DatabaseHelper();
   Directory? appDir;
+  String? minKycUniqueId;
   var loadAmount = 0;
   var referenceNumber = '';
-  
   NotificationServices notificationServices = NotificationServices();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // requestStoragePermission();
-    
    
    checkInternetConnectivity(); // Check the initial internet connectivity state
-    requestStoragePermission();
+   requestStoragePermission();
 
-    checkInternetConnectivity(); // Check the initial internet connectivity state
-    notification_loan();
-     notification_FD();
-      getUsername();
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       print(result);
       if (result != ConnectivityResult.none) {
@@ -227,18 +190,54 @@ class _HomeState extends State<Home> {
         showInternetConnectionDialog(); // Show the internet connection dialog
       }
     });
-     getReferenceNumberFromSharedPreferences();
-    getReferenceNumber();
-      fetchCardSchemeId(referenceNumber);
+
+   notification_loan();
+   notification_FD();
+   getminkycuniqeid();
+   getUsername();
+   getReferenceNumberFromSharedPreferences();
+   getReferenceNumber();
+   fetchCardSchemeId(referenceNumber);
    setState(() {
       makeGetRequest(referenceNumber);
    });
+
     fetchImageUrls();
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
-  }
-  
 
+  }
+   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    setState(() {
+      activeIndex = (_scrollController.offset / 130).round(); //140
+    });
+  }
+  getminkycuniqeid()async
+   {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      minKycUniqueId= await prefs.getString('storedminKycUniqueId') ?? '';
+      print("minKycUniqueId is home :- $minKycUniqueId");
+   }
+ getdarkmodepreviousstate() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool? previusstate = prefs.getBool("setIsDark");
+    if (previusstate == null) {
+      notifire.setIsDark = false;
+    } else {
+      notifire.setIsDark = previusstate;
+    }
+  }
+Future<void> getUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    username = prefs.getString('username');
+    setState(() {});
+  }
 Future<void> getReferenceNumber() async {
   DatabaseReference databaseRef = FirebaseDatabase.instance.reference();
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -442,17 +441,7 @@ Future<void> fetchCardSchemeId(String referenceNumber) async {
 
 
 
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  void _onScroll() {
-    setState(() {
-      activeIndex = (_scrollController.offset / 130).round(); //140
-    });
-  }
+ 
 
   void showInternetConnectionDialog() {
     showDialog(

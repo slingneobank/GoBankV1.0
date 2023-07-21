@@ -1,10 +1,43 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gobank/utils/media.dart';
+class DiscountedBar extends StatefulWidget {
+  const DiscountedBar({super.key});
 
-class DiscountedBar extends StatelessWidget {
-  const DiscountedBar({
-    Key? key,
-  }) : super(key: key);
+  @override
+  State<DiscountedBar> createState() => _DiscountedBarState();
+}
+
+class _DiscountedBarState extends State<DiscountedBar> {
+  int amount=0;
+  int offer_amount=0;
+  
+  
+
+  Future<void> fetchDataFromFirestore() async {
+    try {
+      
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('sling_physicalcard').doc('1').get();
+      
+      int newAmount = snapshot['amount'];
+       int newoffer_amount = snapshot['offer_amount'];
+      setState(() {
+        amount = newAmount;
+        offer_amount=newoffer_amount;
+      });
+    } catch (e) {
+      // Handle errors if any
+      print("Error fetching data: $e");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    
+      fetchDataFromFirestore();
+   
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +70,7 @@ class DiscountedBar extends StatelessWidget {
                       color: const Color.fromARGB(255, 106, 113, 119),
                       child: Center(
                         child: Image.asset(
-                          'card_img.jpeg',
+                          'card.png',
                           width: screenWidth * 0.1,
                           height: screenWidth * 0.1,
                         ),
@@ -62,7 +95,7 @@ class DiscountedBar extends StatelessWidget {
                                     fontSize: height / 45),
                               ),
                               Text(
-                                "\u{20B9}199",
+                                "\u{20B9}$offer_amount",
                                 style: TextStyle(
                                     fontFamily: "Gilroy medium",
                                     color: Colors.amber,
@@ -73,7 +106,7 @@ class DiscountedBar extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(right: 15),
                             child: Text(
-                              "\u{20B9}399",
+                              "\u{20B9}$amount",
                               style: TextStyle(
                                 fontFamily: "Gilroy medium",
                                 color: Colors.white,
