@@ -14,6 +14,7 @@ import 'package:gobank/home/giftcard/buyvoucher.dart';
 import 'package:gobank/home/helpandsupport.dart';
 import 'package:gobank/home/rating.dart';
 import 'package:gobank/home/notifications.dart';
+import 'package:gobank/home/refer.dart';
 import 'package:gobank/home/savings/savings_story_page.dart';
 import 'package:gobank/home/scanpay/scan.dart';
 import 'package:gobank/home/seealltransaction.dart';
@@ -28,6 +29,7 @@ import 'package:gobank/slingsaverclub/sliderpage.dart';
 import 'package:gobank/utils/colornotifire.dart';
 import 'package:gobank/utils/media.dart';
 import 'package:gobank/utils/string.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -61,7 +63,7 @@ class _HomeState extends State<Home> {
   String? username;
   Widget currentScreen = const Home();
   int currentTab = 0;
-  
+
   final List screens = [
     const Home(),
     const Analytics(),
@@ -78,7 +80,7 @@ class _HomeState extends State<Home> {
     "images/ticket.png",
     //"images/bill.png",
     // "images/mastercard.png",
-    ];
+  ];
   List giftimg = [
     "asset/images/amazon.png",
     "asset/images/bigbasket.png",
@@ -87,7 +89,8 @@ class _HomeState extends State<Home> {
     "asset/images/swiggy.png",
     "asset/images/zomato.png",
     "asset/images/flipkart.png",
-    "asset/images/more.png",];
+    "asset/images/more.png",
+  ];
   List giftname = [
     "Amazon",
     "Bigbasket",
@@ -96,7 +99,8 @@ class _HomeState extends State<Home> {
     "Swiggy",
     "Zomato",
     "Flipkart",
-    "100+\nMore"];
+    "100+\nMore"
+  ];
   List giftdiscount = ["5", "5", "5", "5", "2", "5", "3", ""];
   List paymentname = [
     "Sling_store",
@@ -114,54 +118,65 @@ class _HomeState extends State<Home> {
     //"Buy Coupons",
     // CustomStrings.allservices,
     //"Credit Card"
-    ];
+  ];
   List transaction = [
     "images/starbuckscoffee.png",
     "images/spotify.png",
-    "images/netflix.png"];
+    "images/netflix.png"
+  ];
   List cashbankimg = [
     //"images/cashback.png",
-    // "images/merchant1.png",
-    "images/helpandsupport.png"];
+    "images/merchant1.png",
+    "images/helpandsupport.png"
+  ];
   List transactionname = [
     CustomStrings.starbuckscoffee,
     CustomStrings.spotifypremium,
-    CustomStrings.netflixpremium,];
+    CustomStrings.netflixpremium,
+  ];
   List transactioncolor = [
     Colors.red,
     Colors.green,
-    Colors.red,];
+    Colors.red,
+  ];
   List transactionamount = [
     "-\$.55.000",
     "+\$.27.000",
-    "-\$.34.000",];
+    "-\$.34.000",
+  ];
   List cashbankname = [
     // CustomStrings.cashback,
-    // "Refer A Friend",
-    CustomStrings.helpandsuppors,];
+    "Refer A Friend",
+    CustomStrings.helpandsuppors,
+  ];
   List cashbankdiscription = [
     // CustomStrings.scratchcards,
-    // CustomStrings.startsccepting,
-    CustomStrings.relatedpaytm,];
+    CustomStrings.startsccepting,
+    CustomStrings.relatedpaytm,
+  ];
   List transactiondate = [
     "12 Oct 2021 . 16:03",
     "8 Oct 2021 . 12:05",
-    "4 Oct 2021 . 09:25",];
+    "4 Oct 2021 . 09:25",
+  ];
   List cashbankdiscription2 = [
     // CustomStrings.scratchcards2,
-    // CustomStrings.startsccepting2,
-    CustomStrings.relatedpaytm2,];
+    CustomStrings.startsccepting2,
+    CustomStrings.relatedpaytm2,
+  ];
   bool selection = true;
   int activeIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final FirebaseStorage storage = FirebaseStorage.instance;
-  final String folderPath ='offer_images'; // Path to your Firebase Storage folder
+  final String folderPath =
+      'offer_images'; // Path to your Firebase Storage folder
   List<String> imageUrls = [];
   bool flag = false;
   bool isLoading = true;
   bool isConnected = false;
   List<String> localImageUrls = [];
-  final List<String> localImagesList = []; // Create an empty list to store local paths
+  final List<String> localImagesList =
+      []; // Create an empty list to store local paths
   final DatabaseHelper databaseHelper = DatabaseHelper();
   Directory? appDir;
   String? minKycUniqueId;
@@ -172,9 +187,9 @@ class _HomeState extends State<Home> {
   void initState() {
     // TODO: implement initState
     super.initState();
-   
-   checkInternetConnectivity(); // Check the initial internet connectivity state
-   requestStoragePermission();
+
+    checkInternetConnectivity(); // Check the initial internet connectivity state
+    requestStoragePermission();
 
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       print(result);
@@ -191,23 +206,23 @@ class _HomeState extends State<Home> {
       }
     });
 
-   notification_loan();
-   notification_FD();
-   getminkycuniqeid();
-   getUsername();
-   getReferenceNumberFromSharedPreferences();
-   getReferenceNumber();
-   fetchCardSchemeId(referenceNumber);
-   setState(() {
+    notification_loan();
+    notification_FD();
+    getminkycuniqeid();
+    getUsername();
+    getReferenceNumberFromSharedPreferences();
+    getReferenceNumber();
+    fetchCardSchemeId(referenceNumber);
+    setState(() {
       makeGetRequest(referenceNumber);
-   });
+    });
 
     fetchImageUrls();
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
-
   }
-   @override
+
+  @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
@@ -218,13 +233,14 @@ class _HomeState extends State<Home> {
       activeIndex = (_scrollController.offset / 130).round(); //140
     });
   }
-  getminkycuniqeid()async
-   {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      minKycUniqueId= await prefs.getString('storedminKycUniqueId') ?? '';
-      print("minKycUniqueId is home :- $minKycUniqueId");
-   }
- getdarkmodepreviousstate() async {
+
+  getminkycuniqeid() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    minKycUniqueId = await prefs.getString('storedminKycUniqueId') ?? '';
+    print("minKycUniqueId is home :- $minKycUniqueId");
+  }
+
+  getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
     bool? previusstate = prefs.getBool("setIsDark");
     if (previusstate == null) {
@@ -233,176 +249,179 @@ class _HomeState extends State<Home> {
       notifire.setIsDark = previusstate;
     }
   }
-Future<void> getUsername() async {
+
+  Future<void> getUsername() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     username = prefs.getString('username');
     setState(() {});
   }
-Future<void> getReferenceNumber() async {
-  DatabaseReference databaseRef = FirebaseDatabase.instance.reference();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? phoneNumber = prefs.getString('mobileNumber');
-  print("phonenumber $phoneNumber");
 
-  // Retrieve the reference number from SharedPreferences
-  referenceNumber = prefs.getString('referenceNumber') ?? '';
-
-  // If the reference number is null, retrieve it from the "digital_card_issuance" table
-  if (referenceNumber.isEmpty) {
-    DatabaseEvent event = await databaseRef.child('digital_card_issuance').once();
-    DataSnapshot snapshot = event.snapshot;
-    Map<dynamic, dynamic>? digitalCardData = snapshot.value as Map<dynamic, dynamic>?;
-    if (digitalCardData != null && phoneNumber != null && digitalCardData.containsKey(phoneNumber)) {
-      int? referenceNumberInt = digitalCardData[phoneNumber]['referenceNumber'] as int?;
-      referenceNumber = referenceNumberInt?.toString() ?? '';
-
-      // Store the reference number in SharedPreferences
-      await prefs.setString('referenceNumber', referenceNumber);
-    }
-  }
-
-  print('Reference Number: $referenceNumber');
-}
-
-
-Future<void> fetchCardSchemeId(String referenceNumber) async {
-  try {
+  Future<void> getReferenceNumber() async {
+    DatabaseReference databaseRef = FirebaseDatabase.instance.reference();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    referenceNumber = prefs!.getString('referenceNumber') ?? '';
-    print(referenceNumber);
-    String storedReferenceNumber = prefs.getString('referenceNumber') ?? '';
-    print("stored $storedReferenceNumber");
-    if (referenceNumber == storedReferenceNumber) {
-      final databaseReference = FirebaseDatabase.instance.reference();
+    String? phoneNumber = prefs.getString('mobileNumber');
+    print("phonenumber $phoneNumber");
+
+    // Retrieve the reference number from SharedPreferences
+    referenceNumber = prefs.getString('referenceNumber') ?? '';
+
+    // If the reference number is null, retrieve it from the "digital_card_issuance" table
+    if (referenceNumber.isEmpty) {
       DatabaseEvent event =
-          await databaseReference.child('card_responses').child(referenceNumber).once();
-      DataSnapshot snapshot=event.snapshot;
-      // Print the entire snapshot.value to understand its structure
-      print('Snapshot Value: ${snapshot.value}');
+          await databaseRef.child('digital_card_issuance').once();
+      DataSnapshot snapshot = event.snapshot;
+      Map<dynamic, dynamic>? digitalCardData =
+          snapshot.value as Map<dynamic, dynamic>?;
+      if (digitalCardData != null &&
+          phoneNumber != null &&
+          digitalCardData.containsKey(phoneNumber)) {
+        int? referenceNumberInt =
+            digitalCardData[phoneNumber]['referenceNumber'] as int?;
+        referenceNumber = referenceNumberInt?.toString() ?? '';
 
-      // Check if the snapshot exists and contains data
-          
-       if (snapshot.value != null) {
-      Map<dynamic, dynamic>? data = snapshot.value as Map<dynamic, dynamic>?;
-      int? cardSchemeId = data?['cardDetailResponse']?['cardSchemeId'];
-       
-      if (cardSchemeId != null) {
-        print('Card Scheme Id: $cardSchemeId');
-        await prefs!.setInt('cardSchemeId', cardSchemeId!);
-      } else {
-        print('Card Scheme Id not found in the snapshot.');
+        // Store the reference number in SharedPreferences
+        await prefs.setString('referenceNumber', referenceNumber);
       }
-    } else {
-        print('Reference number not found.');
-      }
-    } else {
-      // Show a dialog box to create a digital card
-      showDialog(
-        context: context, // You'll need to pass the context to this function
-        builder: (context) => AlertDialog(
-          title: Text('Create Digital Card'),
-          content: Text('First, create a digital card.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
     }
-  } catch (e) {
-    print('Error fetching data: $e');
+
+    print('Reference Number: $referenceNumber');
   }
-}
 
+  Future<void> fetchCardSchemeId(String referenceNumber) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      referenceNumber = prefs!.getString('referenceNumber') ?? '';
+      print(referenceNumber);
+      String storedReferenceNumber = prefs.getString('referenceNumber') ?? '';
+      print("stored $storedReferenceNumber");
+      if (referenceNumber == storedReferenceNumber) {
+        final databaseReference = FirebaseDatabase.instance.reference();
+        DatabaseEvent event = await databaseReference
+            .child('card_responses')
+            .child(referenceNumber)
+            .once();
+        DataSnapshot snapshot = event.snapshot;
+        // Print the entire snapshot.value to understand its structure
+        print('Snapshot Value: ${snapshot.value}');
 
+        // Check if the snapshot exists and contains data
 
+        if (snapshot.value != null) {
+          Map<dynamic, dynamic>? data =
+              snapshot.value as Map<dynamic, dynamic>?;
+          int? cardSchemeId = data?['cardDetailResponse']?['cardSchemeId'];
 
-
-  void notification_FD()
-  {
-     notificationServices.getDeviceToken().then((value)async{
-
-                              var data = {
-                                'to' : value.toString(),
-                                'priority' : 'high',
-                                'notification' : {
-                                  'title' : 'Slingone' ,
-                                  'body' : 'Open a FD' ,
-                                  "sound": "windchime.mp3"
-                              },
-                                // 'android': {
-                                //   'notification': {
-                                //     'notification_count': 23,
-                                //   },
-                                // },
-                                // 'data' : {
-                                //   'type' : 'msj' ,
-                                //   'id' : 'Asif Taj'
-                                // }
-                              };
-
-                              await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
-                              body: jsonEncode(data) ,
-                                headers: {
-                                  'Content-Type': 'application/json; charset=UTF-8',
-                                  'Authorization' : 'key=AAAAd2FTt9k:APA91bHEX1w3KaiJCSVfo6yxtaA9qyfOh9AqodXOFtkmjIdc7J_tMzl760nLGgTkvaYAScMQVTcXcC-icHl0I3Z4p_fTRZUFXWgUwnVHYVRGB9b5LF4HVdyYa-dTX5ayzCNhiv6ZCLcb'
-                                }
-                              ).then((value){
-                                if (kDebugMode) {
-                                  print("sucess"+value.body.toString());
-                                }
-                              }).onError((error, stackTrace){
-                                if (kDebugMode) {
-                                  print("error$error");
-                                }
-                              }); 
-                            });
+          if (cardSchemeId != null) {
+            print('Card Scheme Id: $cardSchemeId');
+            await prefs!.setInt('cardSchemeId', cardSchemeId!);
+          } else {
+            print('Card Scheme Id not found in the snapshot.');
+          }
+        } else {
+          print('Reference number not found.');
+        }
+      } else {
+        // Show a dialog box to create a digital card
+        showDialog(
+          context: context, // You'll need to pass the context to this function
+          builder: (context) => AlertDialog(
+            title: Text('Create Digital Card'),
+            content: Text('First, create a digital card.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
   }
- void notification_loan()
-{
-   notificationServices.getDeviceToken().then((value)async{
 
-                              var data = {
-                                'to' : value.toString(),
-                                'priority' : 'high',
-                                'notification' : {
-                                  'title' : 'Slingone' ,
-                                  'body' : 'Apply For a Loan' ,
-                                  "sound": "windchime.mp3"
-                              },
-                                // 'android': {
-                                //   'notification': {
-                                //     'notification_count': 23,
-                                //   },
-                                // },
-                                // 'data' : {
-                                //   'type' : 'msj' ,
-                                //   'id' : 'Asif Taj'
-                                // }
-                              };
+  void notification_FD() {
+    notificationServices.getDeviceToken().then((value) async {
+      var data = {
+        'to': value.toString(),
+        'priority': 'high',
+        'notification': {
+          'title': 'Slingone',
+          'body': 'Open a FD',
+          "sound": "windchime.mp3"
+        },
+        // 'android': {
+        //   'notification': {
+        //     'notification_count': 23,
+        //   },
+        // },
+        // 'data' : {
+        //   'type' : 'msj' ,
+        //   'id' : 'Asif Taj'
+        // }
+      };
 
-                              await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
-                              body: jsonEncode(data) ,
-                                headers: {
-                                  'Content-Type': 'application/json; charset=UTF-8',
-                                  'Authorization' : 'key=AAAAd2FTt9k:APA91bHEX1w3KaiJCSVfo6yxtaA9qyfOh9AqodXOFtkmjIdc7J_tMzl760nLGgTkvaYAScMQVTcXcC-icHl0I3Z4p_fTRZUFXWgUwnVHYVRGB9b5LF4HVdyYa-dTX5ayzCNhiv6ZCLcb'
-                                }
-                              ).then((value){
-                                if (kDebugMode) {
-                                  print("sucess"+value.body.toString());
-                                }
-                              }).onError((error, stackTrace){
-                                if (kDebugMode) {
-                                  print("error$error");
-                                }
-                              }); 
-                            });
-}
+      await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+          body: jsonEncode(data),
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization':
+                'key=AAAAd2FTt9k:APA91bHEX1w3KaiJCSVfo6yxtaA9qyfOh9AqodXOFtkmjIdc7J_tMzl760nLGgTkvaYAScMQVTcXcC-icHl0I3Z4p_fTRZUFXWgUwnVHYVRGB9b5LF4HVdyYa-dTX5ayzCNhiv6ZCLcb'
+          }).then((value) {
+        if (kDebugMode) {
+          print("sucess" + value.body.toString());
+        }
+      }).onError((error, stackTrace) {
+        if (kDebugMode) {
+          print("error$error");
+        }
+      });
+    });
+  }
+
+  void notification_loan() {
+    notificationServices.getDeviceToken().then((value) async {
+      var data = {
+        'to': value.toString(),
+        'priority': 'high',
+        'notification': {
+          'title': 'Slingone',
+          'body': 'Apply For a Loan',
+          "sound": "windchime.mp3"
+        },
+        // 'android': {
+        //   'notification': {
+        //     'notification_count': 23,
+        //   },
+        // },
+        // 'data' : {
+        //   'type' : 'msj' ,
+        //   'id' : 'Asif Taj'
+        // }
+      };
+
+      await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+          body: jsonEncode(data),
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization':
+                'key=AAAAd2FTt9k:APA91bHEX1w3KaiJCSVfo6yxtaA9qyfOh9AqodXOFtkmjIdc7J_tMzl760nLGgTkvaYAScMQVTcXcC-icHl0I3Z4p_fTRZUFXWgUwnVHYVRGB9b5LF4HVdyYa-dTX5ayzCNhiv6ZCLcb'
+          }).then((value) {
+        if (kDebugMode) {
+          print("sucess" + value.body.toString());
+        }
+      }).onError((error, stackTrace) {
+        if (kDebugMode) {
+          print("error$error");
+        }
+      });
+    });
+  }
+
   Future<void> getReferenceNumberFromSharedPreferences() async {
     var sharedPreferences = await SharedPreferences.getInstance();
-    referenceNumber = sharedPreferences.getString('referenceNumber')??'';
+    referenceNumber = sharedPreferences.getString('referenceNumber') ?? '';
 
     if (referenceNumber.isNotEmpty) {
       makeGetRequest(referenceNumber);
@@ -412,11 +431,13 @@ Future<void> fetchCardSchemeId(String referenceNumber) async {
       });
     }
   }
+
   Future<void> makeGetRequest(String referenceNumber) async {
     var sharedPreferences = await SharedPreferences.getInstance();
     var token = sharedPreferences.getString('token');
 
-    var url = Uri.parse('https://issuanceapis-uat.pinelabs.com/v1/cards/balances/$referenceNumber');
+    var url = Uri.parse(
+        'https://issuanceapis-uat.pinelabs.com/v1/cards/balances/$referenceNumber');
 
     var headers = {
       'accept': 'application/json',
@@ -439,18 +460,14 @@ Future<void> fetchCardSchemeId(String referenceNumber) async {
     }
   }
 
-
-
- 
-
   void showInternetConnectionDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('NO Internet Connection'),
-          content:
-              const Text('Try Turning on your WIFI or MOBILEDATA for using the App'),
+          content: const Text(
+              'Try Turning on your WIFI or MOBILEDATA for using the App'),
           actions: [
             Column(
               //mainAxisAlignment: MainAxisAlignment.center,
@@ -509,13 +526,12 @@ Future<void> fetchCardSchemeId(String referenceNumber) async {
       localImageUrls = await getImageUrlsFromDatabase();
       print("Images are retrieved from the local database.");
     }
-  if(mounted)
-  {
-    setState(() {
-      flag = true;
-      isLoading = false;
-    });
-  }
+    if (mounted) {
+      setState(() {
+        flag = true;
+        isLoading = false;
+      });
+    }
   }
 
   Future<List<String>> getImageUrlsFromDatabase() async {
@@ -671,516 +687,72 @@ Future<void> fetchCardSchemeId(String referenceNumber) async {
     }
   }
 
+  Future<void> _handleRefresh() async {
+    return await Future.delayed(Duration(seconds: 2));
+  }
+
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return WillPopScope(
       onWillPop: () async {
-          final timegap = DateTime.now().difference(pre_backpress);
-          final cantExit = timegap >= Duration(seconds: 2);
-          pre_backpress = DateTime.now();
-          if (cantExit) {
-            //show snackbar
-            final snack = SnackBar(
-              content: Text('Press Back button again to Exit'),
-              duration: Duration(seconds: 2),
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snack);
-            return false;
-          } else {
-            return true;
-          }
-        },
+        final timegap = DateTime.now().difference(pre_backpress);
+        final cantExit = timegap >= Duration(seconds: 2);
+        pre_backpress = DateTime.now();
+        if (cantExit) {
+          //show snackbar
+          final snack = SnackBar(
+            content: Text('Press Back button again to Exit'),
+            duration: Duration(seconds: 2),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snack);
+          return false;
+        } else {
+          return true;
+        }
+      },
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: notifire.getprimerycolor,
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: height / 20,
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: width / 20,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        CustomStrings.goodmorning,
-                        style: TextStyle(
-                            color: notifire.getdarkgreycolor,
-                            fontSize: height / 50,
-                            fontFamily: 'Gilroy Medium'),
-                      ),
-                      SizedBox(
-                        height: height / 100,
-                      ),
-                      Text(
-                        '${username ?? "Guest"}',
-                        style: TextStyle(
-                            color: notifire.getdarkscolor,
-                            fontSize: height / 40,
-                            fontFamily: 'Gilroy Bold'),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MyCard(),
-                        ),
-                      );
-                    },
-                    child: Image.asset(
-                      "images/message1.png",
-                      color: notifire.getdarkscolor,
-                      height: height / 30,
-                    ),
-                  ),
-                  SizedBox(
-                    width: width / 30,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const Notificationindex(CustomStrings.notification),
-                        ),
-                      );
-                    },
-                    child: Image.asset(
-                      "images/notification.png",
-                      color: notifire.getdarkscolor,
-                      height: height / 30,
-                    ),
-                  ),
-                  SizedBox(
-                    width: width / 20,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: height / 80,
-              ),
-              Stack(
-                children: [
-                  Container(
-                      color: notifire.getbackcolor,
-                      child: Image.asset("images/backphoto.png")),
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: height / 30,
-                      ),
-                      Center(
-                        child: Container(
-                          height: height / 35,
-                          width: width / 1.5,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
-                            ),
-                            color: Color(0xff8978fa),
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: Container(
-                          height: height / 7,
-                          width: width / 1.2,
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
-                            ),
-                            color: notifire.getbluecolor,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: height / 40,
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsets.symmetric(horizontal: width / 20),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      CustomStrings.totalcardbalance,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: height / 50,
-                                          fontFamily: 'Gilroy Medium'),
-                                    ),
-                                    const Spacer(),
-                                    Column(
-                                      children: [
-                                        Image.asset(
-                                          "images/rupay.png",
-                                          height: height / 45,
-                                          fit: BoxFit.contain,
-                                        ),
-                                        Text(
-                                          CustomStrings.rupaycard,
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: height / 70,
-                                              fontFamily: 'Gilroy Medium'),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: width / 20),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: height / 20,
-                                      width: width / 2.4,
-                                      color: selection
-                                          ? Colors.transparent
-                                          : Colors.transparent,
-                                      child: selection
-                                          ? Text(
-                                              "$loadAmount",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: height / 35,
-                                                  fontFamily: 'Gilroy Bold'),
-                                            )
-                                          : Text(
-                                              "********",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: height / 20,
-                                                  fontFamily: 'Gilroy Bold'),
-                                            ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          selection = !selection;
-                                        });
-                                      },
-                                      child: selection
-                                          ? Padding(
-                                              padding: EdgeInsets.only(
-                                                  bottom: height / 100),
-                                              child: Image.asset(
-                                                "images/eye.png",
-                                                color: Colors.white,
-                                                height: height / 40,
-                                              ),
-                                            )
-                                          : Padding(
-                                              padding: EdgeInsets.only(
-                                                  bottom: height / 100),
-                                              child: const Icon(
-                                                Icons.remove_red_eye,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: width / 30),
-                          child: Container(
-                            height: height / 6.5,
-                            width: width,
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              color: notifire.getdarkwhitecolor,
-                              boxShadow: <BoxShadow>[
-                                BoxShadow(
-                                  color: notifire.getbluecolor.withOpacity(0.4),
-                                  blurRadius: 15.0,
-                                  offset: const Offset(0.0, 0.75),
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: height / 50,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Stack(
-                                      children: [
-                                        Column(
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                generateToken('payvoy.uatuser', 'X4oVUECF9EWhX9');
-                                                // Navigator.push(
-                                                //   context,
-                                                //   MaterialPageRoute(
-                                                //     builder: (context) =>
-                                                //        const  CardDetails(),
-                                                //   ),
-                                                // );
-                                              },
-                                              child: Container(
-                                                height: height / 15,
-                                                width: width / 7,
-                                                decoration: BoxDecoration(
-                                                  color:
-                                                      notifire.gettabwhitecolor,
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                    Radius.circular(10),
-                                                  ),
-                                                ),
-                                                child: Center(
-                                                  child: Image.asset(
-                                                    "images/scanpay.png",
-                                                    height: height / 20,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: height / 60,
-                                            ),
-                                            Text(
-                                              " Debit card",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontFamily: "Gilroy Bold",
-                                                  color: notifire.getdarkscolor,
-                                                  fontSize: height / 65),
-                                            ),
-                                          ],
-                                        ),
-                                        Positioned(
-                                          top: -5,
-                                          right: 15,
-                                          child: Container(
-                                            padding: const EdgeInsets.all(4.0),
-                                            decoration: BoxDecoration(
-                                              color: Colors.yellow[300],
-                                              borderRadius:
-                                                  BorderRadius.circular(32.0),
-                                              boxShadow: [
-                                                const BoxShadow(
-                                                  color: Colors.white,
-                                                  offset: Offset(-4.0, -4.0),
-                                                  blurRadius: 16.0,
-                                                ),
-                                                BoxShadow(
-                                                  color: Colors.black
-                                                      .withOpacity(0.2),
-                                                  offset: const Offset(4.0, 4.0),
-                                                  blurRadius: 16.0,
-                                                ),
-                                              ],
-                                            ),
-                                            // A text widget with some style
-                                            child: Text(
-                                              'Sling',
-                                              style: TextStyle(
-                                                color: Colors.grey[800],
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 7,
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const SendMoney(),
-                                              ),
-                                            );
-                                          },
-                                          child: Container(
-                                            height: height / 15,
-                                            width: width / 7,
-                                            decoration: BoxDecoration(
-                                              color: notifire.gettabwhitecolor,
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                            ),
-                                            child: Center(
-                                              child: Image.asset(
-                                                "images/transfer.png",
-                                                height: height / 20,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: height / 60,
-                                        ),
-                                        Text(
-                                          "Add Money",
-                                          style: TextStyle(
-                                              fontFamily: "Gilroy Bold",
-                                              color: notifire.getdarkscolor,
-                                              fontSize: height / 55),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                     const personalloan(),
-                                              ),
-                                            );
-                                          },
-                                          child: Container(
-                                            height: height / 15,
-                                            width: width / 7,
-                                            decoration: BoxDecoration(
-                                              color: notifire.gettabwhitecolor,
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                            ),
-                                            child: Center(
-                                              child: Image.asset(
-                                                "images/request.png",
-                                                height: height / 20,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: height / 60,
-                                        ),
-                                        Text(
-                                          "Apply for a Loan",
-                                          style: TextStyle(
-                                              fontFamily: "Gilroy Bold",
-                                              color: notifire.getdarkscolor,
-                                              fontSize: height / 55),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const SavingsStory(),
-                                              ),
-                                            );
-                                          },
-                                          child: Container(
-                                            height: height / 15,
-                                            width: width / 7,
-                                            decoration: BoxDecoration(
-                                              color: notifire.gettabwhitecolor,
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                            ),
-                                            child: Center(
-                                              child: Image.asset(
-                                                "images/topup.png",
-                                                height: height / 20,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: height / 60,
-                                        ),
-                                        Text(
-                                          "Open a FD",
-                                          style: TextStyle(
-                                              fontFamily: "Gilroy Bold",
-                                              color: notifire.getdarkscolor,
-                                              fontSize: height / 55),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              // SizedBox(
-              //   height: height / 30,
-              // ),
-              // Padding(
-              //   padding: EdgeInsets.symmetric(horizontal: width / 30),
-              //   child: Container(
-              //       height: height / 7,
-              //       decoration: const BoxDecoration(
-              //         borderRadius: BorderRadius.all(
-              //           Radius.circular(10),
-              //         ),
-              //       ),
-              //       child: const CouponSliders()),
-              // ),
-              SizedBox(
-                height: height / 30,
-              ),
-              const SizedBox(
-                child: BannerPage(),
-              ),
-              SizedBox(
-                height: height / 30,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: width / 18),
-                child: Row(
+        body: LiquidPullToRefresh(
+          onRefresh: _handleRefresh,
+          color: Colors.deepPurple,
+          height: 300,
+          backgroundColor: Colors.deepPurple[200],
+          animSpeedFactor: 2,
+          showChildOpacityTransition: true,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: height / 20,
+                ),
+                Row(
                   children: [
-                    Text(
-                      CustomStrings.discoverservices,
-                      style: TextStyle(
-                          fontFamily: "Gilroy Bold",
-                          color: notifire.getdarkscolor,
-                          fontSize: height / 40),
+                    SizedBox(
+                      width: width / 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          CustomStrings.goodmorning,
+                          style: TextStyle(
+                              color: notifire.getdarkgreycolor,
+                              fontSize: height / 50,
+                              fontFamily: 'Gilroy Medium'),
+                        ),
+                        SizedBox(
+                          height: height / 100,
+                        ),
+                        Text(
+                          '${username ?? "Guest"}',
+                          style: TextStyle(
+                              color: notifire.getdarkscolor,
+                              fontSize: height / 40,
+                              fontFamily: 'Gilroy Bold'),
+                        ),
+                      ],
                     ),
                     const Spacer(),
                     GestureDetector(
@@ -1188,573 +760,903 @@ Future<void> fetchCardSchemeId(String referenceNumber) async {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const Seeallpayment(),
+                            builder: (context) => const MyCard(),
                           ),
                         );
                       },
-                      child: Container(
-                        color: Colors.transparent,
-                        child: Text(
-                          CustomStrings.seeall,
-                          style: TextStyle(
-                              fontFamily: "Gilroy Bold",
-                              color: notifire.getbluecolor,
-                              fontSize: height / 45),
-                        ),
+                      child: Image.asset(
+                        "images/message1.png",
+                        color: notifire.getdarkscolor,
+                        height: height / 30,
                       ),
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: height / 50,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: width / 20),
-                child: Container(
-                  color: Colors.transparent,
-                  height: height / 7,
-                  width: width,
-                  child: GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.only(bottom: height / 15),
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: height / 9,
-                        mainAxisExtent: height / 8,
-                        childAspectRatio: 4 / 2,
-                        crossAxisSpacing: height / 30,
-                        mainAxisSpacing: height / 50,
-                      ),
-                      itemCount: img.length,
-                      itemBuilder: (BuildContext ctx, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            if (index == 0) {
-                              // Get.to(() => const SlingStore());
-                              navigator!.push(MaterialPageRoute(
-                                builder: (context) => const sling_storemain(),
-                              ));
-                            } else {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const Scan(),
-                                ),
-                              );
-                            }
-                          },
-                          child: Column(
-                            children: [
-                              Container(
-                                height: height / 15,
-                                width: width / 7,
-                                decoration: BoxDecoration(
-                                  color: notifire.gettabwhitecolor,
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(10),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Image.asset(
-                                    img[index],
-                                    height: height / 20,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: height / 90,
-                              ),
-                              Center(
-                                child: Text(
-                                  paymentname[index],
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontFamily: "Gilroy Bold",
-                                      color: notifire.getdarkscolor,
-                                      fontSize: height / 55),
-                                ),
-                              ),
-                            ],
+                    SizedBox(
+                      width: width / 30,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Notificationindex(
+                                CustomStrings.notification),
                           ),
                         );
-                      }),
-                ),
-              ),
-              SizedBox(
-                height: height / 100,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: width / 18),
-                child: Row(
-                  children: [
-                    Text(
-                      CustomStrings.giftcardsection,
-                      style: TextStyle(
-                          fontFamily: "Gilroy Bold",
-                          color: notifire.getdarkscolor,
-                          fontSize: height / 40),
+                      },
+                      child: Image.asset(
+                        "images/notification.png",
+                        color: notifire.getdarkscolor,
+                        height: height / 30,
+                      ),
+                    ),
+                    SizedBox(
+                      width: width / 20,
                     ),
                   ],
                 ),
-              ),
-              SizedBox(
-                height: height / 60,
-              ),
-              Padding(
-                padding:
-                    EdgeInsets.only(top: 10, left: width / 20, right: width / 20),
-                child: Container(
-                  height: height / 2.5,
-                  width: width,
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 239, 251, 253),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: height / 30,
-                        width: width, // Adjust the width as needed
-                        // Add your content for the first child here
-                        child: SizedBox(),
-                      ),
-                      // SizedBox(
-                      //   height: height / 90,
-                      // ),
-                      Expanded(
-                        child: GridView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: EdgeInsets.only(bottom: height / 20),
-                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: height / 9,
-                            mainAxisExtent: height / 8,
-                            childAspectRatio: 3 / 2,
-                            crossAxisSpacing: height / 30,
-                            mainAxisSpacing: height / 30,
+                SizedBox(
+                  height: height / 80,
+                ),
+                Stack(
+                  children: [
+                    Container(
+                        color: notifire.getbackcolor,
+                        child: Image.asset("images/backphoto.png")),
+                    Column(
+                      children: [
+                        SizedBox(
+                          height: height / 30,
+                        ),
+                        Center(
+                          child: Container(
+                            height: height / 35,
+                            width: width / 1.5,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              ),
+                              color: Color(0xff8978fa),
+                            ),
                           ),
-                          itemCount: giftimg.length,
-                          itemBuilder: (BuildContext ctx, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                if (index == 7) {
-                                  navigator!.push(MaterialPageRoute(
-                                      builder: (context) => buyvoucher()));
-                                } else {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => giftofferform(
-                                            icon: giftimg[index],
-                                            storename: giftname[index],
-                                            discount: giftdiscount[index]),
-                                      ));
-                                }
-                              },
+                        ),
+                        Center(
+                          child: Container(
+                            height: height / 7,
+                            width: width / 1.2,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              ),
+                              color: notifire.getbluecolor,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: height / 40,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: width / 20),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        CustomStrings.totalcardbalance,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: height / 50,
+                                            fontFamily: 'Gilroy Medium'),
+                                      ),
+                                      const Spacer(),
+                                      Column(
+                                        children: [
+                                          Image.asset(
+                                            "images/rupay.png",
+                                            height: height / 45,
+                                            fit: BoxFit.contain,
+                                          ),
+                                          Text(
+                                            CustomStrings.rupaycard,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: height / 70,
+                                                fontFamily: 'Gilroy Medium'),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: width / 20),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        height: height / 20,
+                                        width: width / 2.4,
+                                        color: selection
+                                            ? Colors.transparent
+                                            : Colors.transparent,
+                                        child: selection
+                                            ? Text(
+                                                "$loadAmount",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: height / 35,
+                                                    fontFamily: 'Gilroy Bold'),
+                                              )
+                                            : Text(
+                                                "********",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: height / 20,
+                                                    fontFamily: 'Gilroy Bold'),
+                                              ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            selection = !selection;
+                                          });
+                                        },
+                                        child: selection
+                                            ? Padding(
+                                                padding: EdgeInsets.only(
+                                                    bottom: height / 100),
+                                                child: Image.asset(
+                                                  "images/eye.png",
+                                                  color: Colors.white,
+                                                  height: height / 40,
+                                                ),
+                                              )
+                                            : Padding(
+                                                padding: EdgeInsets.only(
+                                                    bottom: height / 100),
+                                                child: const Icon(
+                                                  Icons.remove_red_eye,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Padding(
+                            padding:
+                                EdgeInsets.symmetric(horizontal: width / 30),
+                            child: Container(
+                              height: height / 6.5,
+                              width: width,
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                                color: notifire.getdarkwhitecolor,
+                                boxShadow: <BoxShadow>[
+                                  BoxShadow(
+                                    color:
+                                        notifire.getbluecolor.withOpacity(0.4),
+                                    blurRadius: 15.0,
+                                    offset: const Offset(0.0, 0.75),
+                                  ),
+                                ],
+                              ),
                               child: Column(
                                 children: [
-                                  giftdiscount[index].isNotEmpty
-                                      ? Container(
-                                          height: 15,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                            color: Colors.amber[300],
-                                            borderRadius:
-                                                BorderRadius.circular(2),
+                                  SizedBox(
+                                    height: height / 50,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Stack(
+                                        children: [
+                                          Column(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  generateToken(
+                                                      'payvoy.uatuser',
+                                                      'X4oVUECF9EWhX9');
+                                                  // Navigator.push(
+                                                  //   context,
+                                                  //   MaterialPageRoute(
+                                                  //     builder: (context) =>
+                                                  //        const  CardDetails(),
+                                                  //   ),
+                                                  // );
+                                                },
+                                                child: Container(
+                                                  height: height / 15,
+                                                  width: width / 7,
+                                                  decoration: BoxDecoration(
+                                                    color: notifire
+                                                        .gettabwhitecolor,
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                      Radius.circular(10),
+                                                    ),
+                                                  ),
+                                                  child: Center(
+                                                    child: Image.asset(
+                                                      "images/scanpay.png",
+                                                      height: height / 20,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: height / 60,
+                                              ),
+                                              Text(
+                                                " Debit card",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontFamily: "Gilroy Bold",
+                                                    color:
+                                                        notifire.getdarkscolor,
+                                                    fontSize: height / 65),
+                                              ),
+                                            ],
                                           ),
-                                          child: Center(
-                                            child: Text(
-                                              "${giftdiscount[index]}% Off",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: "Gilroy Bold",
-                                                color: notifire.getdarkscolor,
-                                                fontSize: height / 55,
+                                          Positioned(
+                                            top: -5,
+                                            right: 15,
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
+                                              decoration: BoxDecoration(
+                                                color: Colors.yellow[300],
+                                                borderRadius:
+                                                    BorderRadius.circular(32.0),
+                                                boxShadow: [
+                                                  const BoxShadow(
+                                                    color: Colors.white,
+                                                    offset: Offset(-4.0, -4.0),
+                                                    blurRadius: 16.0,
+                                                  ),
+                                                  BoxShadow(
+                                                    color: Colors.black
+                                                        .withOpacity(0.2),
+                                                    offset:
+                                                        const Offset(4.0, 4.0),
+                                                    blurRadius: 16.0,
+                                                  ),
+                                                ],
+                                              ),
+                                              // A text widget with some style
+                                              child: Text(
+                                                'Sling',
+                                                style: TextStyle(
+                                                  color: Colors.grey[800],
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 7,
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const SendMoney(),
+                                                ),
+                                              );
+                                            },
+                                            child: Container(
+                                              height: height / 15,
+                                              width: width / 7,
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    notifire.gettabwhitecolor,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                              child: Center(
+                                                child: Image.asset(
+                                                  "images/transfer.png",
+                                                  height: height / 20,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        )
-                                      : SizedBox(),
-                                  Container(
-                                    height: height / 15,
-                                    width: width / 7,
-                                    decoration: BoxDecoration(
-                                      color: notifire.gettabwhitecolor,
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(10),
+                                          SizedBox(
+                                            height: height / 60,
+                                          ),
+                                          Text(
+                                            "Add Money",
+                                            style: TextStyle(
+                                                fontFamily: "Gilroy Bold",
+                                                color: notifire.getdarkscolor,
+                                                fontSize: height / 55),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    child: Center(
-                                      child: Image.asset(
-                                        giftimg[index],
-                                        height: height / 20,
+                                      Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const personalloan(),
+                                                ),
+                                              );
+                                            },
+                                            child: Container(
+                                              height: height / 15,
+                                              width: width / 7,
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    notifire.gettabwhitecolor,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                              child: Center(
+                                                child: Image.asset(
+                                                  "images/request.png",
+                                                  height: height / 20,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: height / 60,
+                                          ),
+                                          Text(
+                                            "Apply for a Loan",
+                                            style: TextStyle(
+                                                fontFamily: "Gilroy Bold",
+                                                color: notifire.getdarkscolor,
+                                                fontSize: height / 55),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: height / 90,
-                                  ),
-                                  Center(
-                                    child: Text(
-                                      giftname[index],
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontFamily: "Gilroy Bold",
-                                        color: notifire.getdarkscolor,
-                                        fontSize: height / 55,
+                                      Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const SavingsStory(),
+                                                ),
+                                              );
+                                            },
+                                            child: Container(
+                                              height: height / 15,
+                                              width: width / 7,
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    notifire.gettabwhitecolor,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                              child: Center(
+                                                child: Image.asset(
+                                                  "images/topup.png",
+                                                  height: height / 20,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: height / 60,
+                                          ),
+                                          Text(
+                                            "Open a FD",
+                                            style: TextStyle(
+                                                fontFamily: "Gilroy Bold",
+                                                color: notifire.getdarkscolor,
+                                                fontSize: height / 55),
+                                          ),
+                                        ],
                                       ),
-                                    ),
+                                    ],
                                   ),
                                 ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                // SizedBox(
+                //   height: height / 30,
+                // ),
+                // Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: width / 30),
+                //   child: Container(
+                //       height: height / 7,
+                //       decoration: const BoxDecoration(
+                //         borderRadius: BorderRadius.all(
+                //           Radius.circular(10),
+                //         ),
+                //       ),
+                //       child: const CouponSliders()),
+                // ),
+                SizedBox(
+                  height: height / 30,
+                ),
+                const SizedBox(
+                  child: BannerPage(),
+                ),
+                SizedBox(
+                  height: height / 30,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: width / 18),
+                  child: Row(
+                    children: [
+                      Text(
+                        CustomStrings.discoverservices,
+                        style: TextStyle(
+                            fontFamily: "Gilroy Bold",
+                            color: notifire.getdarkscolor,
+                            fontSize: height / 40),
+                      ),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Seeallpayment(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          child: Text(
+                            CustomStrings.seeall,
+                            style: TextStyle(
+                                fontFamily: "Gilroy Bold",
+                                color: notifire.getbluecolor,
+                                fontSize: height / 45),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: height / 50,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: width / 20),
+                  child: Container(
+                    color: Colors.transparent,
+                    height: height / 7,
+                    width: width,
+                    child: GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.only(bottom: height / 15),
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: height / 9,
+                          mainAxisExtent: height / 8,
+                          childAspectRatio: 4 / 2,
+                          crossAxisSpacing: height / 30,
+                          mainAxisSpacing: height / 50,
+                        ),
+                        itemCount: img.length,
+                        itemBuilder: (BuildContext ctx, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              if (index == 0) {
+                                // Get.to(() => const SlingStore());
+                                navigator!.push(MaterialPageRoute(
+                                  builder: (context) => const sling_storemain(),
+                                ));
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Scan(),
+                                  ),
+                                );
+                              }
+                            },
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: height / 15,
+                                  width: width / 7,
+                                  decoration: BoxDecoration(
+                                    color: notifire.gettabwhitecolor,
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Image.asset(
+                                      img[index],
+                                      height: height / 20,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: height / 90,
+                                ),
+                                Center(
+                                  child: Text(
+                                    paymentname[index],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontFamily: "Gilroy Bold",
+                                        color: notifire.getdarkscolor,
+                                        fontSize: height / 55),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                  ),
+                ),
+                SizedBox(
+                  height: height / 100,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: width / 18),
+                  child: Row(
+                    children: [
+                      Text(
+                        CustomStrings.giftcardsection,
+                        style: TextStyle(
+                            fontFamily: "Gilroy Bold",
+                            color: notifire.getdarkscolor,
+                            fontSize: height / 40),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: height / 60,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: 10, left: width / 20, right: width / 20),
+                  child: Container(
+                    height: height / 2.5,
+                    width: width,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 239, 251, 253),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: height / 30,
+                          width: width, // Adjust the width as needed
+                          // Add your content for the first child here
+                          child: SizedBox(),
+                        ),
+                        // SizedBox(
+                        //   height: height / 90,
+                        // ),
+                        Expanded(
+                          child: GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.only(bottom: height / 20),
+                            gridDelegate:
+                                SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: height / 9,
+                              mainAxisExtent: height / 8,
+                              childAspectRatio: 3 / 2,
+                              crossAxisSpacing: height / 30,
+                              mainAxisSpacing: height / 30,
+                            ),
+                            itemCount: giftimg.length,
+                            itemBuilder: (BuildContext ctx, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  if (index == 7) {
+                                    navigator!.push(MaterialPageRoute(
+                                        builder: (context) => buyvoucher()));
+                                  } else {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => giftofferform(
+                                              icon: giftimg[index],
+                                              storename: giftname[index],
+                                              discount: giftdiscount[index]),
+                                        ));
+                                  }
+                                },
+                                child: Column(
+                                  children: [
+                                    giftdiscount[index].isNotEmpty
+                                        ? Container(
+                                            height: 15,
+                                            width: 50,
+                                            decoration: BoxDecoration(
+                                              color: Colors.amber[300],
+                                              borderRadius:
+                                                  BorderRadius.circular(2),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                "${giftdiscount[index]}% Off",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontFamily: "Gilroy Bold",
+                                                  color: notifire.getdarkscolor,
+                                                  fontSize: height / 55,
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        : SizedBox(),
+                                    Container(
+                                      height: height / 15,
+                                      width: width / 7,
+                                      decoration: BoxDecoration(
+                                        color: notifire.gettabwhitecolor,
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(10),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Image.asset(
+                                          giftimg[index],
+                                          height: height / 20,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: height / 90,
+                                    ),
+                                    Center(
+                                      child: Text(
+                                        giftname[index],
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: "Gilroy Bold",
+                                          color: notifire.getdarkscolor,
+                                          fontSize: height / 55,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        Container(
+                          height: height / 25,
+                          width: width, // Adjust the width as needed
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                            ),
+                            child: Container(
+                              color: const Color.fromARGB(255, 142, 219, 145),
+                              child: Center(
+                                child: Text(
+                                  'Instant Discount. No Limits. 100+ Brands!',
+                                  style: TextStyle(
+                                    color: notifire.getdarkscolor,
+                                    fontSize: height / 55,
+                                    fontFamily: 'Gilroy Bold',
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(
+                  height: height / 40,
+                ),
+
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: width / 18),
+                  child: Row(
+                    children: [
+                      Text(
+                        CustomStrings.slingsaverclub,
+                        style: TextStyle(
+                            fontFamily: "Gilroy Bold",
+                            color: notifire.getdarkscolor,
+                            fontSize: height / 40),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: height / 80,
+                ),
+                SizedBox(
+                  height: 230,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: imageUrls.length == 0
+                            ? Center(child: CircularProgressIndicator())
+                            : (isConnected && imageUrls.isNotEmpty)
+                                ? ListView.builder(
+                                    controller: _scrollController,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: imageUrls.length,
+                                    itemBuilder: (context, index) {
+                                      return GestureDetector(
+                                        onTap: () => _onImageTap(index),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            width: 150,
+                                            //height: 200,
+                                            margin: EdgeInsets.only(
+                                                left: index != 0 ? 10.0 : 0.0),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              child: buildImageWidget(
+                                                  imageUrls[index]),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : (localImageUrls.isNotEmpty)
+                                    ? ListView.builder(
+                                        controller: _scrollController,
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: localImageUrls.length,
+                                        itemBuilder: (context, index) {
+                                          return GestureDetector(
+                                            onTap: () => _onImageTap(index),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5.0),
+                                              child: Container(
+                                                width: 150,
+                                                margin: EdgeInsets.only(
+                                                    left: index != 0
+                                                        ? 10.0
+                                                        : 0.0),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  child: buildImageWidget(
+                                                      localImageUrls[index]),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      )
+                                    : const Center(
+                                        child: CircularProgressIndicator()),
+                      ),
+                      SizedBox(height: height / 40),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List<Widget>.generate(
+                          isConnected
+                              ? imageUrls.length
+                              : localImageUrls.length,
+                          (int index) {
+                            bool isActive = (index == activeIndex);
+                            bool isImageUrl =
+                                (isConnected && index < imageUrls.length);
+
+                            return AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 3.0),
+                              height: 7.0,
+                              width: isActive ? 7.0 : 7.0,
+                              decoration: BoxDecoration(
+                                color: isActive ? Colors.blue : Colors.grey,
+                                borderRadius: BorderRadius.circular(5.0),
                               ),
                             );
                           },
                         ),
                       ),
-                      Container(
-                        height: height / 25,
-                        width: width, // Adjust the width as needed
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(10),
-                            bottomRight: Radius.circular(10),
-                          ),
-                          child: Container(
-                            color: const Color.fromARGB(255, 142, 219, 145),
-                            child: Center(
-                              child: Text(
-                                'Instant Discount. No Limits. 100+ Brands!',
-                                style: TextStyle(
-                                  color: notifire.getdarkscolor,
-                                  fontSize: height / 55,
-                                  fontFamily: 'Gilroy Bold',
-                                ),
-                              ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: height / 80),
+                //add here indicator
+                SizedBox(
+                  height: height / 80,
+                ),
+                const SizedBox(
+                  height: 200,
+                  //width: width-30,
+                  child: SliderPage(),
+                ),
+                SizedBox(
+                  height: height / 80,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: width / 18),
+                  child: Row(
+                    children: [
+                      Text(
+                        CustomStrings.lasttransaction,
+                        style: TextStyle(
+                            fontFamily: "Gilroy Bold",
+                            color: notifire.getdarkscolor,
+                            fontSize: height / 40),
+                      ),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Seealltransaction(),
                             ),
+                          );
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          child: Text(
+                            CustomStrings.seeall,
+                            style: TextStyle(
+                                fontFamily: "Gilroy Bold",
+                                color: notifire.getbluecolor,
+                                fontSize: height / 45),
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
-    
-              SizedBox(
-                height: height / 40,
-              ),
-    
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: width / 18),
-                child: Row(
-                  children: [
-                    Text(
-                      CustomStrings.slingsaverclub,
-                      style: TextStyle(
-                          fontFamily: "Gilroy Bold",
-                          color: notifire.getdarkscolor,
-                          fontSize: height / 40),
-                    ),
-                  ],
+                SizedBox(
+                  height: height / 50,
                 ),
-              ),
-              SizedBox(
-                height: height / 80,
-              ),
-              SizedBox(
-                height: 230,
-                child: Column(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: imageUrls.length==0
-                          ? Center(child: CircularProgressIndicator())
-                          : (isConnected && imageUrls.isNotEmpty)
-                              ? ListView.builder(
-                                  controller: _scrollController,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: imageUrls.length,
-                                  itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                      onTap: () => _onImageTap(index),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 5.0),
-                                        child: Container(
-                                          width: 150,
-                                          //height: 200,
-                                          margin: EdgeInsets.only(
-                                              left: index != 0 ? 10.0 : 0.0),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            child: buildImageWidget(
-                                                imageUrls[index]),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                )
-                              : (localImageUrls.isNotEmpty)
-                                  ? ListView.builder(
-                                      controller: _scrollController,
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: localImageUrls.length,
-                                      itemBuilder: (context, index) {
-                                        return GestureDetector(
-                                          onTap: () => _onImageTap(index),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 5.0),
-                                            child: Container(
-                                              width: 150,
-                                              margin: EdgeInsets.only(
-                                                  left: index != 0 ? 10.0 : 0.0),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                child: buildImageWidget(
-                                                    localImageUrls[index]),
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    )
-                                  : const Center(child: CircularProgressIndicator()),
-                    ),
-                    SizedBox(height: height / 40),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List<Widget>.generate(
-                        isConnected ? imageUrls.length : localImageUrls.length,
-                        (int index) {
-                          bool isActive = (index == activeIndex);
-                          bool isImageUrl =
-                              (isConnected && index < imageUrls.length);
-    
-                          return AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            margin: const EdgeInsets.symmetric(horizontal: 3.0),
-                            height: 7.0,
-                            width: isActive ? 7.0 : 7.0,
-                            decoration: BoxDecoration(
-                              color: isActive ? Colors.blue : Colors.grey,
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-    
-              SizedBox(height: height / 80),
-              //add here indicator
-              SizedBox(
-                height: height / 80,
-              ),
-              const SizedBox(
-                height: 200,
-                //width: width-30,
-                child: SliderPage(),
-              ),
-              SizedBox(
-                height: height / 80,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: width / 18),
-                child: Row(
-                  children: [
-                    Text(
-                      CustomStrings.lasttransaction,
-                      style: TextStyle(
-                          fontFamily: "Gilroy Bold",
-                          color: notifire.getdarkscolor,
-                          fontSize: height / 40),
-                    ),
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Seealltransaction(),
-                          ),
-                        );
-                      },
+                Container(
+                  height: height / 3,
+                  color: Colors.transparent,
+                  child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    itemCount: transaction.length,
+                    itemBuilder: (context, index) => Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: width / 22, vertical: height / 100),
                       child: Container(
-                        color: Colors.transparent,
-                        child: Text(
-                          CustomStrings.seeall,
-                          style: TextStyle(
-                              fontFamily: "Gilroy Bold",
-                              color: notifire.getbluecolor,
-                              fontSize: height / 45),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: height / 50,
-              ),
-              Container(
-                height: height / 3,
-                color: Colors.transparent,
-                child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  itemCount: transaction.length,
-                  itemBuilder: (context, index) => Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: width / 22, vertical: height / 100),
-                    child: Container(
-                      height: height / 11,
-                      width: width,
-                      decoration: BoxDecoration(
-                        color: notifire.getdarkwhitecolor,
-                        border: Border.all(
-                          color: Colors.grey.withOpacity(0.2),
-                        ),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: width / 20),
-                        child: Row(
-                          children: [
-                            Container(
-                              height: height / 15,
-                              width: width / 7,
-                              decoration: BoxDecoration(
-                                color: notifire.gettabwhitecolor,
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              child: Center(
-                                child: Image.asset(
-                                  transaction[index],
-                                  height: height / 20,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: width / 30,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: height / 70,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      transactionname[index],
-                                      style: TextStyle(
-                                          fontFamily: "Gilroy Bold",
-                                          color: notifire.getdarkscolor,
-                                          fontSize: height / 50),
-                                    ),
-                                    // SizedBox(width: width / 7,),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: height / 100,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      transactiondate[index],
-                                      style: TextStyle(
-                                          fontFamily: "Gilroy Medium",
-                                          color: notifire.getdarkgreycolor
-                                              .withOpacity(0.6),
-                                          fontSize: height / 60),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            const Spacer(),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                SizedBox(
-                                  height: height / 70,
-                                ),
-                                Text(
-                                  transactionamount[index],
-                                  style: TextStyle(
-                                      fontFamily: "Gilroy Bold",
-                                      color: transactioncolor[index],
-                                      fontSize: height / 45),
-                                ),
-                                SizedBox(
-                                  height: height / 100,
-                                ),
-                                Text(
-                                  "Order ID:***ase21",
-                                  style: TextStyle(
-                                      fontFamily: "Gilroy Medium",
-                                      color: notifire.getdarkgreycolor
-                                          .withOpacity(0.6),
-                                      fontSize: height / 60),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                height: height / 7.8,
-                color: Colors.transparent,
-                child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  itemCount: cashbankname.length,
-                  itemBuilder: (context, index) => Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: width / 20, vertical: height / 100),
-                    child: InkWell(
-                      onTap: () {
-                        // if (index == 0) {
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) =>
-                        //           const Notificationindex(CustomStrings.cashback),
-                        //     ),
-                        //   );
-                        // } else if (index == 1) {
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => const HelpSupport(
-                        //         "Refer A Friend",
-                        //       ),
-                        //     ),
-                        //   );
-                        // } else
-                        if (index == 0) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const HelpAndSupport(),
-                            ),
-                          );
-                        }
-                      },
-                      child: Container(
-                        height: height / 9,
+                        height: height / 11,
                         width: width,
                         decoration: BoxDecoration(
                           color: notifire.getdarkwhitecolor,
@@ -1780,7 +1682,7 @@ Future<void> fetchCardSchemeId(String referenceNumber) async {
                                 ),
                                 child: Center(
                                   child: Image.asset(
-                                    cashbankimg[index],
+                                    transaction[index],
                                     height: height / 20,
                                   ),
                                 ),
@@ -1797,7 +1699,7 @@ Future<void> fetchCardSchemeId(String referenceNumber) async {
                                   Row(
                                     children: [
                                       Text(
-                                        cashbankname[index],
+                                        transactionname[index],
                                         style: TextStyle(
                                             fontFamily: "Gilroy Bold",
                                             color: notifire.getdarkscolor,
@@ -1811,135 +1713,45 @@ Future<void> fetchCardSchemeId(String referenceNumber) async {
                                   ),
                                   Row(
                                     children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            cashbankdiscription[index],
-                                            style: TextStyle(
-                                                fontFamily: "Gilroy Medium",
-                                                color: notifire.getdarkgreycolor
-                                                    .withOpacity(0.6),
-                                                fontSize: height / 70),
-                                          ),
-                                          Text(
-                                            cashbankdiscription2[index],
-                                            style: TextStyle(
-                                                fontFamily: "Gilroy Medium",
-                                                color: notifire.getdarkgreycolor
-                                                    .withOpacity(0.6),
-                                                fontSize: height / 60),
-                                          ),
-                                        ],
+                                      Text(
+                                        transactiondate[index],
+                                        style: TextStyle(
+                                            fontFamily: "Gilroy Medium",
+                                            color: notifire.getdarkgreycolor
+                                                .withOpacity(0.6),
+                                            fontSize: height / 60),
                                       ),
                                     ],
                                   ),
                                 ],
                               ),
                               const Spacer(),
-                              Icon(Icons.arrow_forward_ios,
-                                  color: notifire.getdarkscolor,
-                                  size: height / 40),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                height: height / 6,
-                color: Colors.transparent,
-                child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  itemCount: 1,
-                  itemBuilder: (context, index) => Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: width / 20, vertical: height / 100),
-                    child: InkWell(
-                      onTap: () {},
-                      child: Container(
-                        height: height / 7,
-                        width: width,
-                        decoration: BoxDecoration(
-                          color: notifire.getdarkwhitecolor,
-                          border: Border.all(
-                            color: Colors.grey.withOpacity(0.2),
-                          ),
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: width / 20),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: height / 10,
-                                width: width / 6,
-                                decoration: BoxDecoration(
-                                  color: notifire.gettabwhitecolor,
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(10),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Image.asset(
-                                    'images/rating.png',
-                                    height: height / 5,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: width / 30,
-                              ),
                               Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   SizedBox(
                                     height: height / 70,
                                   ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        CustomStrings.lovingsling,
-                                        style: TextStyle(
-                                            fontFamily: "Gilroy Bold",
-                                            color: notifire.getdarkscolor,
-                                            fontSize: height / 50),
-                                      ),
-                                      // SizedBox(width: width / 7,),
-                                    ],
+                                  Text(
+                                    transactionamount[index],
+                                    style: TextStyle(
+                                        fontFamily: "Gilroy Bold",
+                                        color: transactioncolor[index],
+                                        fontSize: height / 45),
                                   ),
-                                  InkWell(
-                                    onTap: () {
-                                      openRatingDialog(context);
-                                    },
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          CustomStrings.rating,
-                                          style: TextStyle(
-                                            fontFamily: "Gilroy Bold",
-                                            color: const Color.fromARGB(
-                                                255, 210, 194, 51),
-                                            fontSize: height / 50,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
+                                  SizedBox(
+                                    height: height / 100,
+                                  ),
+                                  Text(
+                                    "Order ID:***ase21",
+                                    style: TextStyle(
+                                        fontFamily: "Gilroy Medium",
+                                        color: notifire.getdarkgreycolor
+                                            .withOpacity(0.6),
+                                        fontSize: height / 60),
+                                  ),
                                 ],
                               ),
-                              const Spacer(),
-                              Icon(Icons.arrow_forward_ios,
-                                  color: notifire.getdarkscolor,
-                                  size: height / 40),
                             ],
                           ),
                         ),
@@ -1947,8 +1759,253 @@ Future<void> fetchCardSchemeId(String referenceNumber) async {
                     ),
                   ),
                 ),
-              ),
-            ],
+                Container(
+                  height: height / 4,
+                  color: Colors.transparent,
+                  child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    itemCount: cashbankname.length,
+                    itemBuilder: (context, index) => Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: width / 20, vertical: height / 100),
+                      child: InkWell(
+                        onTap: () {
+                          // if (index == 0) {
+                          //   Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) =>
+                          //           const Notificationindex(CustomStrings.cashback),
+                          //     ),
+                          //   );
+                          // } else if (index == 1) {
+                          //   Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => const HelpSupport(
+                          //         "Refer A Friend",
+                          //       ),
+                          //     ),
+                          //   );
+                          // } else
+                          if (index == 0) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Refer(),
+                              ),
+                            );
+                          } else if (index == 1) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const HelpAndSupport(),
+                              ),
+                            );
+                          }
+                        },
+                        child: Container(
+                          height: height / 9,
+                          width: width,
+                          decoration: BoxDecoration(
+                            color: notifire.getdarkwhitecolor,
+                            border: Border.all(
+                              color: Colors.grey.withOpacity(0.2),
+                            ),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          child: Padding(
+                            padding:
+                                EdgeInsets.symmetric(horizontal: width / 20),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: height / 15,
+                                  width: width / 7,
+                                  decoration: BoxDecoration(
+                                    color: notifire.gettabwhitecolor,
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Image.asset(
+                                      cashbankimg[index],
+                                      height: height / 20,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: width / 30,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: height / 70,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          cashbankname[index],
+                                          style: TextStyle(
+                                              fontFamily: "Gilroy Bold",
+                                              color: notifire.getdarkscolor,
+                                              fontSize: height / 50),
+                                        ),
+                                        // SizedBox(width: width / 7,),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: height / 100,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              cashbankdiscription[index],
+                                              style: TextStyle(
+                                                  fontFamily: "Gilroy Medium",
+                                                  color: notifire
+                                                      .getdarkgreycolor
+                                                      .withOpacity(0.6),
+                                                  fontSize: height / 70),
+                                            ),
+                                            Text(
+                                              cashbankdiscription2[index],
+                                              style: TextStyle(
+                                                  fontFamily: "Gilroy Medium",
+                                                  color: notifire
+                                                      .getdarkgreycolor
+                                                      .withOpacity(0.6),
+                                                  fontSize: height / 60),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                const Spacer(),
+                                Icon(Icons.arrow_forward_ios,
+                                    color: notifire.getdarkscolor,
+                                    size: height / 40),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  height: height / 6,
+                  color: Colors.transparent,
+                  child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    itemCount: 1,
+                    itemBuilder: (context, index) => Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: width / 20, vertical: height / 100),
+                      child: InkWell(
+                        onTap: () {},
+                        child: Container(
+                          height: height / 7,
+                          width: width,
+                          decoration: BoxDecoration(
+                            color: notifire.getdarkwhitecolor,
+                            border: Border.all(
+                              color: Colors.grey.withOpacity(0.2),
+                            ),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          child: Padding(
+                            padding:
+                                EdgeInsets.symmetric(horizontal: width / 20),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: height / 10,
+                                  width: width / 6,
+                                  decoration: BoxDecoration(
+                                    color: notifire.gettabwhitecolor,
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Image.asset(
+                                      'images/rating.png',
+                                      height: height / 5,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: width / 30,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: height / 70,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          CustomStrings.lovingsling,
+                                          style: TextStyle(
+                                              fontFamily: "Gilroy Bold",
+                                              color: notifire.getdarkscolor,
+                                              fontSize: height / 50),
+                                        ),
+                                        // SizedBox(width: width / 7,),
+                                      ],
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        openRatingDialog(context);
+                                      },
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            CustomStrings.rating,
+                                            style: TextStyle(
+                                              fontFamily: "Gilroy Bold",
+                                              color: const Color.fromARGB(
+                                                  255, 210, 194, 51),
+                                              fontSize: height / 50,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                const Spacer(),
+                                Icon(Icons.arrow_forward_ios,
+                                    color: notifire.getdarkscolor,
+                                    size: height / 40),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         // backgroundColor: notifire.getprimerycolor,
@@ -2147,12 +2204,12 @@ Future<void> fetchCardSchemeId(String referenceNumber) async {
 
       print('Images are shown from Firebase Storage.');
       return FadeInImage.assetNetwork(
-        placeholder:  'asset/images/loading.gif',
-         image: imageUrl,
-         fit: BoxFit.cover,
-         width: height*0.15,
-         height: height*0.15,
-         );
+        placeholder: 'asset/images/loading.gif',
+        image: imageUrl,
+        fit: BoxFit.cover,
+        width: height * 0.15,
+        height: height * 0.15,
+      );
       // return Image.network(
       //   imageUrl,
       //   fit: BoxFit.cover,
@@ -2175,16 +2232,18 @@ Future<void> fetchCardSchemeId(String referenceNumber) async {
       );
     }
   }
+
   String responseMessage = '';
 
-   Future<void> generateToken(String username, String apiKey) async {
+  Future<void> generateToken(String username, String apiKey) async {
     AuthController authController = AuthController();
 
     try {
       String? token = await authController.generateToken(username, apiKey);
 
       setState(() {
-        responseMessage = 'Debit card for Token generated successfully. Refresh Token: $token';
+        responseMessage =
+            'Debit card for Token generated successfully. Refresh Token: $token';
       });
       print(token);
       // Navigate to the next screen
@@ -2196,10 +2255,9 @@ Future<void> fetchCardSchemeId(String referenceNumber) async {
     } catch (e) {
       setState(() {
         responseMessage = 'Error: $e';
-       
       });
-       print(responseMessage);
-        showDialog(
+      print(responseMessage);
+      showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: Text(responseMessage),
@@ -2209,8 +2267,8 @@ Future<void> fetchCardSchemeId(String referenceNumber) async {
               onPressed: () {
                 // Exit the app
                 //Navigator.of(context).pop();
-                SystemNavigator.pop(); 
-               // exit(0);//forcefully terminate app to background
+                SystemNavigator.pop();
+                // exit(0);//forcefully terminate app to background
               },
               child: const Text('Exit'),
             ),
