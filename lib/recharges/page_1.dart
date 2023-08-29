@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:task/page_2.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'page_2.dart';
 
 class Page1 extends StatefulWidget {
   const Page1({super.key});
