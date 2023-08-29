@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:task/page_3.dart';
+import 'page_3.dart';
 
 class Page2 extends StatefulWidget {
   const Page2({super.key, required this.phNum});
