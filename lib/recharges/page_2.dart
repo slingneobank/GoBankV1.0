@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 import 'page_3.dart';
 
 class Page2 extends StatefulWidget {
   const Page2({super.key, required this.phNum});
   final String phNum;
+
   @override
   State<Page2> createState() => _Page2State();
 }
@@ -12,6 +15,36 @@ class Page2 extends StatefulWidget {
 class _Page2State extends State<Page2> {
   final Stream<QuerySnapshot> _dataStream =
       FirebaseFirestore.instance.collection('recharges').snapshots();
+
+  Map<String, String> imageUrls = {};
+
+  @override
+  void initState() {
+    super.initState();
+    fetchImageUrls();
+  }
+
+  Future<void> fetchImageUrls() async {
+    final snapshot =
+        await FirebaseFirestore.instance.collection('recharges').get();
+
+    for (final doc in snapshot.docs) {
+      final imageName = doc.id.toLowerCase();
+      final url = await getImageUrl('$imageName.png');
+
+      setState(() {
+        imageUrls[imageName] = url;
+      });
+    }
+  }
+
+  Future<String> getImageUrl(String imageName) async {
+    final firebase_storage.Reference ref = firebase_storage
+        .FirebaseStorage.instance
+        .ref('recharges_assets/$imageName');
+    final String downloadUrl = await ref.getDownloadURL();
+    return downloadUrl;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +93,7 @@ class _Page2State extends State<Page2> {
                     shrinkWrap: true,
                     itemCount: documentNames.length,
                     itemBuilder: (context, index) {
+                      final imageName = documentNames[index].toLowerCase();
                       return Container(
                         width: width * 0.9,
                         height: height * 0.12,
@@ -85,18 +119,28 @@ class _Page2State extends State<Page2> {
                                 MaterialStateProperty.all(Colors.transparent),
                             elevation: MaterialStateProperty.all(0),
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.only(left: width * 0.15),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                documentNames[index].toUpperCase(),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
+                          child: Row(
+                            children: [
+                              if (imageUrls.containsKey(imageName))
+                                SizedBox(
+                                  width: width * 0.16,
+                                  child:
+                                      Image.network(imageUrls[imageName] ?? ''),
+                                ),
+                              SizedBox(
+                                width: width * 0.1,
+                              ),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  documentNames[index].toUpperCase(),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
                       );
